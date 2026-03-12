@@ -46,7 +46,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **RSLT-01**: App displays each heir's share as fraction, percentage, and monetary amount simultaneously
 - [x] **RSLT-02**: App shows Quranic ayah and/or Hadith reference justifying each heir's share allocation
-- [ ] **RSLT-03**: App provides step-by-step calculation explanation showing how shares were derived
+- [x] **RSLT-03**: App provides step-by-step calculation explanation showing how shares were derived
 - [ ] **RSLT-04**: App displays pie chart showing proportional share distribution
 - [ ] **RSLT-05**: App displays bar chart showing monetary amount per heir
 - [x] **RSLT-06**: App provides dual mode — simple view for general public, detailed view for legal professionals
@@ -127,7 +127,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DSGN-03 | Phase 2 | Complete |
 | RSLT-01 | Phase 3 | Complete |
 | RSLT-02 | Phase 3 | Complete |
-| RSLT-03 | Phase 3 | Pending |
+| RSLT-03 | Phase 3 | Complete |
 | RSLT-06 | Phase 3 | Complete |
 | PROP-01 | Phase 4 | Pending |
 | PROP-02 | Phase 4 | Pending |

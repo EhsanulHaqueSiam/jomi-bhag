@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Faraid Engine and Project Foundation** - Pure TypeScript calculation engine with exact fraction arithmetic, all Hajb blocking rules, Awl/Radd adjustments, and project scaffolding (gap closure in progress)
 - [ ] **Phase 2: Heir Input Wizard** - Multi-step wizard with heir entry (gender, siblings, spouses, children), modern responsive UI, and form validation
-- [ ] **Phase 3: Core Results Display** - Share breakdown (fractions, percentages, monetary), Quranic/Hadith references, step-by-step explanation, and dual simple/detailed mode
+- [x] **Phase 3: Core Results Display** - Share breakdown (fractions, percentages, monetary), Quranic/Hadith references, step-by-step explanation, and dual simple/detailed mode
 - [ ] **Phase 4: Property Input System** - Multi-property entry with BD land units, regional conversion, houses, trees/crops, and ponds
 - [ ] **Phase 5: Property Valuation** - Estate value calculation with mouza rate auto-suggestion, user override, and per-heir monetary distribution
 - [ ] **Phase 6: Charts and Visualization** - Pie chart for proportional shares and bar chart for monetary comparison
@@ -72,7 +72,7 @@ Plans:
 
 Plans:
 - [x] 03-01-PLAN.md -- Engine integration, display utilities, heir cards with Quran references, estate value input, mode toggle, and ResultsPage container
-- [ ] 03-02-PLAN.md -- Adjustment banners, special case callouts, blocked heirs section, step accordion, Islamic Basis section, integration tests, and visual verification
+- [x] 03-02-PLAN.md -- Adjustment banners, special case callouts, blocked heirs section, step accordion, Islamic Basis section, integration tests, and visual verification
 
 ### Phase 4: Property Input System
 **Goal**: Users can enter multiple properties of different types with Bangladesh-specific land units and regional variations
@@ -151,7 +151,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 |-------|----------------|--------|-----------|
 | 1. Faraid Engine and Project Foundation | 4/4 | Complete | 2026-03-12 |
 | 2. Heir Input Wizard | 3/3 | Complete | 2026-03-12 |
-| 3. Core Results Display | 1/2 | In progress | - |
+| 3. Core Results Display | 2/2 | Complete | 2026-03-12 |
 | 4. Property Input System | 0/2 | Not started | - |
 | 5. Property Valuation | 0/2 | Not started | - |
 | 6. Charts and Visualization | 0/1 | Not started | - |

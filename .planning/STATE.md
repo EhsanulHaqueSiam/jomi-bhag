@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: in_progress
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-03-12T21:06:01Z"
-last_activity: 2026-03-12 -- Completed Plan 03-01 (Core results display with heir cards)
+stopped_at: Completed 03-02-PLAN.md
+last_updated: "2026-03-12T21:15:49Z"
+last_activity: 2026-03-12 -- Completed Plan 03-02 (Supplementary results sections and integration tests)
 progress:
-  total_phases: 8
-  completed_phases: 2
-  total_plans: 8
-  completed_plans: 8
+  total_phases: 10
+  completed_phases: 3
+  total_plans: 9
+  completed_plans: 9
   percent: 100
 ---
 
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-12)
 
 **Core value:** Accurate, unbiased Islamic inheritance division -- the app strictly follows Faraid rules for every calculation without favoring any heir.
-**Current focus:** Phase 3 in progress. Core results display with heir cards complete (Plan 01 of 02).
+**Current focus:** Phase 3 complete. Core results display with all supplementary sections, step accordion, and Islamic Basis finished.
 
 ## Current Position
 
-Phase: 3 of 8 (Core Results Display) -- IN PROGRESS
-Plan: 1 of 2 in current phase
-Status: Plan 03-01 complete, ready for Plan 03-02
-Last activity: 2026-03-12 -- Completed Plan 03-01 (Core results display with heir cards)
+Phase: 3 of 10 (Core Results Display) -- COMPLETE
+Plan: 2 of 2 in current phase -- COMPLETE
+Status: Phase 3 complete, ready for Phase 4
+Last activity: 2026-03-12 -- Completed Plan 03-02 (Supplementary results sections and integration tests)
 
 Progress: [████████░░] 80%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
+- Total plans completed: 9
 - Average duration: 8 min
-- Total execution time: 1.0 hours
+- Total execution time: 1.1 hours
 
 **By Phase:**
 
@@ -45,10 +45,10 @@ Progress: [████████░░] 80%
 |-------|-------|-------|----------|
 | 1 | 4/4 | 31 min | 8 min |
 | 2 | 3/3 | 36 min | 12 min |
-| 3 | 1/2 | 5 min | 5 min |
+| 3 | 2/2 | 10 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (8 min), 02-02 (3 min), 02-03 (25 min), 03-01 (5 min)
+- Last 5 plans: 02-02 (3 min), 02-03 (25 min), 03-01 (5 min), 03-02 (5 min)
 - Trend: Steady
 
 *Updated after each plan completion*
@@ -94,6 +94,10 @@ Recent decisions affecting current work:
 - [Phase 03]: QuranReference uses motion/react AnimatePresence for smooth expand/collapse
 - [Phase 03]: HeirCard shows Each/Total rows when count > 1, single row otherwise
 - [Phase 03]: Results step hides FamilyTree, info text, and both navigation bars
+- [Phase 03]: StepAccordion uses Set<number> state for multi-open accordion
+- [Phase 03]: AdjustmentBanner: amber for Awl, blue for Radd visual distinction
+- [Phase 03]: SpecialCaseCallout uses gold theme consistent with Islamic accent palette
+- [Phase 03]: Integration tests use mock FaraidOutput factories with real Fraction objects
 
 ### Pending Todos
 
@@ -101,8 +105,8 @@ None yet.
 
 ### Roadmap Evolution
 
-- Phase 9 added: Land Lot Division and Qurah Assignment — named land parcels divided into groups per Faraid shares, random (Qur'ah) or user-named assignment to heirs
-- Phase 10 added: Movable Assets and Complete Estate Inventory — gold, silver, cash, vehicles, jewelry, furniture, investments, livestock with indivisible asset handling per Islamic jurisprudence
+- Phase 9 added: Land Lot Division and Qurah Assignment -- named land parcels divided into groups per Faraid shares, random (Qur'ah) or user-named assignment to heirs
+- Phase 10 added: Movable Assets and Complete Estate Inventory -- gold, silver, cash, vehicles, jewelry, furniture, investments, livestock with indivisible asset handling per Islamic jurisprudence
 
 ### Blockers/Concerns
 
@@ -111,6 +115,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-12T21:06:01Z
-Stopped at: Completed 03-01-PLAN.md
-Resume file: .planning/phases/03-core-results-display/03-01-SUMMARY.md
+Last session: 2026-03-12T21:15:49Z
+Stopped at: Completed 03-02-PLAN.md
+Resume file: .planning/phases/03-core-results-display/03-02-SUMMARY.md
