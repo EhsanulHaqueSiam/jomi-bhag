@@ -59,7 +59,7 @@ describe('Wizard renders on load', () => {
   it('renders Step 1 content on initial load', () => {
     render(<App />)
     expect(
-      screen.getByText('I am calculating inheritance for my...'),
+      screen.getByText('Click on who passed away in your family'),
     ).toBeInTheDocument()
   })
 
@@ -129,7 +129,7 @@ describe('Step navigation', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('I am calculating inheritance for my...'),
+        screen.getByText('Click on who passed away in your family'),
       ).toBeInTheDocument()
     })
   })
@@ -141,7 +141,7 @@ describe('DSGN-03 wizard flow', () => {
 
     // Step 1
     expect(
-      screen.getByText('I am calculating inheritance for my...'),
+      screen.getByText('Click on who passed away in your family'),
     ).toBeInTheDocument()
 
     // Select relationship and go to Step 2

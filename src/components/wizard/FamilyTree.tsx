@@ -1,13 +1,152 @@
 import { useWizardStore } from '@/stores/wizardStore'
+import type { HeirType } from '@/core/faraid/types'
 
-interface TreeNode {
-  label: string
-  count?: number
-  type: 'deceased' | 'spouse' | 'child' | 'sibling' | 'user'
-  highlight?: boolean
+interface FamilyTreeProps {
+  currentStep: number
 }
 
-export function FamilyTree() {
+export function FamilyTree({ currentStep }: FamilyTreeProps) {
+  const relationship = useWizardStore((s) => s.relationship)
+
+  if (currentStep === 1) {
+    return <TreeSelector />
+  }
+
+  if (!relationship) return null
+  return <TreeDisplay />
+}
+
+// ─── Step 1: Interactive relationship selector ─────────────────────────
+
+function TreeSelector() {
+  const relationship = useWizardStore((s) => s.relationship)
+  const setRelationship = useWizardStore((s) => s.setRelationship)
+
+  return (
+    <div className="rounded-xl border border-emerald-100 bg-gradient-to-b from-emerald-50/40 to-white p-4">
+      <p className="mb-4 text-center text-sm text-gray-600">
+        Click on who passed away in your family
+      </p>
+
+      {/* Row 1: Parents (above YOU) */}
+      <div className="mb-1 text-center">
+        <span className="text-[10px] font-medium tracking-wider text-gray-400 uppercase">
+          My Parents
+        </span>
+      </div>
+      <div className="flex justify-center gap-2">
+        <TreeButton
+          label="Father"
+          selected={relationship === 'father'}
+          onClick={() => setRelationship('father')}
+        />
+        <TreeButton
+          label="Mother"
+          selected={relationship === 'mother'}
+          onClick={() => setRelationship('mother')}
+        />
+      </div>
+
+      {/* Connector: parents → YOU */}
+      <div className="flex justify-center">
+        <div className="h-3 w-px bg-emerald-200" />
+      </div>
+
+      {/* Row 2: YOU (center) */}
+      <div className="flex justify-center">
+        <span className="rounded-full bg-emerald-600 px-5 py-1.5 text-xs font-bold tracking-wide text-white shadow-md">
+          YOU
+        </span>
+      </div>
+
+      {/* Connector: YOU → siblings/spouse */}
+      <div className="flex justify-center">
+        <div className="h-3 w-px bg-emerald-200" />
+      </div>
+
+      {/* Row 3: Siblings (same generation) */}
+      <div className="mb-1 text-center">
+        <span className="text-[10px] font-medium tracking-wider text-gray-400 uppercase">
+          My Siblings
+        </span>
+      </div>
+      <div className="flex justify-center gap-2">
+        <TreeButton
+          label="Brother"
+          selected={relationship === 'brother'}
+          onClick={() => setRelationship('brother')}
+        />
+        <TreeButton
+          label="Sister"
+          selected={relationship === 'sister'}
+          onClick={() => setRelationship('sister')}
+        />
+      </div>
+
+      {/* Divider */}
+      <div className="my-3 border-t border-dashed border-gray-200" />
+
+      {/* Row 4: Spouse (same generation) */}
+      <div className="mb-1 text-center">
+        <span className="text-[10px] font-medium tracking-wider text-gray-400 uppercase">
+          My Spouse
+        </span>
+      </div>
+      <div className="flex justify-center gap-2">
+        <TreeButton
+          label="Husband"
+          selected={relationship === 'husband'}
+          onClick={() => setRelationship('husband')}
+        />
+        <TreeButton
+          label="Wife"
+          selected={relationship === 'wife'}
+          onClick={() => setRelationship('wife')}
+        />
+      </div>
+
+      {/* Other */}
+      <div className="mt-3 flex justify-center">
+        <TreeButton
+          label="Other"
+          selected={relationship === 'other'}
+          onClick={() => setRelationship('other')}
+          ghost
+        />
+      </div>
+    </div>
+  )
+}
+
+function TreeButton({
+  label,
+  selected,
+  onClick,
+  ghost = false,
+}: {
+  label: string
+  selected: boolean
+  onClick: () => void
+  ghost?: boolean
+}) {
+  const base = 'rounded-lg px-4 py-2 text-sm font-medium transition-all cursor-pointer'
+  const style = selected
+    ? 'bg-gray-800 text-white shadow-md ring-2 ring-gray-600'
+    : ghost
+      ? 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
+      : 'bg-white text-gray-700 ring-1 ring-gray-200 hover:ring-emerald-300 hover:bg-emerald-50'
+
+  return (
+    <button type="button" onClick={onClick} className={`${base} ${style}`}>
+      {label}
+      {selected && <span className="ml-1 text-xs opacity-60">&#x271D;</span>}
+    </button>
+  )
+}
+
+// ─── Steps 2-3: Heir display tree ──────────────────────────────────────
+
+function TreeDisplay() {
   const relationship = useWizardStore((s) => s.relationship)
   const deceasedGender = useWizardStore((s) => s.deceasedGender)
   const wifeCount = useWizardStore((s) => s.wifeCount)
@@ -26,177 +165,180 @@ export function FamilyTree() {
   const sisterUterineCount = useWizardStore((s) => s.sisterUterineCount)
   const autoIncludes = useWizardStore((s) => s.autoIncludes)
 
-  if (!relationship) return null
+  const autoCount = (type: HeirType) =>
+    autoIncludes.find((ai) => ai.type === type)?.count ?? 0
+
+  // Determine where the user sits in the tree
+  const userIsChild =
+    relationship === 'father' || relationship === 'mother'
+  const userIsSpouse =
+    relationship === 'husband' || relationship === 'wife'
+  const userIsSibling =
+    relationship === 'brother' || relationship === 'sister'
 
   const deceasedLabel =
+    deceasedGender === 'male' ? 'Deceased \u2642' : deceasedGender === 'female' ? 'Deceased \u2640' : 'Deceased'
+
+  // Spouse
+  const totalWives = wifeCount + autoCount('wife')
+  const totalHusband = (husbandPresent ? 1 : 0) + autoCount('husband')
+  const hasSpouse =
+    (deceasedGender === 'male' && totalWives > 0) ||
+    (deceasedGender === 'female' && totalHusband > 0)
+  const spouseLabel =
     deceasedGender === 'male'
-      ? 'Deceased (M)'
-      : deceasedGender === 'female'
-        ? 'Deceased (F)'
-        : 'Deceased'
+      ? totalWives === 1
+        ? 'Wife'
+        : `${totalWives} Wives`
+      : 'Husband'
 
-  // Build spouse nodes
-  const spouseNodes: TreeNode[] = []
-  if (deceasedGender === 'male' && wifeCount > 0) {
-    spouseNodes.push({
-      label: wifeCount === 1 ? 'Wife' : `Wives`,
-      count: wifeCount,
-      type: 'spouse',
-      highlight: autoIncludes.some((ai) => ai.type === 'wife'),
-    })
-  }
-  if (deceasedGender === 'female' && husbandPresent) {
-    spouseNodes.push({
-      label: 'Husband',
-      type: 'spouse',
-      highlight: autoIncludes.some((ai) => ai.type === 'husband'),
-    })
-  }
+  // Children
+  const totalSons = sonCount + autoCount('son')
+  const totalDaughters = daughterCount + autoCount('daughter')
+  const hasChildren = totalSons > 0 || totalDaughters > 0
 
-  // Build children nodes
-  const childNodes: TreeNode[] = []
-  if (sonCount > 0) {
-    childNodes.push({
-      label: sonCount === 1 ? 'Son' : 'Sons',
-      count: sonCount,
-      type: 'child',
-      highlight: autoIncludes.some((ai) => ai.type === 'son'),
-    })
-  }
-  if (daughterCount > 0) {
-    childNodes.push({
-      label: daughterCount === 1 ? 'Daughter' : 'Daughters',
-      count: daughterCount,
-      type: 'child',
-      highlight: autoIncludes.some((ai) => ai.type === 'daughter'),
-    })
-  }
-
-  // Build sibling nodes
-  const siblingNodes: TreeNode[] = []
+  // Siblings
   const totalBrothers =
-    brotherFullCount + brotherConsanguineCount + brotherUterineCount
+    brotherFullCount +
+    brotherConsanguineCount +
+    brotherUterineCount +
+    autoCount('brother_full')
   const totalSisters =
-    sisterFullCount + sisterConsanguineCount + sisterUterineCount
+    sisterFullCount +
+    sisterConsanguineCount +
+    sisterUterineCount +
+    autoCount('sister_full')
+  const hasSiblings = totalBrothers > 0 || totalSisters > 0
 
-  if (totalBrothers > 0) {
-    siblingNodes.push({
-      label: totalBrothers === 1 ? 'Brother' : 'Brothers',
-      count: totalBrothers,
-      type: 'sibling',
-      highlight: autoIncludes.some((ai) => ai.type === 'brother_full'),
-    })
-  }
-  if (totalSisters > 0) {
-    siblingNodes.push({
-      label: totalSisters === 1 ? 'Sister' : 'Sisters',
-      count: totalSisters,
-      type: 'sibling',
-      highlight: autoIncludes.some((ai) => ai.type === 'sister_full'),
-    })
-  }
-
-  const hasAnyHeirs =
-    spouseNodes.length > 0 ||
-    childNodes.length > 0 ||
-    siblingNodes.length > 0
+  const hasAny = hasSpouse || hasChildren || hasSiblings
 
   return (
-    <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 p-4">
-      <p className="mb-3 text-center text-xs font-medium tracking-wide text-emerald-700 uppercase">
+    <div className="rounded-xl border border-emerald-100 bg-emerald-50/30 px-3 py-4">
+      <p className="mb-3 text-center text-[10px] font-semibold tracking-widest text-emerald-600 uppercase">
         Family Overview
       </p>
 
-      <div className="flex flex-col items-center gap-1">
-        {/* Deceased node */}
-        <NodeBadge
-          label={deceasedLabel}
-          type="deceased"
-        />
-
-        {hasAnyHeirs && (
-          <div className="h-4 w-px bg-emerald-300" />
-        )}
-
-        {/* Spouse row */}
-        {spouseNodes.length > 0 && (
-          <>
-            <div className="flex flex-wrap justify-center gap-2">
-              {spouseNodes.map((n) => (
-                <NodeBadge key={n.label} {...n} />
-              ))}
-            </div>
-            {(childNodes.length > 0 || siblingNodes.length > 0) && (
-              <div className="h-3 w-px bg-emerald-200" />
-            )}
-          </>
-        )}
-
-        {/* Children row */}
-        {childNodes.length > 0 && (
-          <>
-            <div className="flex flex-wrap justify-center gap-2">
-              {childNodes.map((n) => (
-                <NodeBadge key={n.label} {...n} />
-              ))}
-            </div>
-            {siblingNodes.length > 0 && (
-              <div className="h-3 w-px bg-emerald-200" />
-            )}
-          </>
-        )}
-
-        {/* Siblings row */}
-        {siblingNodes.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-2">
-            {siblingNodes.map((n) => (
-              <NodeBadge key={n.label} {...n} />
-            ))}
+      {/* ── Top row: Siblings (same generation as deceased) ── */}
+      {hasSiblings && (
+        <>
+          <div className="mb-1 text-center">
+            <span className="text-[9px] font-medium tracking-wider text-gray-400 uppercase">
+              Siblings of deceased
+            </span>
           </div>
-        )}
+          <div className="flex flex-wrap justify-center gap-1.5">
+            {totalBrothers > 0 && (
+              <HeirBadge
+                label={totalBrothers === 1 ? 'Brother' : `${totalBrothers} Brothers`}
+                isYou={userIsSibling && relationship === 'brother'}
+                autoIncluded={autoCount('brother_full') > 0}
+              />
+            )}
+            {totalSisters > 0 && (
+              <HeirBadge
+                label={totalSisters === 1 ? 'Sister' : `${totalSisters} Sisters`}
+                isYou={userIsSibling && relationship === 'sister'}
+                autoIncluded={autoCount('sister_full') > 0}
+              />
+            )}
+          </div>
+          <div className="flex justify-center">
+            <div className="h-2 w-px bg-emerald-200" />
+          </div>
+        </>
+      )}
 
-        {!hasAnyHeirs && (
-          <p className="mt-1 text-xs text-gray-400">
-            Add heirs to see them here
-          </p>
+      {/* ── Middle row: Deceased ══ Spouse ── */}
+      <div className="flex items-center justify-center gap-0">
+        {/* Deceased */}
+        <span className="inline-flex items-center gap-1 rounded-lg bg-gray-800 px-3 py-1.5 text-xs font-semibold text-white shadow-sm">
+          {deceasedLabel}
+        </span>
+
+        {/* Marriage connector + Spouse */}
+        {hasSpouse && (
+          <>
+            <span className="mx-1 text-xs font-bold text-emerald-400">=</span>
+            <HeirBadge
+              label={spouseLabel}
+              isYou={userIsSpouse}
+              autoIncluded={
+                deceasedGender === 'male'
+                  ? autoCount('wife') > 0
+                  : autoCount('husband') > 0
+              }
+            />
+          </>
         )}
       </div>
+
+      {/* ── Connector to children ── */}
+      {hasChildren && (
+        <div className="flex justify-center">
+          <div className="h-3 w-px bg-emerald-300" />
+        </div>
+      )}
+
+      {/* ── Bottom row: Children ── */}
+      {hasChildren && (
+        <>
+          <div className="mb-1 text-center">
+            <span className="text-[9px] font-medium tracking-wider text-gray-400 uppercase">
+              Children
+            </span>
+          </div>
+          <div className="flex flex-wrap justify-center gap-1.5">
+            {totalSons > 0 && (
+              <HeirBadge
+                label={totalSons === 1 ? 'Son' : `${totalSons} Sons`}
+                isYou={userIsChild && autoCount('son') > 0}
+                autoIncluded={autoCount('son') > 0}
+              />
+            )}
+            {totalDaughters > 0 && (
+              <HeirBadge
+                label={
+                  totalDaughters === 1
+                    ? 'Daughter'
+                    : `${totalDaughters} Daughters`
+                }
+                isYou={userIsChild && autoCount('daughter') > 0}
+                autoIncluded={autoCount('daughter') > 0}
+              />
+            )}
+          </div>
+        </>
+      )}
+
+      {!hasAny && (
+        <p className="mt-2 text-center text-xs text-gray-400">
+          Add family members to see them here
+        </p>
+      )}
     </div>
   )
 }
 
-function NodeBadge({
+function HeirBadge({
   label,
-  count,
-  type,
-  highlight,
-}: TreeNode) {
-  const baseStyles = 'inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition-all'
-
-  const typeStyles = {
-    deceased: 'bg-gray-800 text-white',
-    spouse: highlight
-      ? 'bg-emerald-200 text-emerald-800 ring-1 ring-emerald-400'
-      : 'bg-white text-gray-700 ring-1 ring-gray-200',
-    child: highlight
-      ? 'bg-emerald-200 text-emerald-800 ring-1 ring-emerald-400'
-      : 'bg-white text-gray-700 ring-1 ring-gray-200',
-    sibling: highlight
-      ? 'bg-emerald-200 text-emerald-800 ring-1 ring-emerald-400'
-      : 'bg-white text-gray-700 ring-1 ring-gray-200',
-    user: 'bg-emerald-600 text-white',
-  }
+  isYou,
+  autoIncluded,
+}: {
+  label: string
+  isYou: boolean
+  autoIncluded: boolean
+}) {
+  const style = autoIncluded
+    ? 'bg-emerald-100 text-emerald-800 ring-1 ring-emerald-300'
+    : 'bg-white text-gray-700 ring-1 ring-gray-200'
 
   return (
-    <span className={`${baseStyles} ${typeStyles[type]}`}>
-      {count !== undefined && count > 1 && (
-        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-black/10 text-[10px]">
-          {count}
-        </span>
-      )}
+    <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium ${style}`}>
       {label}
-      {highlight && (
-        <span className="text-[10px] opacity-70">you</span>
+      {isYou && (
+        <span className="rounded bg-emerald-600 px-1 py-px text-[8px] font-semibold leading-none text-white">
+          you
+        </span>
       )}
     </span>
   )

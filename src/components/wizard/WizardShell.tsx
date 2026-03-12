@@ -84,7 +84,7 @@ export function WizardShell() {
 
       {/* Family tree visualization */}
       <div className="mt-4">
-        <FamilyTree />
+        <FamilyTree currentStep={currentStep} />
       </div>
 
       {/* Animated step content */}
