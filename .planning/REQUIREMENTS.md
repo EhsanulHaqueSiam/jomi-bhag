@@ -39,8 +39,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **VALP-01**: App auto-suggests property prices from BD govt mouza rates by district/upazila
 - [x] **VALP-02**: User can override auto-suggested price with actual market value
-- [ ] **VALP-03**: App calculates total estate value from all property entries combined
-- [ ] **VALP-04**: App shows per-heir monetary amount based on share fraction × total estate value
+- [x] **VALP-03**: App calculates total estate value from all property entries combined
+- [x] **VALP-04**: App shows per-heir monetary amount based on share fraction × total estate value
 
 ### Results Display
 
@@ -137,8 +137,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROP-06 | Phase 4 | Complete |
 | VALP-01 | Phase 5 | Complete |
 | VALP-02 | Phase 5 | Complete |
-| VALP-03 | Phase 5 | Pending |
-| VALP-04 | Phase 5 | Pending |
+| VALP-03 | Phase 5 | Complete |
+| VALP-04 | Phase 5 | Complete |
 | RSLT-04 | Phase 6 | Pending |
 | RSLT-05 | Phase 6 | Pending |
 | OUTP-01 | Phase 7 | Pending |

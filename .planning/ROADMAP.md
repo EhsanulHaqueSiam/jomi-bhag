@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 2: Heir Input Wizard** - Multi-step wizard with heir entry (gender, siblings, spouses, children), modern responsive UI, and form validation
 - [x] **Phase 3: Core Results Display** - Share breakdown (fractions, percentages, monetary), Quranic/Hadith references, step-by-step explanation, and dual simple/detailed mode
 - [x] **Phase 4: Property Input System** - Multi-property entry with BD land units, regional conversion, houses, trees/crops, and ponds (completed 2026-03-12)
-- [ ] **Phase 5: Property Valuation** - Estate value calculation with mouza rate auto-suggestion, user override, and per-heir monetary distribution
+- [x] **Phase 5: Property Valuation** - Estate value calculation with mouza rate auto-suggestion, user override, and per-heir monetary distribution (completed 2026-03-12)
 - [ ] **Phase 6: Charts and Visualization** - Pie chart for proportional shares and bar chart for monetary comparison
 - [ ] **Phase 7: PDF Export and Print** - Downloadable PDF report with full division details, Quranic references, and print-friendly layout
 - [ ] **Phase 8: Persistence and Scenarios** - localStorage saving, scenario comparison, and load/modify previous calculations
@@ -96,7 +96,7 @@ Plans:
   1. App auto-suggests property prices from BD government mouza rates by district/upazila, and user can override with actual market value
   2. Total estate value is computed from all property entries combined (land + structures + trees/crops + ponds)
   3. Each heir's monetary amount is calculated as their share fraction multiplied by total estate value and displayed alongside their share
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 05-01-PLAN.md -- Mouza rate data module (8 BD division HQ districts, upazila-level rates), Property type extension (upazila + rateSource fields), valuation helper, upazila cascade dropdown, and inline rate suggestion UI
@@ -153,7 +153,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 2. Heir Input Wizard | 3/3 | Complete | 2026-03-12 |
 | 3. Core Results Display | 2/2 | Complete | 2026-03-12 |
 | 4. Property Input System | 2/2 | Complete   | 2026-03-12 |
-| 5. Property Valuation | 0/2 | Not started | - |
+| 5. Property Valuation | 2/2 | Complete   | 2026-03-12 |
 | 6. Charts and Visualization | 0/1 | Not started | - |
 | 7. PDF Export and Print | 0/2 | Not started | - |
 | 8. Persistence and Scenarios | 0/2 | Not started | - |

@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-03-12T23:11:13.749Z"
-last_activity: 2026-03-13 -- Phase 5 Plan 01 complete (mouza rate data and rate suggestion UI)
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-03-12T23:15:42.000Z"
+last_activity: 2026-03-13 -- Phase 5 Plan 02 complete (estate breakdown card and per-heir property distribution)
 progress:
   total_phases: 10
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 13
-  completed_plans: 12
-  percent: 92
+  completed_plans: 13
+  percent: 100
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-13)
 
 **Core value:** Accurate, unbiased Islamic inheritance division -- the app strictly follows Faraid rules for every calculation without favoring any heir.
-**Current focus:** Phase 5 — Property Valuation (mouza rate data, rate suggestion UI, estate breakdown, per-heir distribution)
+**Current focus:** Phase 5 complete -- Property Valuation (mouza rate data, rate suggestion UI, estate breakdown, per-heir distribution)
 
 ## Current Position
 
-Phase: 5 of 10 (Property Valuation) -- Plan 01 complete
-Plan: 1 of 2 complete
+Phase: 5 of 10 (Property Valuation) -- Phase complete
+Plan: 2 of 2 complete
 Status: Executing
-Last activity: 2026-03-13 -- Phase 5 Plan 01 complete (mouza rate data and rate suggestion UI)
+Last activity: 2026-03-13 -- Phase 5 Plan 02 complete (estate breakdown card and per-heir property distribution)
 
-Progress: [█████████░] 12/13 plans (92%)
+Progress: [██████████] 13/13 plans (100%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
-- Average duration: 8 min
-- Total execution time: 1.3 hours
+- Total plans completed: 13
+- Average duration: 7 min
+- Total execution time: 1.4 hours
 
 **By Phase:**
 
@@ -48,12 +48,15 @@ Progress: [█████████░] 12/13 plans (92%)
 | 3 | 2/2 | 10 min | 5 min |
 | 4 | 2/2 | 12 min | 6 min |
 
+| 5 | 2/2 | 8 min | 4 min |
+
 **Recent Trend:**
-- Last 5 plans: 02-03 (25 min), 03-01 (5 min), 03-02 (5 min), 04-01 (6 min), 04-02 (6 min)
+- Last 5 plans: 03-02 (5 min), 04-01 (6 min), 04-02 (6 min), 05-01 (5 min), 05-02 (3 min)
 - Trend: Steady
 
 *Updated after each plan completion*
 | Phase 05 P01 | 5min | 2 tasks | 10 files |
+| Phase 05 P02 | 3min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -111,6 +114,9 @@ Recent decisions affecting current work:
 - [Phase 05]: Mouza rate data hardcoded for 84 upazilas across 8 BD division HQ districts with representative govt minimum rates
 - [Phase 05]: City corp entries added for all 8 division capitals as pseudo-upazilas for rate lookup
 - [Phase 05]: rateSource on Property tracks govt vs manual; division change resets upazila and rateSource
+- [Phase 05]: EstateBreakdownCard replaces EstateValueInput in ResultsPage; EstateValueInput file preserved but unused
+- [Phase 05]: getAutoLabel replicated in EstateBreakdownCard and HeirCard (simple utility, not worth shared module)
+- [Phase 05]: Per-property BDT amounts use Math.round(share.valueOf() * propertyTotal) for integer precision
 
 ### Pending Todos
 
@@ -128,6 +134,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-12T23:11:13.748Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-03-12T23:15:42.000Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None
