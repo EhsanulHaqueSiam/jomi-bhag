@@ -12,23 +12,22 @@ Accurate, unbiased Islamic inheritance division — the app strictly follows Far
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ Full Faraid calculation engine (Awl, Radd, Asaba, standard shares) — Phase 1
+- ✓ Heir input system — number of brothers, sisters, and their spouse status — Phase 2
+- ✓ User identifies as male/female heir and enters own spouse status — Phase 2
+- ✓ Detailed share breakdown — fractions, percentages, and monetary values per heir — Phase 3
+- ✓ Quran/Hadith references justifying each allocation — Phase 3
+- ✓ Simple mode for general public, detailed mode for legal professionals — Phase 3
 
 ### Active
 
-- [ ] Full Faraid calculation engine (Awl, Radd, Asaba, standard shares)
-- [ ] Heir input system — number of brothers, sisters, and their spouse status
-- [ ] User identifies as male/female heir and enters own spouse status
 - [ ] Parents assumed deceased — division among children/siblings and spouses
 - [ ] All property types: agricultural, residential, commercial, mixed, ponds, orchards
 - [ ] House valuation — structures on land affecting total property value
 - [ ] Tree/crop valuation — trees, bamboo groves, orchards affecting value
 - [ ] Property price: auto-suggest from BD govt/market data with user override
-- [ ] Detailed share breakdown — fractions, percentages, and monetary values per heir
 - [ ] Data visualizations and charts showing division
-- [ ] Quran/Hadith references justifying each allocation
 - [ ] Printable PDF/report generation with full division details
-- [ ] Simple mode for general public, detailed mode for legal professionals
 - [ ] Optional account system — calculate without login, save with optional account
 - [ ] Modern, exceptional frontend design (React + TypeScript + TailwindCSS)
 
@@ -67,4 +66,4 @@ Accurate, unbiased Islamic inheritance division — the app strictly follows Far
 | Free forever model | Public service for BD community, no monetization barriers | — Pending |
 
 ---
-*Last updated: 2026-03-12 after initialization*
+*Last updated: 2026-03-13 after Phase 3*
