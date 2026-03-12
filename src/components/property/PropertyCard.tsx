@@ -3,6 +3,7 @@ import { useWizardStore } from '@/stores/wizardStore'
 import { computePropertyTotal } from '@/core/land/types'
 import type { PropertyType } from '@/core/land/types'
 import { PROPERTY_TYPES, BD_DIVISIONS } from '@/data/bd-land-data'
+import { UPAZILA_BY_DIVISION } from '@/data/mouza-rates'
 import { PropertyTypeSelector } from './PropertyTypeSelector'
 import { LandAreaInput } from './LandAreaInput'
 import { HouseDetailSection } from './HouseDetailSection'
@@ -50,6 +51,13 @@ export function PropertyCard({ propertyId }: PropertyCardProps) {
     ? BD_DIVISIONS.find((d) => d.value === property.division)?.label
     : null
 
+  const upazilaLabel =
+    property.division && property.upazila
+      ? UPAZILA_BY_DIVISION[property.division]?.find(
+          (u) => u.value === property.upazila,
+        )?.label ?? null
+      : null
+
   const typeIcon = property.type
     ? PROPERTY_TYPES.find((pt) => pt.value === property.type)?.icon
     : null
@@ -90,15 +98,30 @@ export function PropertyCard({ propertyId }: PropertyCardProps) {
           <div className="font-medium text-gray-900 truncate">
             {displayName}
           </div>
-          {divisionLabel && (
-            <span className="text-xs text-gray-500">{divisionLabel}</span>
+          {(divisionLabel || upazilaLabel) && (
+            <span className="text-xs text-gray-500">
+              {divisionLabel}{upazilaLabel ? `, ${upazilaLabel}` : ''}
+            </span>
           )}
         </div>
-        {total > 0 && (
-          <span className="text-sm font-medium text-emerald-700">
-            &#2547;{displayFormatter.format(total)}
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {property.landValue > 0 && (
+            property.rateSource === 'govt' ? (
+              <span className="rounded-full bg-emerald-50 px-1.5 py-0.5 text-xs text-emerald-700">
+                Govt rate
+              </span>
+            ) : (
+              <span className="rounded-full bg-gray-100 px-1.5 py-0.5 text-xs text-gray-500">
+                Manual
+              </span>
+            )
+          )}
+          {total > 0 && (
+            <span className="text-sm font-medium text-emerald-700">
+              &#2547;{displayFormatter.format(total)}
+            </span>
+          )}
+        </div>
         <svg
           className={`h-5 w-5 text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
           fill="none"

@@ -4,6 +4,8 @@ import { useWizardStore } from '@/stores/wizardStore'
 import { StepProperties } from '@/components/property/StepProperties'
 import { PropertyTypeSelector } from '@/components/property/PropertyTypeSelector'
 import { LandAreaInput } from '@/components/property/LandAreaInput'
+import { PropertyCard } from '@/components/property/PropertyCard'
+import { UPAZILA_BY_DIVISION } from '@/data/mouza-rates'
 import type { Property } from '@/core/land/types'
 
 // Reset store before each test
@@ -252,5 +254,168 @@ describe('PROP-06: Regional variations', () => {
     render(<LandAreaInput propertyId={pRaj.id} />)
     // Rajshahi katha conversion should show ~1.34
     expect(screen.getByText(/1\.34/)).toBeInTheDocument()
+  })
+})
+
+describe('VALP-01: Upazila dropdown and rate suggestion', () => {
+  test('upazila dropdown appears when division is selected', () => {
+    const p = makeProperty({ type: 'residential', division: 'dhaka' })
+    useWizardStore.setState({ properties: [p], expandedPropertyId: p.id })
+
+    render(<LandAreaInput propertyId={p.id} />)
+    expect(screen.getByText('Upazila')).toBeInTheDocument()
+    expect(screen.getByText('Select upazila')).toBeInTheDocument()
+  })
+
+  test('upazila dropdown not shown when no division selected', () => {
+    const p = makeProperty({ type: 'residential' })
+    useWizardStore.setState({ properties: [p], expandedPropertyId: p.id })
+
+    render(<LandAreaInput propertyId={p.id} />)
+    expect(screen.queryByText('Upazila')).not.toBeInTheDocument()
+  })
+
+  test('upazila dropdown options match UPAZILA_BY_DIVISION for dhaka', () => {
+    const p = makeProperty({ type: 'residential', division: 'dhaka' })
+    useWizardStore.setState({ properties: [p], expandedPropertyId: p.id })
+
+    render(<LandAreaInput propertyId={p.id} />)
+    const upazilaSelect = screen.getByDisplayValue('Select upazila')
+    const options = Array.from(upazilaSelect.querySelectorAll('option'))
+    // First option is "Select upazila" placeholder, rest are upazilas
+    const upazilaLabels = options.slice(1).map((o) => o.textContent)
+    const expectedLabels = UPAZILA_BY_DIVISION['dhaka'].map((u) => u.label)
+    expect(upazilaLabels).toEqual(expectedLabels)
+  })
+
+  test('rate suggestion appears when division + upazila + type set and rate exists', () => {
+    // 5 decimal = 5 * 435.6 = 2178 sqft; savar residential rate = 800000 BDT/decimal
+    const p = makeProperty({
+      type: 'residential',
+      division: 'dhaka',
+      upazila: 'savar',
+      landAreaSqft: 2178,
+      landInputUnit: 'decimal',
+    })
+    useWizardStore.setState({ properties: [p], expandedPropertyId: p.id })
+
+    render(<LandAreaInput propertyId={p.id} />)
+    expect(screen.getByText(/Govt rate:/)).toBeInTheDocument()
+    expect(screen.getByText(/Use this rate/)).toBeInTheDocument()
+  })
+
+  test('rate suggestion hidden for mixed type', () => {
+    const p = makeProperty({
+      type: 'mixed',
+      division: 'dhaka',
+      upazila: 'savar',
+      landAreaSqft: 2178,
+      landInputUnit: 'decimal',
+    })
+    useWizardStore.setState({ properties: [p], expandedPropertyId: p.id })
+
+    render(<LandAreaInput propertyId={p.id} />)
+    expect(screen.queryByText(/Govt rate:/)).not.toBeInTheDocument()
+  })
+
+  test('rate suggestion hidden when area is 0', () => {
+    const p = makeProperty({
+      type: 'residential',
+      division: 'dhaka',
+      upazila: 'savar',
+      landAreaSqft: 0,
+    })
+    useWizardStore.setState({ properties: [p], expandedPropertyId: p.id })
+
+    render(<LandAreaInput propertyId={p.id} />)
+    expect(screen.queryByText(/Govt rate:/)).not.toBeInTheDocument()
+  })
+
+  test('"Use this rate" button fills land value and sets rateSource to govt', () => {
+    // 5 decimal = 2178 sqft; savar residential = 800000 BDT/decimal
+    // 5 * 800000 = 4000000 (approx, since 2178/435.6 = 5.0 exactly)
+    const p = makeProperty({
+      type: 'residential',
+      division: 'dhaka',
+      upazila: 'savar',
+      landAreaSqft: 2178,
+      landInputUnit: 'decimal',
+    })
+    useWizardStore.setState({ properties: [p], expandedPropertyId: p.id })
+
+    render(<LandAreaInput propertyId={p.id} />)
+    fireEvent.click(screen.getByText(/Use this rate/))
+
+    const updated = useWizardStore.getState().properties[0]
+    expect(updated.landValue).toBeGreaterThan(0)
+    expect(updated.rateSource).toBe('govt')
+  })
+
+  test('shows "not available" message when upazila has no rate data', () => {
+    // Use an upazila value that does not exist in rate data
+    const p = makeProperty({
+      type: 'residential',
+      division: 'dhaka',
+      upazila: 'nonexistent_area',
+      landAreaSqft: 2178,
+    })
+    useWizardStore.setState({ properties: [p], expandedPropertyId: p.id })
+
+    render(<LandAreaInput propertyId={p.id} />)
+    expect(screen.getByText(/Govt rates not available/)).toBeInTheDocument()
+  })
+})
+
+describe('VALP-02: Rate source badge on PropertyCard', () => {
+  test('shows "Govt rate" badge when rateSource is govt and landValue > 0', () => {
+    const p = makeProperty({
+      type: 'residential',
+      division: 'dhaka',
+      upazila: 'savar',
+      rateSource: 'govt',
+      landValue: 800000,
+    })
+    useWizardStore.setState({ properties: [p] })
+
+    render(<PropertyCard propertyId={p.id} />)
+    expect(screen.getByText('Govt rate')).toBeInTheDocument()
+  })
+
+  test('shows "Manual" badge when rateSource is manual and landValue > 0', () => {
+    const p = makeProperty({
+      type: 'residential',
+      division: 'dhaka',
+      landValue: 500000,
+      rateSource: 'manual',
+    })
+    useWizardStore.setState({ properties: [p] })
+
+    render(<PropertyCard propertyId={p.id} />)
+    expect(screen.getByText('Manual')).toBeInTheDocument()
+  })
+
+  test('no badge when landValue is 0', () => {
+    const p = makeProperty({
+      type: 'residential',
+      division: 'dhaka',
+      landValue: 0,
+    })
+    useWizardStore.setState({ properties: [p] })
+
+    render(<PropertyCard propertyId={p.id} />)
+    expect(screen.queryByText('Govt rate')).not.toBeInTheDocument()
+    expect(screen.queryByText('Manual')).not.toBeInTheDocument()
+  })
+
+  test('shows upazila label next to division in card header', () => {
+    const p = makeProperty({
+      type: 'residential',
+      division: 'dhaka',
+      upazila: 'savar',
+    })
+    useWizardStore.setState({ properties: [p] })
+
+    render(<PropertyCard propertyId={p.id} />)
+    expect(screen.getByText(/Dhaka, Savar/)).toBeInTheDocument()
   })
 })

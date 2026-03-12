@@ -3,9 +3,11 @@ import { useWizardStore } from '@/stores/wizardStore'
 import type { Division, LandUnit } from '@/core/land/types'
 import { toSqft, fromSqft } from '@/core/land/units'
 import { BD_DIVISIONS } from '@/data/bd-land-data'
+import { UPAZILA_BY_DIVISION, getMouzaRate } from '@/data/mouza-rates'
 import { Tooltip } from '@/components/ui/Tooltip'
 import { ConversionDisplay } from './ConversionDisplay'
 import { PropertyValueInput } from './PropertyValueInput'
+import { MouzaRateSuggestion } from './MouzaRateSuggestion'
 
 const UNIT_OPTIONS: { value: LandUnit; label: string }[] = [
   { value: 'decimal', label: 'Decimal' },
@@ -47,7 +49,17 @@ export function LandAreaInput({ propertyId }: LandAreaInputProps) {
         : parseFloat(rawInput) || 0
     const newSqft =
       currentDisplay > 0 ? toSqft(currentDisplay, landInputUnit, newDiv) : 0
-    updateProperty(propertyId, { division: newDiv, landAreaSqft: newSqft })
+    updateProperty(propertyId, {
+      division: newDiv,
+      landAreaSqft: newSqft,
+      upazila: null,
+      rateSource: 'manual',
+    })
+  }
+
+  const handleUpazilaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newUpazila = e.target.value || null
+    updateProperty(propertyId, { upazila: newUpazila })
   }
 
   const handleAreaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,8 +82,37 @@ export function LandAreaInput({ propertyId }: LandAreaInputProps) {
   }
 
   const handleLandValueChange = (val: number) => {
-    updateProperty(propertyId, { landValue: val })
+    updateProperty(propertyId, { landValue: val, rateSource: 'manual' })
   }
+
+  const handleApplyRate = (totalValue: number) => {
+    updateProperty(propertyId, { landValue: totalValue, rateSource: 'govt' })
+  }
+
+  // Rate suggestion logic
+  const rate =
+    division &&
+    property.upazila &&
+    property.type &&
+    property.type !== 'mixed'
+      ? getMouzaRate(division, property.upazila, property.type)
+      : null
+
+  const areaInDecimals =
+    landAreaSqft > 0 && division
+      ? fromSqft(landAreaSqft, 'decimal', division)
+      : 0
+
+  // Check if we should show "rates not available" message
+  const showNoRateMessage =
+    division &&
+    property.upazila &&
+    property.type &&
+    property.type !== 'mixed' &&
+    rate === null
+
+  // Upazila options for current division
+  const upazilaOptions = division ? UPAZILA_BY_DIVISION[division] : []
 
   // Format display for area
   const areaDisplay =
@@ -97,6 +138,27 @@ export function LandAreaInput({ propertyId }: LandAreaInputProps) {
           ))}
         </select>
       </div>
+
+      {/* Upazila dropdown (conditional on division) */}
+      {division && (
+        <div>
+          <label className="mb-1 block text-sm font-medium text-gray-600">
+            Upazila
+          </label>
+          <select
+            value={property.upazila ?? ''}
+            onChange={handleUpazilaChange}
+            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-gray-900 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-100"
+          >
+            <option value="">Select upazila</option>
+            {upazilaOptions.map((u) => (
+              <option key={u.value} value={u.value}>
+                {u.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {/* Area input + unit dropdown */}
       <div>
@@ -145,6 +207,22 @@ export function LandAreaInput({ propertyId }: LandAreaInputProps) {
         label="Land Value (BDT)"
         placeholder="Enter land value"
       />
+
+      {/* Rate suggestion */}
+      {rate !== null && areaInDecimals > 0 && (
+        <MouzaRateSuggestion
+          ratePerDecimal={rate}
+          areaInDecimals={areaInDecimals}
+          onApply={handleApplyRate}
+        />
+      )}
+
+      {/* No rate available message */}
+      {showNoRateMessage && (
+        <p className="text-xs text-gray-400">
+          Govt rates not available for this area — enter your estimated land value
+        </p>
+      )}
     </div>
   )
 }
