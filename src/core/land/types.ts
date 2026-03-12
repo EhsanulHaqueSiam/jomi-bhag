@@ -43,6 +43,8 @@ export interface Property {
   nickname: string
   type: PropertyType | null
   division: Division | null
+  upazila: string | null
+  rateSource: 'govt' | 'manual'
   landAreaSqft: number
   landInputUnit: LandUnit
   landValue: number

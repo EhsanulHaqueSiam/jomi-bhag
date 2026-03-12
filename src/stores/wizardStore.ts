@@ -245,6 +245,8 @@ export const useWizardStore = create<WizardStore>()((set, get) => ({
       nickname: '',
       type: null,
       division: null,
+      upazila: null,
+      rateSource: 'manual',
       landAreaSqft: 0,
       landInputUnit: 'decimal',
       landValue: 0,
