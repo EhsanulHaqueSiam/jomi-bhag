@@ -30,9 +30,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **PROP-01**: User can input land area in BD units (decimal/shotangsho, katha, bigha) with auto-conversion
 - [x] **PROP-02**: User can add multiple property entries of different types (agricultural, residential, commercial, mixed)
-- [ ] **PROP-03**: User can input house/structure details (area, condition, estimated value) on land
-- [ ] **PROP-04**: User can input tree/crop details (type, count, estimated value) — mango, jackfruit, coconut, bamboo, etc.
-- [ ] **PROP-05**: User can input pond/water body details with area and estimated value
+- [x] **PROP-03**: User can input house/structure details (area, condition, estimated value) on land
+- [x] **PROP-04**: User can input tree/crop details (type, count, estimated value) — mango, jackfruit, coconut, bamboo, etc.
+- [x] **PROP-05**: User can input pond/water body details with area and estimated value
 - [x] **PROP-06**: App handles regional land unit variations (e.g., 1 Katha = 720 sqft Dhaka vs 1620 sqft Rajshahi) with user selection
 
 ### Property Valuation
@@ -131,9 +131,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RSLT-06 | Phase 3 | Complete |
 | PROP-01 | Phase 4 | Complete |
 | PROP-02 | Phase 4 | Complete |
-| PROP-03 | Phase 4 | Pending |
-| PROP-04 | Phase 4 | Pending |
-| PROP-05 | Phase 4 | Pending |
+| PROP-03 | Phase 4 | Complete |
+| PROP-04 | Phase 4 | Complete |
+| PROP-05 | Phase 4 | Complete |
 | PROP-06 | Phase 4 | Complete |
 | VALP-01 | Phase 5 | Pending |
 | VALP-02 | Phase 5 | Pending |
