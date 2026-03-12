@@ -85,8 +85,8 @@ Plans:
 **Plans:** 2/2 plans complete
 
 Plans:
-- [ ] 04-01-PLAN.md -- Land unit types, conversion module with regional BD variations, BD data constants, Zustand store property CRUD, and wizard step 4-to-5 reindexing
-- [ ] 04-02-PLAN.md -- Property UI components (cards, type selector, land area input, house/tree/pond sub-items), running total, integration tests, and visual verification
+- [x] 04-01-PLAN.md -- Land unit types, conversion module with regional BD variations, BD data constants, Zustand store property CRUD, and wizard step 4-to-5 reindexing
+- [x] 04-02-PLAN.md -- Property UI components (cards, type selector, land area input, house/tree/pond sub-items), running total, integration tests, and visual verification
 
 ### Phase 5: Property Valuation
 **Goal**: The app calculates total estate value from all properties and distributes monetary amounts to each heir based on their Faraid share
@@ -96,11 +96,11 @@ Plans:
   1. App auto-suggests property prices from BD government mouza rates by district/upazila, and user can override with actual market value
   2. Total estate value is computed from all property entries combined (land + structures + trees/crops + ponds)
   3. Each heir's monetary amount is calculated as their share fraction multiplied by total estate value and displayed alongside their share
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 05-01: Mouza rate data and valuation engine
-- [ ] 05-02: Estate total calculation and per-heir monetary distribution
+- [ ] 05-01-PLAN.md -- Mouza rate data module (8 BD division HQ districts, upazila-level rates), Property type extension (upazila + rateSource fields), valuation helper, upazila cascade dropdown, and inline rate suggestion UI
+- [ ] 05-02-PLAN.md -- Estate breakdown card replacing EstateValueInput (category totals, per-property detail, override flow, govt/manual badges), per-heir property distribution in HeirCard, and integration tests
 
 ### Phase 6: Charts and Visualization
 **Goal**: Users can see their inheritance division visually through charts
