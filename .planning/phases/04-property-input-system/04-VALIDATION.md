@@ -38,19 +38,21 @@ created: 2026-03-13
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 04-01-01 | 01 | 1 | PROP-01, PROP-06 | unit | `bunx vitest run src/core/__tests__/land-units.test.ts` | ❌ W0 | ⬜ pending |
-| 04-01-02 | 01 | 1 | PROP-02 | unit+integration | `bunx vitest run src/components/__tests__/property.test.tsx` | ❌ W0 | ⬜ pending |
-| 04-02-01 | 02 | 2 | PROP-03, PROP-04, PROP-05 | unit+integration | `bunx vitest run src/components/__tests__/property.test.tsx` | ❌ W0 | ⬜ pending |
-| 04-02-02 | 02 | 2 | PROP-01-06 | integration | `bunx vitest run src/components/__tests__/property.test.tsx` | ❌ W0 | ⬜ pending |
+| 04-01-01 | 01 | 1 | PROP-01, PROP-06 | unit | `bunx vitest run src/core/land/__tests__/units.test.ts` | :x: W0 | :white_large_square: pending |
+| 04-01-02 | 01 | 1 | PROP-02 | unit+integration | `bunx vitest run src/stores/__tests__/wizardStore.test.ts` | :x: W0 | :white_large_square: pending |
+| 04-01-03 | 01 | 1 | PROP-02 | unit | `bunx vitest run src/stores/__tests__/wizardStore.test.ts` | :x: W0 | :white_large_square: pending |
+| 04-02-01 | 02 | 2 | PROP-01-06 | integration | `bunx vitest run src/components/__tests__/property.test.tsx` | :x: W0 | :white_large_square: pending |
+| 04-02-02 | 02 | 2 | PROP-01-06 | integration | `bunx vitest run src/components/__tests__/property.test.tsx` | :x: W0 | :white_large_square: pending |
 
-*Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
+*Status: :white_large_square: pending / :white_check_mark: green / :x: red / :warning: flaky*
 
 ---
 
 ## Wave 0 Requirements
 
-- [ ] `src/core/__tests__/land-units.test.ts` — stubs for PROP-01, PROP-06 land unit conversion
-- [ ] `src/components/__tests__/property.test.tsx` — stubs for PROP-02 through PROP-05 property input components
+- [ ] `src/core/land/__tests__/units.test.ts` — stubs for PROP-01, PROP-06 land unit conversion
+- [ ] `src/stores/__tests__/wizardStore.test.ts` — already exists; new property CRUD test cases added in 04-01-02/03
+- [ ] `src/components/__tests__/property.test.tsx` — stubs for PROP-02 through PROP-06 property input components
 
 *Existing vitest infrastructure and @testing-library/react cover framework needs.*
 
