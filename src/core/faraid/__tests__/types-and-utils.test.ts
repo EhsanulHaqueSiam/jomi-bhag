@@ -14,7 +14,7 @@ import {
   lessThanOne,
   formatShare,
 } from '@/core/utils/fraction'
-import { HeirType } from '@/core/faraid/types'
+import type { HeirType } from '@/core/faraid/types'
 import { FARAID_RULES } from '@/data/faraid-rules'
 
 describe('Fraction Constants', () => {
