@@ -9,14 +9,14 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Faraid Engine
 
-- [ ] **FARD-01**: App calculates standard Faraid shares for all heir types (spouse, sons, daughters, brothers, sisters) using exact fraction arithmetic
+- [x] **FARD-01**: App calculates standard Faraid shares for all heir types (spouse, sons, daughters, brothers, sisters) using exact fraction arithmetic
 - [ ] **FARD-02**: App applies Awl (proportional reduction) when total prescribed shares exceed the estate
 - [ ] **FARD-03**: App applies Radd (redistribution of surplus) per Hanafi rules (spouses excluded from Radd)
 - [ ] **FARD-04**: App correctly identifies and distributes to Asaba (residuary heirs) after fixed shares
 - [ ] **FARD-05**: App implements all 16 Hajb Hirman (total blocking) rules automatically
 - [ ] **FARD-06**: App implements all 5 Hajb Nuqsan (partial reduction) rules automatically
-- [ ] **FARD-07**: App distinguishes between full, consanguine (paternal), and uterine (maternal) siblings
-- [ ] **FARD-08**: App follows Hanafi school of jurisprudence exclusively for all calculations
+- [x] **FARD-07**: App distinguishes between full, consanguine (paternal), and uterine (maternal) siblings
+- [x] **FARD-08**: App follows Hanafi school of jurisprudence exclusively for all calculations
 
 ### Heir Input
 
@@ -68,7 +68,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **DSGN-01**: App has modern, exceptional UI design using React + TypeScript + TailwindCSS
 - [ ] **DSGN-02**: App is fully mobile-responsive (responsive-first design)
 - [ ] **DSGN-03**: App uses multi-step wizard flow (heir input → property input → valuation → results)
-- [ ] **DSGN-04**: App works as a static site deployed on Netlify (client-side only)
+- [x] **DSGN-04**: App works as a static site deployed on Netlify (client-side only)
 
 ## v2 Requirements
 
@@ -108,15 +108,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FARD-01 | Phase 1 | Pending |
+| FARD-01 | Phase 1 | Complete |
 | FARD-02 | Phase 1 | Pending |
 | FARD-03 | Phase 1 | Pending |
 | FARD-04 | Phase 1 | Pending |
 | FARD-05 | Phase 1 | Pending |
 | FARD-06 | Phase 1 | Pending |
-| FARD-07 | Phase 1 | Pending |
-| FARD-08 | Phase 1 | Pending |
-| DSGN-04 | Phase 1 | Pending |
+| FARD-07 | Phase 1 | Complete |
+| FARD-08 | Phase 1 | Complete |
+| DSGN-04 | Phase 1 | Complete |
 | HEIR-01 | Phase 2 | Pending |
 | HEIR-02 | Phase 2 | Pending |
 | HEIR-03 | Phase 2 | Pending |
