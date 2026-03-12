@@ -1,7 +1,3 @@
-[build]
-  command = "bun run build"
-  publish = "dist"
-
 # SPA routing — all paths serve index.html (React Router / client-side routing)
 [[redirects]]
   from = "/*"
