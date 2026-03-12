@@ -1,0 +1,257 @@
+import { create } from 'zustand'
+import type { FaraidInput, HeirInput, HeirType } from '@/core/faraid/types'
+import {
+  deriveDeceasedGender,
+  deriveUserGender,
+  getAutoIncludes,
+} from '@/types/wizard'
+import type { RelationshipType, WizardState } from '@/types/wizard'
+
+interface WizardActions {
+  setStep: (step: number) => void
+  setRelationship: (rel: RelationshipType) => void
+  setUserGender: (gender: 'male' | 'female') => void
+  setMotherAlive: (alive: boolean) => void
+  setDeceasedGender: (gender: 'male' | 'female') => void
+  setMfloEnabled: (enabled: boolean) => void
+  setWifeCount: (n: number) => void
+  setHusbandPresent: (present: boolean) => void
+  setSonCount: (n: number) => void
+  setDaughterCount: (n: number) => void
+  setBrotherFullCount: (n: number) => void
+  setBrotherConsanguineCount: (n: number) => void
+  setBrotherUterineCount: (n: number) => void
+  setSisterFullCount: (n: number) => void
+  setSisterConsanguineCount: (n: number) => void
+  setSisterUterineCount: (n: number) => void
+  setSiblingTypeExpanded: (expanded: boolean) => void
+  isStepValid: (step: number) => boolean
+  buildFaraidInput: () => FaraidInput
+}
+
+type WizardStore = WizardState & WizardActions
+
+/**
+ * Recalculate auto-includes from current state.
+ * Called whenever relationship, userGender, or motherAlive changes.
+ */
+function recalcAutoIncludes(
+  relationship: RelationshipType | null,
+  userGender: 'male' | 'female' | null,
+  motherAlive: boolean | null,
+): { type: HeirType; count: number }[] {
+  if (!relationship) return []
+  return getAutoIncludes(relationship, userGender, motherAlive)
+}
+
+export const useWizardStore = create<WizardStore>()((set, get) => ({
+  // Navigation
+  currentStep: 1,
+  completedSteps: [],
+
+  // Step 1
+  relationship: null,
+  deceasedGender: null,
+  userGender: null,
+  mfloEnabled: false,
+  motherAlive: null,
+
+  // Auto-includes
+  autoIncludes: [],
+
+  // Step 2
+  wifeCount: 0,
+  husbandPresent: false,
+  sonCount: 0,
+  daughterCount: 0,
+
+  // Step 3
+  siblingTypeExpanded: false,
+  brotherFullCount: 0,
+  brotherConsanguineCount: 0,
+  brotherUterineCount: 0,
+  sisterFullCount: 0,
+  sisterConsanguineCount: 0,
+  sisterUterineCount: 0,
+
+  // Actions
+
+  setStep: (step) => {
+    const { completedSteps, currentStep } = get()
+    // Mark all steps before the new step as completed
+    const newCompleted = [...completedSteps]
+    for (let s = 1; s < step; s++) {
+      if (!newCompleted.includes(s)) {
+        newCompleted.push(s)
+      }
+    }
+    // Also mark current step as completed if moving forward
+    if (step > currentStep && !newCompleted.includes(currentStep)) {
+      newCompleted.push(currentStep)
+    }
+    set({ currentStep: step, completedSteps: newCompleted })
+  },
+
+  setRelationship: (rel) => {
+    const deceased = deriveDeceasedGender(rel)
+    const user = deriveUserGender(rel)
+    const autoIncludes = recalcAutoIncludes(rel, user, null)
+    set({
+      relationship: rel,
+      deceasedGender: deceased,
+      userGender: user,
+      motherAlive: null,
+      autoIncludes,
+      // Reset spouse counts since spouse type depends on deceased gender
+      wifeCount: 0,
+      husbandPresent: false,
+    })
+  },
+
+  setUserGender: (gender) => {
+    const { relationship, motherAlive } = get()
+    const autoIncludes = recalcAutoIncludes(relationship, gender, motherAlive)
+    set({ userGender: gender, autoIncludes })
+  },
+
+  setMotherAlive: (alive) => {
+    const { relationship, userGender } = get()
+    const autoIncludes = recalcAutoIncludes(relationship, userGender, alive)
+    set({ motherAlive: alive, autoIncludes })
+  },
+
+  setDeceasedGender: (gender) => {
+    set({ deceasedGender: gender })
+  },
+
+  setMfloEnabled: (enabled) => {
+    set({ mfloEnabled: enabled })
+  },
+
+  setWifeCount: (n) => {
+    set({ wifeCount: Math.max(0, Math.min(4, n)) })
+  },
+
+  setHusbandPresent: (present) => {
+    set({ husbandPresent: present })
+  },
+
+  setSonCount: (n) => {
+    set({ sonCount: Math.max(0, n) })
+  },
+
+  setDaughterCount: (n) => {
+    set({ daughterCount: Math.max(0, n) })
+  },
+
+  setBrotherFullCount: (n) => {
+    set({ brotherFullCount: Math.max(0, n) })
+  },
+
+  setBrotherConsanguineCount: (n) => {
+    set({ brotherConsanguineCount: Math.max(0, n) })
+  },
+
+  setBrotherUterineCount: (n) => {
+    set({ brotherUterineCount: Math.max(0, n) })
+  },
+
+  setSisterFullCount: (n) => {
+    set({ sisterFullCount: Math.max(0, n) })
+  },
+
+  setSisterConsanguineCount: (n) => {
+    set({ sisterConsanguineCount: Math.max(0, n) })
+  },
+
+  setSisterUterineCount: (n) => {
+    set({ sisterUterineCount: Math.max(0, n) })
+  },
+
+  setSiblingTypeExpanded: (expanded) => {
+    // Only toggle visibility, never reset counts
+    set({ siblingTypeExpanded: expanded })
+  },
+
+  isStepValid: (step) => {
+    const state = get()
+    switch (step) {
+      case 1:
+        if (!state.relationship) return false
+        // "other" requires explicit deceasedGender
+        if (state.relationship === 'other' && !state.deceasedGender)
+          return false
+        return true
+      case 2:
+        return true // zero children/spouse is valid
+      case 3:
+        return true // zero siblings is valid
+      default:
+        return false
+    }
+  },
+
+  buildFaraidInput: () => {
+    const state = get()
+    const heirMap = new Map<HeirType, number>()
+
+    // Helper to add to the map (additive)
+    const addHeir = (type: HeirType, count: number) => {
+      if (count <= 0) return
+      heirMap.set(type, (heirMap.get(type) ?? 0) + count)
+    }
+
+    // 1. Add auto-includes
+    for (const ai of state.autoIncludes) {
+      addHeir(ai.type, ai.count)
+    }
+
+    // 2. Add spouse
+    if (state.deceasedGender === 'male' && state.wifeCount > 0) {
+      addHeir('wife', state.wifeCount)
+    }
+    if (state.deceasedGender === 'female' && state.husbandPresent) {
+      addHeir('husband', 1)
+    }
+
+    // 3. Add children
+    addHeir('son', state.sonCount)
+    addHeir('daughter', state.daughterCount)
+
+    // 4. Add siblings
+    if (state.siblingTypeExpanded) {
+      addHeir('brother_full', state.brotherFullCount)
+      addHeir('brother_consanguine', state.brotherConsanguineCount)
+      addHeir('brother_uterine', state.brotherUterineCount)
+      addHeir('sister_full', state.sisterFullCount)
+      addHeir('sister_consanguine', state.sisterConsanguineCount)
+      addHeir('sister_uterine', state.sisterUterineCount)
+    } else {
+      // Collapsed: sum all brothers as brother_full, all sisters as sister_full
+      const totalBrothers =
+        state.brotherFullCount +
+        state.brotherConsanguineCount +
+        state.brotherUterineCount
+      const totalSisters =
+        state.sisterFullCount +
+        state.sisterConsanguineCount +
+        state.sisterUterineCount
+      addHeir('brother_full', totalBrothers)
+      addHeir('sister_full', totalSisters)
+    }
+
+    // Build HeirInput array, filtering zero counts
+    const heirs: HeirInput[] = []
+    for (const [type, count] of heirMap) {
+      if (count > 0) {
+        heirs.push({ type, count })
+      }
+    }
+
+    return {
+      deceasedGender: state.deceasedGender!,
+      heirs,
+      mfloEnabled: state.mfloEnabled,
+    }
+  },
+}))
