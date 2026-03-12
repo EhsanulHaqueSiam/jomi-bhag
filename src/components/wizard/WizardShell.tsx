@@ -3,6 +3,9 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useWizardStore } from '@/stores/wizardStore'
 import { StepIndicator } from '@/components/ui/StepIndicator'
 import { Button } from '@/components/ui/Button'
+import { StepRelationship } from '@/components/wizard/StepRelationship'
+import { StepFamily } from '@/components/wizard/StepFamily'
+import { StepSiblings } from '@/components/wizard/StepSiblings'
 
 const stepVariants = {
   enter: (dir: number) => ({
@@ -27,7 +30,27 @@ const stepTransition = {
 export function WizardShell() {
   const currentStep = useWizardStore((s) => s.currentStep)
   const setStep = useWizardStore((s) => s.setStep)
-  const isStepValid = useWizardStore((s) => s.isStepValid)
+  // Compute validity inline from relevant state so the component re-renders
+  // when relationship/deceasedGender change (isStepValid is a function ref that
+  // never changes, so subscribing to it alone won't trigger re-renders).
+  const relationship = useWizardStore((s) => s.relationship)
+  const deceasedGender = useWizardStore((s) => s.deceasedGender)
+
+  const isCurrentStepValid = (() => {
+    switch (currentStep) {
+      case 1:
+        if (!relationship) return false
+        if (relationship === 'other' && !deceasedGender) return false
+        return true
+      case 2:
+        return true
+      case 3:
+        return true
+      default:
+        return false
+    }
+  })()
+
   const [direction, setDirection] = useState(1)
 
   const handleBack = () => {
@@ -70,10 +93,9 @@ export function WizardShell() {
             exit="exit"
             transition={stepTransition}
           >
-            {/* Placeholder step content -- Plan 03 will replace these */}
-            <div className="flex min-h-[200px] items-center justify-center rounded-lg bg-gray-50 text-gray-400">
-              Step {currentStep} content
-            </div>
+            {currentStep === 1 && <StepRelationship />}
+            {currentStep === 2 && <StepFamily />}
+            {currentStep === 3 && <StepSiblings />}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -91,7 +113,7 @@ export function WizardShell() {
           <Button
             variant="primary"
             onClick={handleNext}
-            disabled={!isStepValid(currentStep)}
+            disabled={!isCurrentStepValid}
           >
             Next
           </Button>
@@ -100,7 +122,7 @@ export function WizardShell() {
           <Button
             variant="primary"
             onClick={handleCalculate}
-            disabled={!isStepValid(3)}
+            disabled={!isCurrentStepValid}
           >
             Calculate Shares
           </Button>
@@ -118,7 +140,7 @@ export function WizardShell() {
           <Button
             variant="primary"
             onClick={handleNext}
-            disabled={!isStepValid(currentStep)}
+            disabled={!isCurrentStepValid}
             fullWidth
           >
             Next
@@ -128,7 +150,7 @@ export function WizardShell() {
           <Button
             variant="primary"
             onClick={handleCalculate}
-            disabled={!isStepValid(3)}
+            disabled={!isCurrentStepValid}
             fullWidth
           >
             Calculate Shares
