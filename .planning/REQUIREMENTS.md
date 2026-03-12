@@ -108,13 +108,51 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (Populated during roadmap creation) | | |
+| FARD-01 | Phase 1 | Pending |
+| FARD-02 | Phase 1 | Pending |
+| FARD-03 | Phase 1 | Pending |
+| FARD-04 | Phase 1 | Pending |
+| FARD-05 | Phase 1 | Pending |
+| FARD-06 | Phase 1 | Pending |
+| FARD-07 | Phase 1 | Pending |
+| FARD-08 | Phase 1 | Pending |
+| DSGN-04 | Phase 1 | Pending |
+| HEIR-01 | Phase 2 | Pending |
+| HEIR-02 | Phase 2 | Pending |
+| HEIR-03 | Phase 2 | Pending |
+| HEIR-04 | Phase 2 | Pending |
+| HEIR-05 | Phase 2 | Pending |
+| DSGN-01 | Phase 2 | Pending |
+| DSGN-02 | Phase 2 | Pending |
+| DSGN-03 | Phase 2 | Pending |
+| RSLT-01 | Phase 3 | Pending |
+| RSLT-02 | Phase 3 | Pending |
+| RSLT-03 | Phase 3 | Pending |
+| RSLT-06 | Phase 3 | Pending |
+| PROP-01 | Phase 4 | Pending |
+| PROP-02 | Phase 4 | Pending |
+| PROP-03 | Phase 4 | Pending |
+| PROP-04 | Phase 4 | Pending |
+| PROP-05 | Phase 4 | Pending |
+| PROP-06 | Phase 4 | Pending |
+| VALP-01 | Phase 5 | Pending |
+| VALP-02 | Phase 5 | Pending |
+| VALP-03 | Phase 5 | Pending |
+| VALP-04 | Phase 5 | Pending |
+| RSLT-04 | Phase 6 | Pending |
+| RSLT-05 | Phase 6 | Pending |
+| OUTP-01 | Phase 7 | Pending |
+| OUTP-02 | Phase 7 | Pending |
+| OUTP-03 | Phase 7 | Pending |
+| PRST-01 | Phase 8 | Pending |
+| PRST-02 | Phase 8 | Pending |
+| PRST-03 | Phase 8 | Pending |
 
 **Coverage:**
-- v1 requirements: 34 total
-- Mapped to phases: 0
-- Unmapped: 34 ⚠️
+- v1 requirements: 39 total
+- Mapped to phases: 39
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-12*
-*Last updated: 2026-03-12 after initial definition*
+*Last updated: 2026-03-12 after roadmap creation*
