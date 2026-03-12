@@ -2,6 +2,9 @@ import { useWizardStore } from '@/stores/wizardStore'
 import { ModeToggle } from '@/components/results/ModeToggle'
 import { EstateValueInput } from '@/components/results/EstateValueInput'
 import { HeirCard } from '@/components/results/HeirCard'
+import { AdjustmentBanner } from '@/components/results/AdjustmentBanner'
+import { SpecialCaseCallout } from '@/components/results/SpecialCaseCallout'
+import { BlockedHeirsSection } from '@/components/results/BlockedHeirsSection'
 import { Button } from '@/components/ui/Button'
 
 export function ResultsPage() {
@@ -32,6 +35,15 @@ export function ResultsPage() {
       {/* Estate value input */}
       <EstateValueInput />
 
+      {/* Adjustment banner (Awl/Radd) */}
+      <AdjustmentBanner
+        adjustment={results.adjustment}
+        totalBeforeAdjustment={results.totalBeforeAdjustment}
+      />
+
+      {/* Special case callouts */}
+      <SpecialCaseCallout specialCases={results.specialCases} />
+
       {/* Heir cards grid */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {activeShares.map((share) => (
@@ -43,9 +55,8 @@ export function ResultsPage() {
         ))}
       </div>
 
-      {/* Plan 02: BlockedHeirsSection */}
-      {/* Plan 02: AdjustmentBanner */}
-      {/* Plan 02: SpecialCaseCallout */}
+      {/* Blocked heirs section */}
+      <BlockedHeirsSection blockedHeirs={results.blockedHeirs} />
 
       {/* Detailed mode sections */}
       {viewMode === 'detailed' && (
