@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
 import type { ShareResult } from '@/core/faraid/types'
 import {
   fractionToString,
@@ -7,6 +9,25 @@ import {
   SHARE_TYPE_LABELS,
 } from '@/core/utils/display'
 import { QuranReference } from '@/components/results/QuranReference'
+import { useWizardStore } from '@/stores/wizardStore'
+import { computePropertyTotal } from '@/core/land/types'
+import type { PropertyType } from '@/core/land/types'
+import { PROPERTY_TYPES } from '@/data/bd-land-data'
+
+const bdtFormatter = new Intl.NumberFormat('en-IN', {
+  style: 'currency',
+  currency: 'BDT',
+  currencyDisplay: 'narrowSymbol',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+})
+
+function getAutoLabel(type: PropertyType | null, index: number): string {
+  if (!type) return 'New Property'
+  const typeInfo = PROPERTY_TYPES.find((pt) => pt.value === type)
+  const label = typeInfo?.label ?? 'Property'
+  return `${label} #${index}`
+}
 
 interface HeirCardProps {
   share: ShareResult
@@ -57,6 +78,9 @@ function HeirIcon({ isFeminine }: { isFeminine: boolean }) {
 }
 
 export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
+  const properties = useWizardStore((s) => s.properties)
+  const [showProperties, setShowProperties] = useState(false)
+
   const label = HEIR_TYPE_LABELS[share.heirType] ?? share.heirType
   const isFeminine = feminineHeirs.has(share.heirType)
   const shareTypeLabel = SHARE_TYPE_LABELS[share.shareType] ?? share.shareType
@@ -71,6 +95,21 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
     (n) => n.startsWith('Awl applied:') || n.startsWith('Radd applied:'),
   )
   const isAwl = adjustmentNote?.startsWith('Awl')
+
+  // Per-property amounts
+  const hasPropertiesAndValue = properties.length > 0 && totalEstateValue > 0
+  const propertyAmounts = properties.map((p) => {
+    const propTotal = computePropertyTotal(p)
+    const sameType = properties.filter((pp) => pp.type === p.type)
+    const typeIndex = sameType.findIndex((pp) => pp.id === p.id) + 1
+    const name = p.nickname || getAutoLabel(p.type, typeIndex)
+    return {
+      id: p.id,
+      name,
+      eachAmount: Math.round(share.sharePerHeir.valueOf() * propTotal),
+      totalAmount: Math.round(share.totalShare.valueOf() * propTotal),
+    }
+  })
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm md:p-5">
@@ -151,6 +190,65 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
           </div>
         )}
       </div>
+
+      {/* Hint when no properties and no estate value */}
+      {properties.length === 0 && totalEstateValue === 0 && (
+        <p className="mt-2 text-xs italic text-gray-400">
+          Add properties or enter estate value to see BDT amounts
+        </p>
+      )}
+
+      {/* Per-property expandable section */}
+      {hasPropertiesAndValue && (
+        <div className="mt-2">
+          <button
+            type="button"
+            onClick={() => setShowProperties(!showProperties)}
+            className="text-xs font-medium text-emerald-700 underline hover:text-emerald-800"
+          >
+            {showProperties ? 'Hide property shares' : 'View property shares'}
+          </button>
+
+          <AnimatePresence initial={false}>
+            {showProperties && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.2, ease: 'easeInOut' }}
+                style={{ overflow: 'hidden' }}
+              >
+                <div className="mt-1">
+                  {propertyAmounts.map((pa) => (
+                    <div
+                      key={pa.id}
+                      className="flex items-baseline justify-between border-t border-gray-100 py-1.5 text-sm"
+                    >
+                      <span className="text-gray-600">{pa.name}</span>
+                      <div className="flex items-baseline gap-2">
+                        {hasMultiple ? (
+                          <>
+                            <span className="text-xs text-gray-500">
+                              Each: {bdtFormatter.format(pa.eachAmount)}
+                            </span>
+                            <span className="font-medium text-emerald-700">
+                              Total ({share.count}): {bdtFormatter.format(pa.totalAmount)}
+                            </span>
+                          </>
+                        ) : (
+                          <span className="font-medium text-emerald-700">
+                            {bdtFormatter.format(pa.totalAmount)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
 
       {/* Adjustment badge */}
       {adjustmentNote && (

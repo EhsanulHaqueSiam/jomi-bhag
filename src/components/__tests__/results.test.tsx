@@ -4,6 +4,7 @@ import Fraction from 'fraction.js'
 import App from '@/App'
 import { useWizardStore } from '@/stores/wizardStore'
 import type { FaraidOutput, ShareResult } from '@/core/faraid/types'
+import type { Property } from '@/core/land/types'
 
 // ---------------------------------------------------------------------------
 // Mock FaraidOutput factories
@@ -379,5 +380,215 @@ describe('Special case callouts', () => {
 
     expect(screen.queryByText('Kalalah')).not.toBeInTheDocument()
     expect(screen.queryByText('Umariyyatayn')).not.toBeInTheDocument()
+  })
+})
+
+// ---------------------------------------------------------------------------
+// Mock properties for VALP-03 / VALP-04 tests
+// ---------------------------------------------------------------------------
+
+function makeProperty(overrides: Partial<Property> & { id: string }): Property {
+  return {
+    nickname: '',
+    type: 'residential',
+    division: 'dhaka',
+    upazila: null,
+    rateSource: 'manual',
+    landAreaSqft: 4356,
+    landInputUnit: 'decimal',
+    landValue: 500000,
+    house: null,
+    trees: null,
+    pond: null,
+    ...overrides,
+  }
+}
+
+const twoProperties: Property[] = [
+  makeProperty({
+    id: 'prop-1',
+    nickname: 'Bari-er Jomi',
+    type: 'residential',
+    rateSource: 'govt',
+    landValue: 800000,
+    house: { estimatedValue: 200000, areaSqft: 1200, constructionType: 'brick', floors: 2, condition: 'good' },
+  }),
+  makeProperty({
+    id: 'prop-2',
+    nickname: '',
+    type: 'agricultural',
+    rateSource: 'manual',
+    landValue: 300000,
+    trees: { totalEstimatedValue: 50000, items: [], isItemized: false },
+    pond: { areaSqft: 2178, areaInputUnit: 'decimal', estimatedValue: 100000 },
+  }),
+]
+
+// Total: prop-1 = 800000+200000 = 1000000, prop-2 = 300000+50000+100000 = 450000
+// Grand total = 1450000
+
+// ---------------------------------------------------------------------------
+// VALP-03: EstateBreakdownCard tests
+// ---------------------------------------------------------------------------
+
+describe('VALP-03: EstateBreakdownCard', () => {
+  it('shows category totals when properties exist', () => {
+    useWizardStore.setState({
+      ...baseStoreState,
+      results: makeSimpleOutput(),
+      properties: twoProperties,
+      totalEstateValue: 1450000,
+    })
+    render(<App />)
+
+    // Should display "Estate Value" header
+    expect(screen.getByText('Estate Value')).toBeInTheDocument()
+    // Category labels present
+    expect(screen.getByText('Land')).toBeInTheDocument()
+    expect(screen.getByText('Structures')).toBeInTheDocument()
+    expect(screen.getByText('Trees/Crops')).toBeInTheDocument()
+    expect(screen.getByText('Ponds')).toBeInTheDocument()
+  })
+
+  it('shows override option with auto-calculated label', () => {
+    useWizardStore.setState({
+      ...baseStoreState,
+      results: makeSimpleOutput(),
+      properties: twoProperties,
+      totalEstateValue: 1450000,
+    })
+    render(<App />)
+
+    expect(screen.getByText('Auto-calculated from properties')).toBeInTheDocument()
+    expect(screen.getByText('Override total')).toBeInTheDocument()
+  })
+
+  it('falls back to simple input with no properties', () => {
+    useWizardStore.setState({
+      ...baseStoreState,
+      results: makeSimpleOutput(),
+      properties: [],
+      totalEstateValue: 0,
+    })
+    render(<App />)
+
+    // Should show simple input with label
+    expect(screen.getByText('Total Estate Value (BDT)')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('Enter total estate value')).toBeInTheDocument()
+    // Should NOT show breakdown categories
+    expect(screen.queryByText('Estate Value')).not.toBeInTheDocument()
+  })
+
+  it('shows govt rate and manual badges in per-property rows', async () => {
+    useWizardStore.setState({
+      ...baseStoreState,
+      results: makeSimpleOutput(),
+      properties: twoProperties,
+      totalEstateValue: 1450000,
+    })
+    render(<App />)
+
+    // Expand per-property detail
+    fireEvent.click(screen.getByText('View properties'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Bari-er Jomi')).toBeInTheDocument()
+      expect(screen.getByText('Agricultural #1')).toBeInTheDocument()
+    })
+
+    // Check rate badges
+    expect(screen.getByText('Govt rate')).toBeInTheDocument()
+    expect(screen.getByText('Manual')).toBeInTheDocument()
+  })
+})
+
+// ---------------------------------------------------------------------------
+// VALP-04: HeirCard per-property distribution tests
+// ---------------------------------------------------------------------------
+
+describe('VALP-04: HeirCard per-property distribution', () => {
+  it('shows "View property shares" toggle when properties exist and estate value > 0', () => {
+    useWizardStore.setState({
+      ...baseStoreState,
+      results: makeSimpleOutput(),
+      properties: twoProperties,
+      totalEstateValue: 1450000,
+    })
+    render(<App />)
+
+    const toggles = screen.getAllByText('View property shares')
+    expect(toggles.length).toBeGreaterThan(0)
+  })
+
+  it('shows per-property amounts matching share * property total', async () => {
+    useWizardStore.setState({
+      ...baseStoreState,
+      results: makeSimpleOutput(),
+      properties: twoProperties,
+      totalEstateValue: 1450000,
+    })
+    render(<App />)
+
+    // Click first "View property shares" (Husband card: 1/4 share)
+    const toggles = screen.getAllByText('View property shares')
+    fireEvent.click(toggles[0])
+
+    // Husband (1/4): prop-1 total=1000000, 1/4 * 1000000 = 250000 = BDT 2,50,000
+    await waitFor(() => {
+      // Property names should appear
+      expect(screen.getByText('Bari-er Jomi')).toBeInTheDocument()
+      expect(screen.getByText('Agricultural #1')).toBeInTheDocument()
+    })
+
+    // Check formatted amounts appear (BDT 2,50,000 for husband's share of prop-1)
+    expect(screen.getByText(/2,50,000/)).toBeInTheDocument()
+  })
+
+  it('shows Each/Total per-property rows for multi-heir groups', async () => {
+    useWizardStore.setState({
+      ...baseStoreState,
+      results: makeSimpleOutput(),
+      properties: twoProperties,
+      totalEstateValue: 1450000,
+    })
+    render(<App />)
+
+    // Daughter card (count=2): second toggle button
+    const toggles = screen.getAllByText('View property shares')
+    // First is Husband card, second is Daughter card
+    fireEvent.click(toggles[1])
+
+    await waitFor(() => {
+      // Per-property rows for daughters should show Each/Total pattern
+      const eachLabels = screen.getAllByText(/^Each:/)
+      expect(eachLabels.length).toBeGreaterThan(0)
+
+      const totalLabels = screen.getAllByText(/^Total \(2\):/)
+      expect(totalLabels.length).toBeGreaterThan(0)
+    })
+  })
+
+  it('shows hint when no properties and no estate value', () => {
+    useWizardStore.setState({
+      ...baseStoreState,
+      results: makeSimpleOutput(),
+      properties: [],
+      totalEstateValue: 0,
+    })
+    render(<App />)
+
+    expect(screen.getAllByText('Add properties or enter estate value to see BDT amounts').length).toBeGreaterThan(0)
+  })
+
+  it('does NOT show property toggle when no properties', () => {
+    useWizardStore.setState({
+      ...baseStoreState,
+      results: makeSimpleOutput(),
+      properties: [],
+      totalEstateValue: 1000000,
+    })
+    render(<App />)
+
+    expect(screen.queryByText('View property shares')).not.toBeInTheDocument()
   })
 })
