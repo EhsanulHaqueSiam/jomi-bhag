@@ -7,6 +7,7 @@ import { StepRelationship } from '@/components/wizard/StepRelationship'
 import { StepFamily } from '@/components/wizard/StepFamily'
 import { StepSiblings } from '@/components/wizard/StepSiblings'
 import { FamilyTree } from '@/components/wizard/FamilyTree'
+import { ResultsPage } from '@/components/results/ResultsPage'
 
 const stepVariants = {
   enter: (dir: number) => ({
@@ -64,9 +65,10 @@ export function WizardShell() {
     setStep(currentStep + 1)
   }
 
+  const calculateShares = useWizardStore((s) => s.calculateShares)
+
   const handleCalculate = () => {
-    // Phase 3 will wire this to results display
-    console.log('Calculate shares triggered')
+    calculateShares()
   }
 
   return (
@@ -74,18 +76,22 @@ export function WizardShell() {
       {/* Step Indicator */}
       <StepIndicator />
 
-      {/* Parents-deceased info text */}
-      <p className="mt-3 text-center text-xs text-gray-400">
-        <span className="mr-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-100 text-[10px] font-medium text-gray-400">
-          i
-        </span>
-        This calculator assumes the deceased's parents have passed away
-      </p>
+      {/* Parents-deceased info text (hidden on results step) */}
+      {currentStep !== 4 && (
+        <p className="mt-3 text-center text-xs text-gray-400">
+          <span className="mr-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-100 text-[10px] font-medium text-gray-400">
+            i
+          </span>
+          This calculator assumes the deceased's parents have passed away
+        </p>
+      )}
 
-      {/* Family tree visualization */}
-      <div className="mt-4">
-        <FamilyTree currentStep={currentStep} />
-      </div>
+      {/* Family tree visualization (hidden on results step) */}
+      {currentStep !== 4 && (
+        <div className="mt-4">
+          <FamilyTree currentStep={currentStep} />
+        </div>
+      )}
 
       {/* Animated step content */}
       <div className="relative mt-4 overflow-hidden">
@@ -102,67 +108,72 @@ export function WizardShell() {
             {currentStep === 1 && <StepRelationship />}
             {currentStep === 2 && <StepFamily />}
             {currentStep === 3 && <StepSiblings />}
+            {currentStep === 4 && <ResultsPage />}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Desktop navigation bar */}
-      <div className="mt-8 hidden justify-between md:flex">
-        {currentStep > 1 ? (
-          <Button variant="secondary" onClick={handleBack}>
-            Back
-          </Button>
-        ) : (
-          <div />
-        )}
-        {currentStep < 3 && (
-          <Button
-            variant="primary"
-            onClick={handleNext}
-            disabled={!isCurrentStepValid}
-          >
-            Next
-          </Button>
-        )}
-        {currentStep === 3 && (
-          <Button
-            variant="primary"
-            onClick={handleCalculate}
-            disabled={!isCurrentStepValid}
-          >
-            Calculate Shares
-          </Button>
-        )}
-      </div>
+      {/* Desktop navigation bar (hidden on results step) */}
+      {currentStep !== 4 && (
+        <div className="mt-8 hidden justify-between md:flex">
+          {currentStep > 1 ? (
+            <Button variant="secondary" onClick={handleBack}>
+              Back
+            </Button>
+          ) : (
+            <div />
+          )}
+          {currentStep < 3 && (
+            <Button
+              variant="primary"
+              onClick={handleNext}
+              disabled={!isCurrentStepValid}
+            >
+              Next
+            </Button>
+          )}
+          {currentStep === 3 && (
+            <Button
+              variant="primary"
+              onClick={handleCalculate}
+              disabled={!isCurrentStepValid}
+            >
+              Calculate Shares
+            </Button>
+          )}
+        </div>
+      )}
 
-      {/* Mobile navigation bar -- fixed bottom */}
-      <div className="fixed bottom-0 left-0 right-0 flex gap-3 border-t border-gray-100 bg-white px-4 py-3 md:hidden">
-        {currentStep > 1 && (
-          <Button variant="secondary" onClick={handleBack} fullWidth>
-            Back
-          </Button>
-        )}
-        {currentStep < 3 && (
-          <Button
-            variant="primary"
-            onClick={handleNext}
-            disabled={!isCurrentStepValid}
-            fullWidth
-          >
-            Next
-          </Button>
-        )}
-        {currentStep === 3 && (
-          <Button
-            variant="primary"
-            onClick={handleCalculate}
-            disabled={!isCurrentStepValid}
-            fullWidth
-          >
-            Calculate Shares
-          </Button>
-        )}
-      </div>
+      {/* Mobile navigation bar -- fixed bottom (hidden on results step) */}
+      {currentStep !== 4 && (
+        <div className="fixed bottom-0 left-0 right-0 flex gap-3 border-t border-gray-100 bg-white px-4 py-3 md:hidden">
+          {currentStep > 1 && (
+            <Button variant="secondary" onClick={handleBack} fullWidth>
+              Back
+            </Button>
+          )}
+          {currentStep < 3 && (
+            <Button
+              variant="primary"
+              onClick={handleNext}
+              disabled={!isCurrentStepValid}
+              fullWidth
+            >
+              Next
+            </Button>
+          )}
+          {currentStep === 3 && (
+            <Button
+              variant="primary"
+              onClick={handleCalculate}
+              disabled={!isCurrentStepValid}
+              fullWidth
+            >
+              Calculate Shares
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
