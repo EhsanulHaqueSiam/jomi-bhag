@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-03-12T16:05:00Z"
-last_activity: 2026-03-12 -- Completed Plan 01-01
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-03-12T16:17:10Z"
+last_activity: 2026-03-12 -- Completed Plan 01-02
 progress:
   total_phases: 8
   completed_phases: 0
   total_plans: 17
-  completed_plans: 1
-  percent: 6
+  completed_plans: 2
+  percent: 12
 ---
 
 # Project State
@@ -26,28 +26,28 @@ See: .planning/PROJECT.md (updated 2026-03-12)
 ## Current Position
 
 Phase: 1 of 8 (Faraid Engine and Project Foundation)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: Executing
-Last activity: 2026-03-12 -- Completed Plan 01-01
+Last activity: 2026-03-12 -- Completed Plan 01-02
 
-Progress: [█░░░░░░░░░] 6%
+Progress: [██░░░░░░░░] 12%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 12 min
-- Total execution time: 0.2 hours
+- Total plans completed: 2
+- Average duration: 10 min
+- Total execution time: 0.3 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1 | 1/3 | 12 min | 12 min |
+| 1 | 2/3 | 20 min | 10 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (12 min)
-- Trend: Starting
+- Last 5 plans: 01-01 (12 min), 01-02 (8 min)
+- Trend: Accelerating
 
 *Updated after each plan completion*
 
@@ -63,6 +63,10 @@ Recent decisions affecting current work:
 - Rule table conditions ordered most-specific-first for deterministic evaluation
 - Umariyyatayn handled as engine-level special case (ONE_THIRD default in rule table)
 - MFLO Section 4 stance: pure Faraid default, MFLO as opt-in toggle (from CONTEXT.md)
+- Rules 2/4 (deeper grandson blocking) not modeled: HeirType stops at son_of_son level
+- Rule 5 exception: daughter_of_son not blocked when son_of_son present (Asaba bi-ghayrihi)
+- Pipeline enforcement: blocking -> shares -> special cases -> adjustments
+- Umariyyatayn detection uses post-blocking state (siblings blocked by father don't prevent it)
 
 ### Pending Todos
 
@@ -76,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-12T16:05:00Z
-Stopped at: Completed 01-01-PLAN.md
-Resume file: .planning/phases/01-faraid-engine-and-project-foundation/01-01-SUMMARY.md
+Last session: 2026-03-12T16:17:10Z
+Stopped at: Completed 01-02-PLAN.md
+Resume file: .planning/phases/01-faraid-engine-and-project-foundation/01-02-SUMMARY.md
