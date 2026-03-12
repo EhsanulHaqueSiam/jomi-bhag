@@ -20,6 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 6: Charts and Visualization** - Pie chart for proportional shares and bar chart for monetary comparison
 - [ ] **Phase 7: PDF Export and Print** - Downloadable PDF report with full division details, Quranic references, and print-friendly layout
 - [ ] **Phase 8: Persistence and Scenarios** - localStorage saving, scenario comparison, and load/modify previous calculations
+- [ ] **Phase 9: Land Lot Division and Qurah Assignment** - Named land parcels divided into heir groups per Faraid shares, Qurah-based random or user-named assignment, strictly Islamic fair division
 
 ## Phase Details
 
@@ -66,11 +67,11 @@ Plans:
   2. Every share allocation shows the specific Quranic ayah and/or Hadith reference that justifies it
   3. A step-by-step calculation explanation shows how each share was derived (blocking applied, fixed shares assigned, residuary distributed, adjustments made)
   4. User can toggle between simple mode (fractions and percentages only) and detailed mode (full calculation trace with legal citations)
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 03-01: Share breakdown display and Quranic references
-- [ ] 03-02: Step-by-step explanation and dual mode toggle
+- [ ] 03-01-PLAN.md -- Engine integration, display utilities, heir cards with Quran references, estate value input, mode toggle, and ResultsPage container
+- [ ] 03-02-PLAN.md -- Adjustment banners, special case callouts, blocked heirs section, step accordion, Islamic Basis section, integration tests, and visual verification
 
 ### Phase 4: Property Input System
 **Goal**: Users can enter multiple properties of different types with Bangladesh-specific land units and regional variations
@@ -143,7 +144,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -155,3 +156,19 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 6. Charts and Visualization | 0/1 | Not started | - |
 | 7. PDF Export and Print | 0/2 | Not started | - |
 | 8. Persistence and Scenarios | 0/2 | Not started | - |
+| 9. Land Lot Division and Qurah Assignment | 0/0 | Not started | - |
+
+### Phase 9: Land Lot Division and Qurah Assignment
+**Goal**: Users can enter named land parcels (name, quantity in BD units, market price with auto-suggest), and the app divides parcels into groups matching Faraid shares, then assigns groups to heirs via Qurah (Islamic lot drawing) or user-specified names — strictly following Islamic fair division rules
+**Depends on**: Phase 5
+**Requirements**: TBD
+**Success Criteria** (what must be TRUE):
+  1. User can enter multiple named land parcels with name, quantity (decimal/shotok/katha/bigha), and current market price (auto-filled where possible, user-editable)
+  2. App divides land parcels into groups that match each heir's Faraid share as closely as possible
+  3. User can randomly assign groups to heirs (Qurah — Islamic lot drawing) or manually name/assign each group
+  4. Division and assignment strictly follow Islamic rules for fair property division
+**Plans**: TBD
+
+Plans:
+- [ ] 09-01: Land parcel input and group division algorithm
+- [ ] 09-02: Qurah assignment and manual heir-to-group mapping
