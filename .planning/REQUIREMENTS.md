@@ -65,9 +65,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Design & UX
 
-- [ ] **DSGN-01**: App has modern, exceptional UI design using React + TypeScript + TailwindCSS
-- [ ] **DSGN-02**: App is fully mobile-responsive (responsive-first design)
-- [ ] **DSGN-03**: App uses multi-step wizard flow (heir input → property input → valuation → results)
+- [x] **DSGN-01**: App has modern, exceptional UI design using React + TypeScript + TailwindCSS
+- [x] **DSGN-02**: App is fully mobile-responsive (responsive-first design)
+- [x] **DSGN-03**: App uses multi-step wizard flow (heir input → property input → valuation → results)
 - [x] **DSGN-04**: App works as a static site deployed on Netlify (client-side only)
 
 ## v2 Requirements
@@ -123,8 +123,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | HEIR-04 | Phase 2 | In Progress |
 | HEIR-05 | Phase 2 | In Progress |
 | DSGN-01 | Phase 2 | In Progress |
-| DSGN-02 | Phase 2 | Pending |
-| DSGN-03 | Phase 2 | Pending |
+| DSGN-02 | Phase 2 | Complete |
+| DSGN-03 | Phase 2 | Complete |
 | RSLT-01 | Phase 3 | Pending |
 | RSLT-02 | Phase 3 | Pending |
 | RSLT-03 | Phase 3 | Pending |
