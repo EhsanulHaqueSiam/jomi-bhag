@@ -10,9 +10,9 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Faraid Engine
 
 - [x] **FARD-01**: App calculates standard Faraid shares for all heir types (spouse, sons, daughters, brothers, sisters) using exact fraction arithmetic
-- [ ] **FARD-02**: App applies Awl (proportional reduction) when total prescribed shares exceed the estate
-- [ ] **FARD-03**: App applies Radd (redistribution of surplus) per Hanafi rules (spouses excluded from Radd)
-- [ ] **FARD-04**: App correctly identifies and distributes to Asaba (residuary heirs) after fixed shares
+- [x] **FARD-02**: App applies Awl (proportional reduction) when total prescribed shares exceed the estate
+- [x] **FARD-03**: App applies Radd (redistribution of surplus) per Hanafi rules (spouses excluded from Radd)
+- [x] **FARD-04**: App correctly identifies and distributes to Asaba (residuary heirs) after fixed shares
 - [x] **FARD-05**: App implements all 16 Hajb Hirman (total blocking) rules automatically
 - [x] **FARD-06**: App implements all 5 Hajb Nuqsan (partial reduction) rules automatically
 - [x] **FARD-07**: App distinguishes between full, consanguine (paternal), and uterine (maternal) siblings
@@ -109,9 +109,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | FARD-01 | Phase 1 | Complete |
-| FARD-02 | Phase 1 | Pending |
-| FARD-03 | Phase 1 | Pending |
-| FARD-04 | Phase 1 | Pending |
+| FARD-02 | Phase 1 | Complete |
+| FARD-03 | Phase 1 | Complete |
+| FARD-04 | Phase 1 | Complete |
 | FARD-05 | Phase 1 | Complete |
 | FARD-06 | Phase 1 | Complete |
 | FARD-07 | Phase 1 | Complete |
