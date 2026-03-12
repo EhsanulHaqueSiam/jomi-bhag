@@ -33,12 +33,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. When total prescribed shares are less than 1 with no residuary heirs, Radd redistributes surplus to eligible heirs (spouses excluded per Hanafi)
   4. All 16 Hajb Hirman (total blocking) and 5 Hajb Nuqsan (partial reduction) rules produce correct results verified against known Faraid outcomes
   5. The project builds, passes linting, and deploys as a static site to Netlify
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 01-01: Project scaffolding and Faraid engine type system
-- [ ] 01-02: Hajb blocking rules and core share calculation
-- [ ] 01-03: Awl, Radd, and Asaba with comprehensive test suite
+- [ ] 01-01-PLAN.md -- Project scaffolding (Vite + React + TailwindCSS 4 + Vitest) and Faraid engine type system, fraction utilities, reference data, and rule table
+- [ ] 01-02-PLAN.md -- All 16 Hajb Hirman + 5 Hajb Nuqsan blocking rules, fixed share assignment, and special cases (Umariyyatayn, Mushtarakah, Kalalah)
+- [ ] 01-03-PLAN.md -- Asaba distribution, Awl reduction, Radd redistribution, MFLO Section 4, engine orchestrator, and end-to-end integration tests
 
 ### Phase 2: Heir Input Wizard
 **Goal**: Users can enter their heir details through an intuitive multi-step wizard with validation, and the app looks modern and works on mobile
