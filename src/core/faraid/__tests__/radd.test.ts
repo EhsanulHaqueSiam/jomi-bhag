@@ -10,12 +10,10 @@ import Fraction from 'fraction.js'
 import { applyRadd, applyAdjustment } from '../adjustments'
 import type { ShareAssignment } from '../shares'
 import {
-  ZERO,
   ONE,
   HALF,
   QUARTER,
   EIGHTH,
-  TWO_THIRDS,
   ONE_THIRD,
   ONE_SIXTH,
   sumFractions,
@@ -99,13 +97,13 @@ describe('applyRadd', () => {
         quranRef: '4:12',
       },
     ]
-    const { adjusted, explanation } = applyRadd(shares)
-    const wife = adjusted.find((s) => s.heirType === 'wife')!
+    const result = applyRadd(shares)
+    const wife = result.adjusted.find((s) => s.heirType === 'wife')!
 
     // Wife keeps 1/4
     expect(wife.totalShare.equals(QUARTER)).toBe(true)
     // Total is still 1/4, not 1 (remainder to Bait-ul-Maal)
-    const total = sumFractions(adjusted.map((s) => s.totalShare))
+    const total = sumFractions(result.adjusted.map((s) => s.totalShare))
     expect(total.equals(QUARTER)).toBe(true)
   })
 

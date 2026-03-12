@@ -50,11 +50,19 @@ export interface HeirInput {
   count: number
 }
 
+/** A predeceased child of the deceased, used for MFLO Section 4. */
+export interface PredeceasedChild {
+  gender: 'male' | 'female'
+  livingChildren: HeirInput[]
+}
+
 /** Engine input -- deceased info and heir list. */
 export interface FaraidInput {
   deceasedGender: 'male' | 'female'
   heirs: HeirInput[]
   mfloEnabled?: boolean
+  /** MFLO Section 4: predeceased children whose living children inherit per stirpes. */
+  predeceasedChildren?: PredeceasedChild[]
 }
 
 /** Per-heir output with share details and references. */

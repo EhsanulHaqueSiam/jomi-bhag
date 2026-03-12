@@ -10,7 +10,6 @@ import Fraction from 'fraction.js'
 import { applyAwl, applyAdjustment } from '../adjustments'
 import type { ShareAssignment } from '../shares'
 import {
-  ZERO,
   ONE,
   HALF,
   QUARTER,
