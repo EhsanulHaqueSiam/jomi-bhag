@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import type { FaraidInput, HeirInput, HeirType } from '@/core/faraid/types'
+import type { FaraidInput, FaraidOutput, HeirInput, HeirType } from '@/core/faraid/types'
+import { calculateInheritance } from '@/core/faraid/engine'
 import {
   deriveDeceasedGender,
   deriveUserGender,
@@ -25,6 +26,9 @@ interface WizardActions {
   setSisterConsanguineCount: (n: number) => void
   setSisterUterineCount: (n: number) => void
   setSiblingTypeExpanded: (expanded: boolean) => void
+  calculateShares: () => void
+  setTotalEstateValue: (value: number) => void
+  setViewMode: (mode: 'simple' | 'detailed') => void
   isStepValid: (step: number) => boolean
   buildFaraidInput: () => FaraidInput
 }
@@ -73,6 +77,11 @@ export const useWizardStore = create<WizardStore>()((set, get) => ({
   sisterFullCount: 0,
   sisterConsanguineCount: 0,
   sisterUterineCount: 0,
+
+  // Step 4 (Results)
+  results: null,
+  totalEstateValue: 0,
+  viewMode: 'simple',
 
   // Actions
 
@@ -173,6 +182,26 @@ export const useWizardStore = create<WizardStore>()((set, get) => ({
     set({ siblingTypeExpanded: expanded })
   },
 
+  calculateShares: () => {
+    const state = get()
+    const input = state.buildFaraidInput()
+    const results: FaraidOutput = calculateInheritance(input)
+    const newCompleted = [...state.completedSteps]
+    if (!newCompleted.includes(3)) {
+      newCompleted.push(3)
+    }
+    set({ results, currentStep: 4, completedSteps: newCompleted })
+  },
+
+  setTotalEstateValue: (value) => {
+    const parsed = typeof value === 'number' ? value : parseInt(String(value), 10)
+    set({ totalEstateValue: isNaN(parsed) ? 0 : parsed })
+  },
+
+  setViewMode: (mode) => {
+    set({ viewMode: mode })
+  },
+
   isStepValid: (step) => {
     const state = get()
     switch (step) {
@@ -186,6 +215,8 @@ export const useWizardStore = create<WizardStore>()((set, get) => ({
         return true // zero children/spouse is valid
       case 3:
         return true // zero siblings is valid
+      case 4:
+        return true // results step is always valid once reached
       default:
         return false
     }
