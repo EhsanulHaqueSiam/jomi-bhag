@@ -29,6 +29,9 @@ export function ResultsPage() {
         </h2>
         <div className="flex items-center gap-3">
           <ModeToggle />
+          <Button variant="ghost" onClick={() => setStep(4)}>
+            Edit Properties
+          </Button>
           <Button variant="ghost" onClick={() => setStep(1)}>
             Edit Heirs
           </Button>

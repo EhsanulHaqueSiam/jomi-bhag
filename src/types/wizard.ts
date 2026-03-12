@@ -1,4 +1,5 @@
 import type { FaraidOutput, HeirType } from '@/core/faraid/types'
+import type { Property } from '@/core/land/types'
 
 /**
  * Relationship of the user to the deceased.
@@ -20,12 +21,13 @@ export interface WizardStep {
   shortLabel: string
 }
 
-/** The 4 wizard steps in order. */
+/** The 5 wizard steps in order. */
 export const WIZARD_STEPS: WizardStep[] = [
   { number: 1, label: 'Relationship', shortLabel: 'Relationship' },
   { number: 2, label: 'Family', shortLabel: 'Family' },
   { number: 3, label: 'Siblings', shortLabel: 'Siblings' },
-  { number: 4, label: 'Results', shortLabel: 'Results' },
+  { number: 4, label: 'Properties', shortLabel: 'Properties' },
+  { number: 5, label: 'Results', shortLabel: 'Results' },
 ]
 
 /**
@@ -160,7 +162,11 @@ export interface WizardState {
   sisterConsanguineCount: number
   sisterUterineCount: number
 
-  // Step 4 (Results)
+  // Step 4 (Properties)
+  properties: Property[]
+  expandedPropertyId: string | null
+
+  // Step 5 (Results)
   results: FaraidOutput | null
   totalEstateValue: number
   viewMode: 'simple' | 'detailed'

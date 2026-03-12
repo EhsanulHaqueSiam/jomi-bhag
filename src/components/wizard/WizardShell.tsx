@@ -8,6 +8,7 @@ import { StepFamily } from '@/components/wizard/StepFamily'
 import { StepSiblings } from '@/components/wizard/StepSiblings'
 import { FamilyTree } from '@/components/wizard/FamilyTree'
 import { ResultsPage } from '@/components/results/ResultsPage'
+import { StepProperties } from '@/components/property/StepProperties'
 
 const stepVariants = {
   enter: (dir: number) => ({
@@ -48,6 +49,8 @@ export function WizardShell() {
         return true
       case 3:
         return true
+      case 4:
+        return true
       default:
         return false
     }
@@ -77,7 +80,7 @@ export function WizardShell() {
       <StepIndicator />
 
       {/* Parents-deceased info text (hidden on results step) */}
-      {currentStep !== 4 && (
+      {currentStep !== 5 && (
         <p className="mt-3 text-center text-xs text-gray-400">
           <span className="mr-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-100 text-[10px] font-medium text-gray-400">
             i
@@ -87,7 +90,7 @@ export function WizardShell() {
       )}
 
       {/* Family tree visualization (hidden on results step) */}
-      {currentStep !== 4 && (
+      {currentStep !== 5 && (
         <div className="mt-4">
           <FamilyTree currentStep={currentStep} />
         </div>
@@ -108,13 +111,14 @@ export function WizardShell() {
             {currentStep === 1 && <StepRelationship />}
             {currentStep === 2 && <StepFamily />}
             {currentStep === 3 && <StepSiblings />}
-            {currentStep === 4 && <ResultsPage />}
+            {currentStep === 4 && <StepProperties />}
+            {currentStep === 5 && <ResultsPage />}
           </motion.div>
         </AnimatePresence>
       </div>
 
       {/* Desktop navigation bar (hidden on results step) */}
-      {currentStep !== 4 && (
+      {currentStep !== 5 && (
         <div className="mt-8 hidden justify-between md:flex">
           {currentStep > 1 ? (
             <Button variant="secondary" onClick={handleBack}>
@@ -123,7 +127,7 @@ export function WizardShell() {
           ) : (
             <div />
           )}
-          {currentStep < 3 && (
+          {currentStep < 4 && (
             <Button
               variant="primary"
               onClick={handleNext}
@@ -132,45 +136,65 @@ export function WizardShell() {
               Next
             </Button>
           )}
-          {currentStep === 3 && (
-            <Button
-              variant="primary"
-              onClick={handleCalculate}
-              disabled={!isCurrentStepValid}
-            >
-              Calculate Shares
-            </Button>
+          {currentStep === 4 && (
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleCalculate}
+                className="text-sm font-medium text-emerald-600 hover:text-emerald-700"
+              >
+                Skip to Results
+              </button>
+              <Button
+                variant="primary"
+                onClick={handleCalculate}
+                disabled={!isCurrentStepValid}
+              >
+                Calculate Shares
+              </Button>
+            </div>
           )}
         </div>
       )}
 
       {/* Mobile navigation bar -- fixed bottom (hidden on results step) */}
-      {currentStep !== 4 && (
-        <div className="fixed bottom-0 left-0 right-0 flex gap-3 border-t border-gray-100 bg-white px-4 py-3 md:hidden">
-          {currentStep > 1 && (
-            <Button variant="secondary" onClick={handleBack} fullWidth>
-              Back
-            </Button>
-          )}
-          {currentStep < 3 && (
-            <Button
-              variant="primary"
-              onClick={handleNext}
-              disabled={!isCurrentStepValid}
-              fullWidth
-            >
-              Next
-            </Button>
-          )}
-          {currentStep === 3 && (
-            <Button
-              variant="primary"
+      {currentStep !== 5 && (
+        <div className="fixed bottom-0 left-0 right-0 flex flex-col gap-2 border-t border-gray-100 bg-white px-4 py-3 md:hidden">
+          <div className="flex gap-3">
+            {currentStep > 1 && (
+              <Button variant="secondary" onClick={handleBack} fullWidth>
+                Back
+              </Button>
+            )}
+            {currentStep < 4 && (
+              <Button
+                variant="primary"
+                onClick={handleNext}
+                disabled={!isCurrentStepValid}
+                fullWidth
+              >
+                Next
+              </Button>
+            )}
+            {currentStep === 4 && (
+              <Button
+                variant="primary"
+                onClick={handleCalculate}
+                disabled={!isCurrentStepValid}
+                fullWidth
+              >
+                Calculate Shares
+              </Button>
+            )}
+          </div>
+          {currentStep === 4 && (
+            <button
+              type="button"
               onClick={handleCalculate}
-              disabled={!isCurrentStepValid}
-              fullWidth
+              className="text-center text-sm font-medium text-emerald-600 hover:text-emerald-700"
             >
-              Calculate Shares
-            </Button>
+              Skip to Results
+            </button>
           )}
         </div>
       )}

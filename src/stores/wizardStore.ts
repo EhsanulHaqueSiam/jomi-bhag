@@ -7,6 +7,8 @@ import {
   getAutoIncludes,
 } from '@/types/wizard'
 import type { RelationshipType, WizardState } from '@/types/wizard'
+import type { Property } from '@/core/land/types'
+import { computePropertyTotal } from '@/core/land/types'
 
 interface WizardActions {
   setStep: (step: number) => void
@@ -31,6 +33,11 @@ interface WizardActions {
   setViewMode: (mode: 'simple' | 'detailed') => void
   isStepValid: (step: number) => boolean
   buildFaraidInput: () => FaraidInput
+  addProperty: () => string
+  removeProperty: (id: string) => void
+  updateProperty: (id: string, patch: Partial<Property>) => void
+  setExpandedPropertyId: (id: string | null) => void
+  getAllPropertiesTotal: () => number
 }
 
 type WizardStore = WizardState & WizardActions
@@ -78,7 +85,11 @@ export const useWizardStore = create<WizardStore>()((set, get) => ({
   sisterConsanguineCount: 0,
   sisterUterineCount: 0,
 
-  // Step 4 (Results)
+  // Step 4 (Properties)
+  properties: [],
+  expandedPropertyId: null,
+
+  // Step 5 (Results)
   results: null,
   totalEstateValue: 0,
   viewMode: 'simple',
@@ -190,7 +201,10 @@ export const useWizardStore = create<WizardStore>()((set, get) => ({
     if (!newCompleted.includes(3)) {
       newCompleted.push(3)
     }
-    set({ results, currentStep: 4, completedSteps: newCompleted })
+    if (!newCompleted.includes(4)) {
+      newCompleted.push(4)
+    }
+    set({ results, currentStep: 5, completedSteps: newCompleted })
   },
 
   setTotalEstateValue: (value) => {
@@ -216,10 +230,58 @@ export const useWizardStore = create<WizardStore>()((set, get) => ({
       case 3:
         return true // zero siblings is valid
       case 4:
+        return true // properties step is always valid (optional)
+      case 5:
         return true // results step is always valid once reached
       default:
         return false
     }
+  },
+
+  addProperty: () => {
+    const id = crypto.randomUUID()
+    const newProperty: Property = {
+      id,
+      nickname: '',
+      type: null,
+      division: null,
+      landAreaSqft: 0,
+      landInputUnit: 'decimal',
+      landValue: 0,
+      house: null,
+      trees: null,
+      pond: null,
+    }
+    set((state) => ({
+      properties: [...state.properties, newProperty],
+      expandedPropertyId: id,
+    }))
+    return id
+  },
+
+  removeProperty: (id) => {
+    set((state) => ({
+      properties: state.properties.filter((p) => p.id !== id),
+      expandedPropertyId:
+        state.expandedPropertyId === id ? null : state.expandedPropertyId,
+    }))
+  },
+
+  updateProperty: (id, patch) => {
+    set((state) => ({
+      properties: state.properties.map((p) =>
+        p.id === id ? { ...p, ...patch } : p,
+      ),
+    }))
+  },
+
+  setExpandedPropertyId: (id) => {
+    set({ expandedPropertyId: id })
+  },
+
+  getAllPropertiesTotal: () => {
+    const { properties } = get()
+    return properties.reduce((sum, p) => sum + computePropertyTotal(p), 0)
   },
 
   buildFaraidInput: () => {

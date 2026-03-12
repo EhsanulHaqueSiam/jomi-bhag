@@ -450,6 +450,77 @@ describe('parents excluded (HEIR-05)', () => {
   })
 })
 
+describe('property CRUD', () => {
+  it('addProperty creates property with UUID and default values', () => {
+    const id = useWizardStore.getState().addProperty()
+    expect(id).toBeTruthy()
+    const state = useWizardStore.getState()
+    expect(state.properties).toHaveLength(1)
+    expect(state.properties[0].id).toBe(id)
+    expect(state.properties[0].landInputUnit).toBe('decimal')
+    expect(state.properties[0].type).toBeNull()
+    expect(state.properties[0].division).toBeNull()
+    expect(state.expandedPropertyId).toBe(id)
+  })
+
+  it('removeProperty removes the correct property by ID', () => {
+    const id1 = useWizardStore.getState().addProperty()
+    const id2 = useWizardStore.getState().addProperty()
+    expect(useWizardStore.getState().properties).toHaveLength(2)
+    useWizardStore.getState().removeProperty(id1)
+    expect(useWizardStore.getState().properties).toHaveLength(1)
+    expect(useWizardStore.getState().properties[0].id).toBe(id2)
+  })
+
+  it('removeProperty clears expandedPropertyId if it was the removed one', () => {
+    const id = useWizardStore.getState().addProperty()
+    expect(useWizardStore.getState().expandedPropertyId).toBe(id)
+    useWizardStore.getState().removeProperty(id)
+    expect(useWizardStore.getState().expandedPropertyId).toBeNull()
+  })
+
+  it('updateProperty patches the correct property', () => {
+    const id = useWizardStore.getState().addProperty()
+    useWizardStore.getState().updateProperty(id, { nickname: 'Bari', landValue: 50000 })
+    const p = useWizardStore.getState().properties[0]
+    expect(p.nickname).toBe('Bari')
+    expect(p.landValue).toBe(50000)
+  })
+
+  it('getAllPropertiesTotal returns correct sum across multiple properties', () => {
+    const id1 = useWizardStore.getState().addProperty()
+    const id2 = useWizardStore.getState().addProperty()
+    useWizardStore.getState().updateProperty(id1, { landValue: 100000 })
+    useWizardStore.getState().updateProperty(id2, { landValue: 200000 })
+    expect(useWizardStore.getState().getAllPropertiesTotal()).toBe(300000)
+  })
+})
+
+describe('step reindexing', () => {
+  it('calculateShares now sets currentStep to 5', () => {
+    useWizardStore.getState().setRelationship('father')
+    useWizardStore.getState().setUserGender('male')
+    useWizardStore.getState().calculateShares()
+    expect(useWizardStore.getState().currentStep).toBe(5)
+  })
+
+  it('isStepValid(4) returns true (properties always valid)', () => {
+    expect(useWizardStore.getState().isStepValid(4)).toBe(true)
+  })
+
+  it('isStepValid(5) returns true (results always valid)', () => {
+    expect(useWizardStore.getState().isStepValid(5)).toBe(true)
+  })
+
+  it('calculateShares marks steps 3 and 4 as completed', () => {
+    useWizardStore.getState().setRelationship('father')
+    useWizardStore.getState().setUserGender('male')
+    useWizardStore.getState().calculateShares()
+    expect(useWizardStore.getState().completedSteps).toContain(3)
+    expect(useWizardStore.getState().completedSteps).toContain(4)
+  })
+})
+
 describe('setDeceasedGender for "other"', () => {
   it('allows setting deceased gender explicitly for "other" relationship', () => {
     useWizardStore.getState().setRelationship('other')

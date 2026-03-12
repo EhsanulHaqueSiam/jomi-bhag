@@ -109,8 +109,8 @@ function makeKalalahOutput(): FaraidOutput {
 // ---------------------------------------------------------------------------
 
 const baseStoreState = {
-  currentStep: 4,
-  completedSteps: [1, 2, 3],
+  currentStep: 5,
+  completedSteps: [1, 2, 3, 4],
   relationship: 'father' as const,
   deceasedGender: 'male' as const,
   userGender: 'male' as const,
