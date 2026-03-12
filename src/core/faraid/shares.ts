@@ -16,7 +16,6 @@ import type {
   HeirInput,
   HeirContext,
   FaraidInput,
-  FaraidRule,
   ShareCondition,
 } from '@/core/faraid/types'
 import type { ReductionInfo } from '@/core/faraid/blocking'

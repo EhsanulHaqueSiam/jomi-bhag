@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest'
-import Fraction from 'fraction.js'
 import type { HeirInput, FaraidInput } from '@/core/faraid/types'
 import { buildHeirContext, assignFixedShares } from '@/core/faraid/shares'
 import type { ShareAssignment } from '@/core/faraid/shares'

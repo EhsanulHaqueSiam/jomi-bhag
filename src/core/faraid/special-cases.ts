@@ -11,8 +11,7 @@
 
 import type { HeirContext } from '@/core/faraid/types'
 import type { ShareAssignment } from '@/core/faraid/shares'
-import Fraction from 'fraction.js'
-import { ONE, ZERO, ONE_THIRD, HALF, QUARTER, ONE_SIXTH } from '@/core/utils/fraction'
+import { ONE, ZERO, ONE_THIRD } from '@/core/utils/fraction'
 
 // ─────────────────────────────────────────────────────────
 // Kalalah Detection
