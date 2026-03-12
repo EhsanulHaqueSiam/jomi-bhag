@@ -5,6 +5,9 @@ import { HeirCard } from '@/components/results/HeirCard'
 import { AdjustmentBanner } from '@/components/results/AdjustmentBanner'
 import { SpecialCaseCallout } from '@/components/results/SpecialCaseCallout'
 import { BlockedHeirsSection } from '@/components/results/BlockedHeirsSection'
+import { StepAccordion } from '@/components/results/StepAccordion'
+import { IslamicBasisSection } from '@/components/results/IslamicBasisSection'
+import { getAllReferences } from '@/core/faraid/references'
 import { Button } from '@/components/ui/Button'
 
 export function ResultsPage() {
@@ -61,8 +64,8 @@ export function ResultsPage() {
       {/* Detailed mode sections */}
       {viewMode === 'detailed' && (
         <>
-          {/* Plan 02: StepAccordion */}
-          {/* Plan 02: IslamicBasisSection */}
+          <StepAccordion steps={results.steps} />
+          <IslamicBasisSection references={getAllReferences(results)} />
         </>
       )}
     </div>
