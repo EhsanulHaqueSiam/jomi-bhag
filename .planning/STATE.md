@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 3 context gathered
-last_updated: "2026-03-12T19:05:33.644Z"
-last_activity: 2026-03-12 -- Completed Plan 02-03 (Step content components, visual verification)
+status: in_progress
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-03-12T21:06:01Z"
+last_activity: 2026-03-12 -- Completed Plan 03-01 (Core results display with heir cards)
 progress:
   total_phases: 8
   completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
+  total_plans: 8
+  completed_plans: 8
   percent: 100
 ---
 
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-12)
 
 **Core value:** Accurate, unbiased Islamic inheritance division -- the app strictly follows Faraid rules for every calculation without favoring any heir.
-**Current focus:** Phase 2 complete. Ready for Phase 3: Core Results Display
+**Current focus:** Phase 3 in progress. Core results display with heir cards complete (Plan 01 of 02).
 
 ## Current Position
 
-Phase: 2 of 8 (Heir Input Wizard) -- COMPLETE
-Plan: 3 of 3 in current phase (all done)
-Status: Phase complete, ready for Phase 3
-Last activity: 2026-03-12 -- Completed Plan 02-03 (Step content components, visual verification)
+Phase: 3 of 8 (Core Results Display) -- IN PROGRESS
+Plan: 1 of 2 in current phase
+Status: Plan 03-01 complete, ready for Plan 03-02
+Last activity: 2026-03-12 -- Completed Plan 03-01 (Core results display with heir cards)
 
-Progress: [██████████] 100%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: 8 min
-- Total execution time: 0.9 hours
+- Total execution time: 1.0 hours
 
 **By Phase:**
 
@@ -45,9 +45,10 @@ Progress: [██████████] 100%
 |-------|-------|-------|----------|
 | 1 | 4/4 | 31 min | 8 min |
 | 2 | 3/3 | 36 min | 12 min |
+| 3 | 1/2 | 5 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-04 (1 min), 02-01 (8 min), 02-02 (3 min), 02-03 (25 min)
+- Last 5 plans: 02-01 (8 min), 02-02 (3 min), 02-03 (25 min), 03-01 (5 min)
 - Trend: Steady
 
 *Updated after each plan completion*
@@ -88,10 +89,20 @@ Recent decisions affecting current work:
 - [Phase 02]: FamilyTree SVG visualization added as interactive relationship selector alongside grid buttons
 - [Phase 02]: Sibling progressive disclosure defaults changes to fullCount only when collapsed
 - [Phase 02]: Auto-include badges show '(includes you)' next to relevant steppers
+- [Phase 03]: BDT formatting uses Intl.NumberFormat('en-IN') with narrowSymbol for lakh/crore grouping
+- [Phase 03]: EstateValueInput toggles formatted display (blurred) vs raw number (focused) for usability
+- [Phase 03]: QuranReference uses motion/react AnimatePresence for smooth expand/collapse
+- [Phase 03]: HeirCard shows Each/Total rows when count > 1, single row otherwise
+- [Phase 03]: Results step hides FamilyTree, info text, and both navigation bars
 
 ### Pending Todos
 
 None yet.
+
+### Roadmap Evolution
+
+- Phase 9 added: Land Lot Division and Qurah Assignment — named land parcels divided into groups per Faraid shares, random (Qur'ah) or user-named assignment to heirs
+- Phase 10 added: Movable Assets and Complete Estate Inventory — gold, silver, cash, vehicles, jewelry, furniture, investments, livestock with indivisible asset handling per Islamic jurisprudence
 
 ### Blockers/Concerns
 
@@ -100,6 +111,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-12T19:05:33.641Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-core-results-display/03-CONTEXT.md
+Last session: 2026-03-12T21:06:01Z
+Stopped at: Completed 03-01-PLAN.md
+Resume file: .planning/phases/03-core-results-display/03-01-SUMMARY.md

@@ -21,6 +21,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 7: PDF Export and Print** - Downloadable PDF report with full division details, Quranic references, and print-friendly layout
 - [ ] **Phase 8: Persistence and Scenarios** - localStorage saving, scenario comparison, and load/modify previous calculations
 - [ ] **Phase 9: Land Lot Division and Qurah Assignment** - Named land parcels divided into heir groups per Faraid shares, Qurah-based random or user-named assignment, strictly Islamic fair division
+- [ ] **Phase 10: Movable Assets and Complete Estate Inventory** - Gold, silver, cash, vehicles, jewelry, furniture, investments, livestock, and all non-land assets with Islamic rules for indivisible item division
 
 ## Phase Details
 
@@ -70,7 +71,7 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md -- Engine integration, display utilities, heir cards with Quran references, estate value input, mode toggle, and ResultsPage container
+- [x] 03-01-PLAN.md -- Engine integration, display utilities, heir cards with Quran references, estate value input, mode toggle, and ResultsPage container
 - [ ] 03-02-PLAN.md -- Adjustment banners, special case callouts, blocked heirs section, step accordion, Islamic Basis section, integration tests, and visual verification
 
 ### Phase 4: Property Input System
@@ -144,19 +145,20 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Faraid Engine and Project Foundation | 4/4 | Complete | 2026-03-12 |
 | 2. Heir Input Wizard | 3/3 | Complete | 2026-03-12 |
-| 3. Core Results Display | 0/2 | Not started | - |
+| 3. Core Results Display | 1/2 | In progress | - |
 | 4. Property Input System | 0/2 | Not started | - |
 | 5. Property Valuation | 0/2 | Not started | - |
 | 6. Charts and Visualization | 0/1 | Not started | - |
 | 7. PDF Export and Print | 0/2 | Not started | - |
 | 8. Persistence and Scenarios | 0/2 | Not started | - |
 | 9. Land Lot Division and Qurah Assignment | 0/0 | Not started | - |
+| 10. Movable Assets and Complete Estate Inventory | 0/0 | Not started | - |
 
 ### Phase 9: Land Lot Division and Qurah Assignment
 **Goal**: Users can enter named land parcels (name, quantity in BD units, market price with auto-suggest), and the app divides parcels into groups matching Faraid shares, then assigns groups to heirs via Qurah (Islamic lot drawing) or user-specified names — strictly following Islamic fair division rules
@@ -172,3 +174,19 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 Plans:
 - [ ] 09-01: Land parcel input and group division algorithm
 - [ ] 09-02: Qurah assignment and manual heir-to-group mapping
+
+### Phase 10: Movable Assets and Complete Estate Inventory
+**Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, investments, livestock, etc.) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
+**Depends on**: Phase 5
+**Requirements**: TBD
+**Success Criteria** (what must be TRUE):
+  1. User can input movable assets by category: gold/silver (weight + purity), cash/bank deposits, vehicles, jewelry, furniture/household items, investments/shares, livestock, and custom items
+  2. Each asset has estimated market value (user-entered or guided estimation)
+  3. App calculates per-heir monetary share from total estate (land + movable assets combined)
+  4. For indivisible assets (e.g., a car, a ring), app offers Islamic options: sell and divide proceeds, one heir buys out others at fair value, or Qurah (lot drawing) assignment
+  5. All division strictly follows Faraid rules — no asset type is exempt from Islamic inheritance division
+**Plans**: TBD
+
+Plans:
+- [ ] 10-01: Movable asset input forms by category with valuation
+- [ ] 10-02: Indivisible asset handling (sale/buyout/Qurah) and combined estate calculation
