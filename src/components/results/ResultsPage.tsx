@@ -1,6 +1,6 @@
 import { useWizardStore } from '@/stores/wizardStore'
 import { ModeToggle } from '@/components/results/ModeToggle'
-import { EstateValueInput } from '@/components/results/EstateValueInput'
+import { EstateBreakdownCard } from '@/components/results/EstateBreakdownCard'
 import { HeirCard } from '@/components/results/HeirCard'
 import { AdjustmentBanner } from '@/components/results/AdjustmentBanner'
 import { SpecialCaseCallout } from '@/components/results/SpecialCaseCallout'
@@ -38,8 +38,8 @@ export function ResultsPage() {
         </div>
       </div>
 
-      {/* Estate value input */}
-      <EstateValueInput />
+      {/* Estate value breakdown */}
+      <EstateBreakdownCard />
 
       {/* Adjustment banner (Awl/Radd) */}
       <AdjustmentBanner
