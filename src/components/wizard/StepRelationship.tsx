@@ -37,9 +37,15 @@ export function StepRelationship() {
   return (
     <div className="space-y-6">
       {/* Section heading */}
-      <h2 className="mb-4 text-lg font-semibold text-gray-800">
-        I am calculating inheritance for my...
-      </h2>
+      <div>
+        <h2 className="mb-1 text-lg font-semibold text-gray-800">
+          I am calculating inheritance for my...
+        </h2>
+        <p className="mb-4 text-sm text-gray-500">
+          Select your relationship to the deceased. This determines which heirs
+          are automatically included and how the estate is divided.
+        </p>
+      </div>
 
       {/* Relationship selector grid */}
       <div className="grid grid-cols-3 gap-3 md:grid-cols-4">

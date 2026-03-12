@@ -22,11 +22,13 @@ export function StepFamily() {
     <div className="space-y-4">
       {/* Section heading */}
       <div>
-        <h2 className="mb-2 text-lg font-semibold text-gray-800">
+        <h2 className="mb-1 text-lg font-semibold text-gray-800">
           Immediate Family
         </h2>
         <p className="mb-6 text-sm text-gray-500">
-          Enter the deceased's spouse and children
+          Enter the deceased's spouse and children. In Islamic inheritance,
+          spouses and children are primary heirs with guaranteed shares
+          (Quranic fixed shares).
         </p>
       </div>
 

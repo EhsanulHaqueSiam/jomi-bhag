@@ -55,9 +55,11 @@ export function StepSiblings() {
     <div className="space-y-4">
       {/* Section heading */}
       <div>
-        <h2 className="mb-2 text-lg font-semibold text-gray-800">Siblings</h2>
+        <h2 className="mb-1 text-lg font-semibold text-gray-800">Siblings</h2>
         <p className="mb-6 text-sm text-gray-500">
-          Enter the deceased's brothers and sisters
+          Enter the deceased's brothers and sisters. Siblings inherit when there
+          are no sons or paternal grandsons. Their share depends on whether they
+          are full, consanguine, or uterine.
         </p>
       </div>
 

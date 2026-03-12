@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { StepRelationship } from '@/components/wizard/StepRelationship'
 import { StepFamily } from '@/components/wizard/StepFamily'
 import { StepSiblings } from '@/components/wizard/StepSiblings'
+import { FamilyTree } from '@/components/wizard/FamilyTree'
 
 const stepVariants = {
   enter: (dir: number) => ({
@@ -81,8 +82,13 @@ export function WizardShell() {
         This calculator assumes the deceased's parents have passed away
       </p>
 
+      {/* Family tree visualization */}
+      <div className="mt-4">
+        <FamilyTree />
+      </div>
+
       {/* Animated step content */}
-      <div className="relative mt-6 overflow-hidden">
+      <div className="relative mt-4 overflow-hidden">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={currentStep}
