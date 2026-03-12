@@ -39,7 +39,7 @@ Plans:
 - [x] 01-01-PLAN.md -- Project scaffolding (Vite + React + TailwindCSS 4 + Vitest) and Faraid engine type system, fraction utilities, reference data, and rule table
 - [x] 01-02-PLAN.md -- All 16 Hajb Hirman + 5 Hajb Nuqsan blocking rules, fixed share assignment, and special cases (Umariyyatayn, Mushtarakah, Kalalah)
 - [x] 01-03-PLAN.md -- Asaba distribution, Awl reduction, Radd redistribution, MFLO Section 4, engine orchestrator, and end-to-end integration tests
-- [ ] 01-04-PLAN.md -- Gap closure: fix unused TypeScript imports blocking build (VERIFICATION.md criterion 5)
+- [x] 01-04-PLAN.md -- Gap closure: fix unused TypeScript imports blocking build (VERIFICATION.md criterion 5)
 
 ### Phase 2: Heir Input Wizard
 **Goal**: Users can enter their heir details through an intuitive multi-step wizard with validation, and the app looks modern and works on mobile
@@ -53,7 +53,7 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- Zustand wizard store with state logic (relationship derivation, auto-includes, FaraidInput building), wizard types, TailwindCSS 4 design system, and unit tests
+- [x] 02-01-PLAN.md -- Zustand wizard store with state logic (relationship derivation, auto-includes, FaraidInput building), wizard types, TailwindCSS 4 design system, and unit tests
 - [ ] 02-02-PLAN.md -- UI primitives (StepperButton, StepIndicator, Tooltip, Button), AppLayout, WizardShell with animated step transitions
 - [ ] 02-03-PLAN.md -- Three wizard step components (StepRelationship, StepFamily, StepSiblings), App.tsx wiring, component tests, and visual verification
 
@@ -147,8 +147,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Faraid Engine and Project Foundation | 3/4 | Gap closure   | - |
-| 2. Heir Input Wizard | 0/3 | Planning complete | - |
+| 1. Faraid Engine and Project Foundation | 4/4 | Complete | 2026-03-12 |
+| 2. Heir Input Wizard | 1/3 | Executing | - |
 | 3. Core Results Display | 0/2 | Not started | - |
 | 4. Property Input System | 0/2 | Not started | - |
 | 5. Property Valuation | 0/2 | Not started | - |

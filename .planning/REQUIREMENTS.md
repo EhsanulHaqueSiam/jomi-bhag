@@ -117,12 +117,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FARD-07 | Phase 1 | Complete |
 | FARD-08 | Phase 1 | Complete |
 | DSGN-04 | Phase 1 | Complete |
-| HEIR-01 | Phase 2 | Pending |
-| HEIR-02 | Phase 2 | Pending |
-| HEIR-03 | Phase 2 | Pending |
-| HEIR-04 | Phase 2 | Pending |
-| HEIR-05 | Phase 2 | Pending |
-| DSGN-01 | Phase 2 | Pending |
+| HEIR-01 | Phase 2 | In Progress |
+| HEIR-02 | Phase 2 | In Progress |
+| HEIR-03 | Phase 2 | In Progress |
+| HEIR-04 | Phase 2 | In Progress |
+| HEIR-05 | Phase 2 | In Progress |
+| DSGN-01 | Phase 2 | In Progress |
 | DSGN-02 | Phase 2 | Pending |
 | DSGN-03 | Phase 2 | Pending |
 | RSLT-01 | Phase 3 | Pending |
@@ -155,4 +155,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-12*
-*Last updated: 2026-03-12 after roadmap creation*
+*Last updated: 2026-03-12 after Plan 02-01 completion (store/types layer)*
