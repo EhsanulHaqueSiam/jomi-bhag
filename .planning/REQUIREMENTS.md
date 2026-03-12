@@ -20,11 +20,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Heir Input
 
-- [ ] **HEIR-01**: User can specify their gender (male/female) and marital status
-- [ ] **HEIR-02**: User can enter number of brothers (full, consanguine, uterine) and their spouse status
-- [ ] **HEIR-03**: User can enter number of sisters (full, consanguine, uterine) and their spouse status
-- [ ] **HEIR-04**: User can enter number of sons and daughters of the deceased
-- [ ] **HEIR-05**: App assumes parents are deceased — division is among children/siblings and spouses
+- [x] **HEIR-01**: User can specify their gender (male/female) and marital status
+- [x] **HEIR-02**: User can enter number of brothers (full, consanguine, uterine) and their spouse status
+- [x] **HEIR-03**: User can enter number of sisters (full, consanguine, uterine) and their spouse status
+- [x] **HEIR-04**: User can enter number of sons and daughters of the deceased
+- [x] **HEIR-05**: App assumes parents are deceased — division is among children/siblings and spouses
 
 ### Property Input
 
@@ -117,12 +117,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FARD-07 | Phase 1 | Complete |
 | FARD-08 | Phase 1 | Complete |
 | DSGN-04 | Phase 1 | Complete |
-| HEIR-01 | Phase 2 | In Progress |
-| HEIR-02 | Phase 2 | In Progress |
-| HEIR-03 | Phase 2 | In Progress |
-| HEIR-04 | Phase 2 | In Progress |
-| HEIR-05 | Phase 2 | In Progress |
-| DSGN-01 | Phase 2 | In Progress |
+| HEIR-01 | Phase 2 | Complete |
+| HEIR-02 | Phase 2 | Complete |
+| HEIR-03 | Phase 2 | Complete |
+| HEIR-04 | Phase 2 | Complete |
+| HEIR-05 | Phase 2 | Complete |
+| DSGN-01 | Phase 2 | Complete |
 | DSGN-02 | Phase 2 | Complete |
 | DSGN-03 | Phase 2 | Complete |
 | RSLT-01 | Phase 3 | Pending |
@@ -155,4 +155,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-12*
-*Last updated: 2026-03-12 after Plan 02-01 completion (store/types layer)*
+*Last updated: 2026-03-12 after Plan 02-03 completion (Phase 2 complete)*
