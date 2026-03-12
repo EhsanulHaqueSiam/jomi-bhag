@@ -82,7 +82,7 @@ Plans:
   1. User can input land area in decimal/shotangsho, katha, or bigha with automatic conversion between units
   2. User can add multiple property entries of types: agricultural, residential, commercial, mixed, with house/structure details, tree/crop details, and pond/water body details
   3. Regional land unit variations are handled correctly (e.g., 1 Katha = 720 sqft in Dhaka vs 1620 sqft in Rajshahi) based on user's district/region selection
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 04-01-PLAN.md -- Land unit types, conversion module with regional BD variations, BD data constants, Zustand store property CRUD, and wizard step 4-to-5 reindexing
@@ -152,7 +152,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 1. Faraid Engine and Project Foundation | 4/4 | Complete | 2026-03-12 |
 | 2. Heir Input Wizard | 3/3 | Complete | 2026-03-12 |
 | 3. Core Results Display | 2/2 | Complete | 2026-03-12 |
-| 4. Property Input System | 0/2 | Planning complete | - |
+| 4. Property Input System | 1/2 | In Progress|  |
 | 5. Property Valuation | 0/2 | Not started | - |
 | 6. Charts and Visualization | 0/1 | Not started | - |
 | 7. PDF Export and Print | 0/2 | Not started | - |
