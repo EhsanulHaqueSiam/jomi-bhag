@@ -1,6 +1,7 @@
 import { useWizardStore } from '@/stores/wizardStore'
 import { Button } from '@/components/ui/Button'
 import { PropertyCard } from './PropertyCard'
+import { PropertyRunningTotal } from './PropertyRunningTotal'
 
 export function StepProperties() {
   const properties = useWizardStore((s) => s.properties)
@@ -45,8 +46,8 @@ export function StepProperties() {
         <PropertyCard key={p.id} propertyId={p.id} />
       ))}
 
-      {/* Running total placeholder (Task 2 replaces with PropertyRunningTotal) */}
-      <div data-testid="running-total-slot" />
+      {/* Running total */}
+      <PropertyRunningTotal />
 
       <div className="pt-2">
         <button

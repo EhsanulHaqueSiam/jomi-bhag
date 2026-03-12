@@ -5,6 +5,9 @@ import type { PropertyType } from '@/core/land/types'
 import { PROPERTY_TYPES, BD_DIVISIONS } from '@/data/bd-land-data'
 import { PropertyTypeSelector } from './PropertyTypeSelector'
 import { LandAreaInput } from './LandAreaInput'
+import { HouseDetailSection } from './HouseDetailSection'
+import { TreeCropSection } from './TreeCropSection'
+import { PondSection } from './PondSection'
 
 const displayFormatter = new Intl.NumberFormat('en-IN')
 
@@ -143,9 +146,13 @@ export function PropertyCard({ propertyId }: PropertyCardProps) {
                 <LandAreaInput propertyId={propertyId} />
               )}
 
-              {/* Sub-section slots (Task 2 will add HouseDetailSection, TreeCropSection, PondSection) */}
-              {property.type && property.division && (
-                <div className="space-y-3" data-testid="sub-sections-slot" />
+              {/* Sub-sections: house, trees, pond */}
+              {property.type && (
+                <div className="space-y-4">
+                  <HouseDetailSection propertyId={propertyId} />
+                  <TreeCropSection propertyId={propertyId} />
+                  <PondSection propertyId={propertyId} />
+                </div>
               )}
 
               {/* Delete button */}
