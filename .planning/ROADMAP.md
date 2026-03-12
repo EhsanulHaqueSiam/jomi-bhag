@@ -50,12 +50,12 @@ Plans:
   2. The wizard enforces that parents are deceased (the app's scope) and validates all heir inputs before proceeding
   3. The app renders correctly on mobile devices (375px+) and desktop with no layout breakage
   4. The wizard flow guides the user through heir input, property input, and results in distinct steps
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 02-01: Wizard shell, routing, and Zustand store
-- [ ] 02-02: Heir input forms with validation
-- [ ] 02-03: Responsive layout and design system
+- [ ] 02-01-PLAN.md -- Zustand wizard store with state logic (relationship derivation, auto-includes, FaraidInput building), wizard types, TailwindCSS 4 design system, and unit tests
+- [ ] 02-02-PLAN.md -- UI primitives (StepperButton, StepIndicator, Tooltip, Button), AppLayout, WizardShell with animated step transitions
+- [ ] 02-03-PLAN.md -- Three wizard step components (StepRelationship, StepFamily, StepSiblings), App.tsx wiring, component tests, and visual verification
 
 ### Phase 3: Core Results Display
 **Goal**: Users see their inheritance division results with Quranic justification and can choose between simple and detailed views
@@ -148,7 +148,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Faraid Engine and Project Foundation | 3/4 | Gap closure   | - |
-| 2. Heir Input Wizard | 0/3 | Not started | - |
+| 2. Heir Input Wizard | 0/3 | Planning complete | - |
 | 3. Core Results Display | 0/2 | Not started | - |
 | 4. Property Input System | 0/2 | Not started | - |
 | 5. Property Valuation | 0/2 | Not started | - |
