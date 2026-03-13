@@ -9,6 +9,7 @@ import {
   SHARE_TYPE_LABELS,
 } from '@/core/utils/display'
 import { QuranReference } from '@/components/results/QuranReference'
+import { HeirIcon, feminineHeirs } from '@/components/ui/HeirIcon'
 import { useWizardStore } from '@/stores/wizardStore'
 import { computePropertyTotal } from '@/core/land/types'
 import type { PropertyType } from '@/core/land/types'
@@ -36,47 +37,12 @@ interface HeirCardProps {
   totalEstateValue: number
 }
 
-/** Heir types considered feminine for icon selection. */
-const feminineHeirs = new Set([
-  'wife',
-  'daughter',
-  'daughter_of_son',
-  'mother',
-  'paternal_grandmother',
-  'maternal_grandmother',
-  'sister_full',
-  'sister_consanguine',
-  'sister_uterine',
-])
-
 /** Badge color classes per share type. */
 const shareTypeBadgeStyles: Record<string, string> = {
   fard: 'bg-emerald-50 text-emerald-700',
   asaba: 'bg-blue-50 text-blue-700',
   radd_adjusted: 'bg-amber-50 text-amber-700',
   blocked: 'bg-gray-100 text-gray-500',
-}
-
-function HeirIcon({ isFeminine }: { isFeminine: boolean }) {
-  return (
-    <svg
-      className="h-8 w-8 text-gray-400"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-    >
-      {isFeminine ? (
-        <>
-          <circle cx="12" cy="7" r="3.5" />
-          <path d="M12 12c-4 0-7 2.5-7 5.5 0 .83.67 1.5 1.5 1.5h11c.83 0 1.5-.67 1.5-1.5 0-3-3-5.5-7-5.5z" />
-        </>
-      ) : (
-        <>
-          <circle cx="12" cy="7" r="3.5" />
-          <path d="M12 12c-3.5 0-6.5 2-6.5 5v1.5c0 .83.67 1.5 1.5 1.5h10c.83 0 1.5-.67 1.5-1.5V17c0-3-3-5-6.5-5z" />
-        </>
-      )}
-    </svg>
-  )
 }
 
 export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
