@@ -1,6 +1,7 @@
 import type { AppPage } from '@/types/scenario'
 import { useWizardStore } from '@/stores/wizardStore'
 import { usePdfExport } from '@/hooks/usePdfExport'
+import { useJsonExport } from '@/hooks/useJsonExport'
 import { ModeToggle } from '@/components/results/ModeToggle'
 import { EstateBreakdownCard } from '@/components/results/EstateBreakdownCard'
 import { HeirCard } from '@/components/results/HeirCard'
@@ -26,6 +27,7 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
   const setStep = useWizardStore((s) => s.setStep)
 
   const { downloadPdf, printPdf, isGenerating } = usePdfExport()
+  const { exportJson } = useJsonExport()
 
   if (!results) return null
 
@@ -75,6 +77,12 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
               <path fillRule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clipRule="evenodd" />
             </svg>
             <span className="hidden sm:inline ml-1">Print</span>
+          </Button>
+          <Button variant="ghost" onClick={exportJson}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+            <span className="hidden sm:inline ml-1">Export JSON</span>
           </Button>
           <ModeToggle />
           <Button variant="ghost" onClick={() => setStep(4)}>
