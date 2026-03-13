@@ -166,7 +166,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
 
       {/* Mobile navigation bar -- fixed bottom (hidden on results step) */}
       {currentStep !== 5 && (
-        <div className="fixed bottom-0 left-0 right-0 flex flex-col gap-2 border-t border-gray-100 bg-white px-4 py-3 md:hidden">
+        <div className="fixed bottom-[52px] left-0 right-0 z-50 flex flex-col gap-2 border-t border-gray-100 bg-white px-4 py-3 md:hidden">
           <div className="flex gap-3">
             {currentStep > 1 && (
               <Button variant="secondary" onClick={handleBack} fullWidth>
