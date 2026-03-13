@@ -43,6 +43,9 @@ export function usePdfExport() {
     const divisionState = (await import('@/stores/divisionStore')).useDivisionStore.getState()
     const divisionResult = divisionState.divisionResult
 
+    const distributionState = (await import('@/stores/distributionStore')).useDistributionStore.getState()
+    const distributionResult = distributionState.distributionResult
+
     const pdfData = extractPdfData(
       state.results,
       state.properties,
@@ -51,6 +54,7 @@ export function usePdfExport() {
       barChartImage,
       divisionResult,
       state.movableAssets,
+      distributionResult,
     )
 
     // Generate PDF blob

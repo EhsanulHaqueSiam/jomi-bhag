@@ -25,8 +25,11 @@ export interface PdfData {
   movableAssets: PdfMovableAsset[]
   movableAssetsTotal: number
 
-  // Lot Division (optional)
+  // Lot Division (optional, superseded by distribution when present)
   lotDivision?: PdfLotDivision
+
+  // Distribution (optional, supersedes lotDivision when present)
+  distribution?: PdfDistribution
 
   // Metadata
   generatedAt: Date
@@ -91,4 +94,26 @@ export interface PdfProperty {
   treesValue: number | null
   pondValue: number | null
   totalValue: number
+}
+
+export interface PdfDistributionItem {
+  label: string           // item display name
+  category: string        // display category label
+  type: 'property' | 'movable'
+  value: number           // BDT value
+}
+
+export interface PdfDistributionGroup {
+  heirType: string        // display label (from HEIR_TYPE_LABELS)
+  count: number
+  targetValue: number
+  assignedItems: PdfDistributionItem[]
+  assignedValue: number
+  cashAdjustment: number
+}
+
+export interface PdfDistribution {
+  groups: PdfDistributionGroup[]
+  compensations: { from: string; to: string; amount: number }[]
+  totalEstateValue: number
 }

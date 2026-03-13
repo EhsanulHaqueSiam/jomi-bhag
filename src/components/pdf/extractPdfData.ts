@@ -14,7 +14,8 @@ import {
   SHARE_TYPE_LABELS,
 } from '@/core/utils/display'
 import { getAllReferences } from '@/core/faraid/references'
-import type { PdfData, PdfShareRow, PdfProperty, PdfReference, PdfLotDivision, PdfMovableAsset } from './pdfTypes'
+import type { DistributionResult } from '@/core/distribution/types'
+import type { PdfData, PdfShareRow, PdfProperty, PdfReference, PdfLotDivision, PdfMovableAsset, PdfDistribution, PdfDistributionItem } from './pdfTypes'
 
 function capitalize(s: string): string {
   if (!s) return s
@@ -80,6 +81,7 @@ export function extractPdfData(
   barChartImage: string | null,
   divisionResult?: DivisionResult | null,
   movableAssets?: MovableAsset[],
+  distributionResult?: DistributionResult | null,
 ): PdfData {
   // Map all shares to PdfShareRow
   const shares: PdfShareRow[] = results.shares.map((share) => ({
@@ -164,6 +166,46 @@ export function extractPdfData(
     }
   }
 
+  // Map distribution result to PdfDistribution (optional, supersedes lotDivision)
+  let distribution: PdfDistribution | undefined
+  if (distributionResult) {
+    const itemMap = new Map(distributionResult.items.map((item) => [item.id, item]))
+    distribution = {
+      groups: distributionResult.groups.map((group) => {
+        const assignedItems: PdfDistributionItem[] = group.assignedItems
+          .map((itemId) => {
+            const item = itemMap.get(itemId)
+            if (!item) return null
+            return {
+              label: item.label,
+              category: item.category,
+              type: item.type,
+              value: item.value,
+            }
+          })
+          .filter((item): item is PdfDistributionItem => item !== null)
+          .sort((a, b) => b.value - a.value) // sort by value descending
+
+        return {
+          heirType: HEIR_TYPE_LABELS[group.heirType],
+          count: group.count,
+          targetValue: Math.round(group.targetValue),
+          assignedItems,
+          assignedValue: Math.round(group.assignedValue),
+          cashAdjustment: Math.round(group.cashAdjustment),
+        }
+      }),
+      compensations: distributionResult.compensations.map((comp) => ({
+        from: HEIR_TYPE_LABELS[comp.fromGroup],
+        to: HEIR_TYPE_LABELS[comp.toGroup],
+        amount: Math.round(comp.amount),
+      })),
+      totalEstateValue: distributionResult.totalEstateValue,
+    }
+    // Distribution supersedes lotDivision
+    lotDivision = undefined
+  }
+
   // Map movable assets to PdfMovableAsset
   const pdfMovableAssets: PdfMovableAsset[] = (movableAssets ?? []).map((asset) => {
     const catMeta = ASSET_CATEGORIES.find((c) => c.value === asset.category)
@@ -197,6 +239,7 @@ export function extractPdfData(
     pieChartImage,
     barChartImage,
     lotDivision,
+    distribution,
     generatedAt: new Date(),
   }
 }

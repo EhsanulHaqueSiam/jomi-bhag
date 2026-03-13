@@ -9,6 +9,7 @@ import { PdfChartSection } from './PdfChartSection'
 import { PdfPropertySection } from './PdfPropertySection'
 import { PdfMovableAssetsSection } from './PdfMovableAssetsSection'
 import { PdfLotDivisionSection } from './PdfLotDivisionSection'
+import { PdfDistributionSection } from './PdfDistributionSection'
 import { PdfStepsSection } from './PdfStepsSection'
 import { PdfReferencesSection } from './PdfReferencesSection'
 import { PdfDisclaimer } from './PdfDisclaimer'
@@ -56,10 +57,12 @@ export function PdfDocument({ data }: { data: PdfData }) {
           />
         )}
 
-        {/* 4c. Land Division */}
-        {data.lotDivision && (
+        {/* 4c. Distribution (supersedes Land Division) */}
+        {data.distribution ? (
+          <PdfDistributionSection distribution={data.distribution} />
+        ) : data.lotDivision ? (
           <PdfLotDivisionSection lotDivision={data.lotDivision} />
-        )}
+        ) : null}
 
         {/* 5. Step-by-Step Calculation */}
         <PdfStepsSection steps={data.steps} />
