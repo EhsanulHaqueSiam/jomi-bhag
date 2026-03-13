@@ -162,7 +162,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -178,6 +178,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 10. Movable Assets and Complete Estate Inventory | 3/3 | Complete    | 2026-03-13 |
 | 11. Interactive Asset Distribution | 3/3 | Complete    | 2026-03-13 |
 | 12. JSON Import and Export | 2/2 | Complete    | 2026-03-13 |
+| 13. Land Settlement Methods | 0/3 | Not started | - |
+| 14. Per-Heir Asset Breakdown | 0/0 | Not started | - |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
 **Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, livestock, custom items) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
@@ -233,15 +235,24 @@ Plans:
 - [ ] 12-01-PLAN.md -- Export schema types (ExportSchema, SCHEMA_VERSION), extractExportData pure function, generateExportFilename, import validateAndParseImport with partial data support, and comprehensive unit tests
 - [ ] 12-02-PLAN.md -- UI components (Toast, ImportDropZone, ImportConfirmDialog), hooks (useJsonExport, useJsonImport), ResultsPage export button wiring, StepRelationship import zone wiring, and integration tests
 
-### Phase 13: Land settlement methods - sell and split, physical division by value, buyouts, and joint ownership
-
-**Goal:** [To be planned]
-**Requirements**: TBD
-**Depends on:** Phase 12
-**Plans:** 0 plans
+### Phase 13: Land Settlement Methods
+**Goal**: Users can choose from 4 land settlement methods (Sell & Split, Physical Division by Value, Buyout with installments, Joint Ownership with income calculator) per property on the distribution board, with all calculations following Faraid shares and a complete PDF Settlement Plan section
+**Depends on**: Phase 12
+**Requirements**: P13-01, P13-02, P13-03, P13-04, P13-05, P13-06, P13-07, P13-08, P13-09, P13-10, P13-11, P13-12
+**Success Criteria** (what must be TRUE):
+  1. Each property on the distribution board has an expandable settlement method selector with 4 options
+  2. Sell & Split shows per-heir BDT payouts with optional actual sale price override
+  3. Physical Division allows defining sub-parcels with auto-suggested count and Faraid-based target values, plus cash compensation for imbalance
+  4. Buyout shows buyer selection, compensation breakdown, and optional installment plan (no interest -- Islamic finance compliant)
+  5. Joint Ownership shows ownership percentages from Faraid shares with optional income calculator (rent/crop)
+  6. Settlement data persists via wizardStore (survives navigation and refresh) and exports/imports via JSON
+  7. PDF includes a Settlement Plan section with per-property settlement details
+**Plans:** 3 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 13 to break down)
+- [ ] 13-01-PLAN.md -- Settlement types (discriminated union), 7 pure calculation functions (sell split, sub-parcel targets, physical division compensation, land buyout, installments, ownership shares, income distribution), Property type extension, wizardStore/JSON compatibility, and unit tests
+- [ ] 13-02-PLAN.md -- SettlementPanel component with 4 method detail sub-components (SellSplitDetail, PhysicalDivisionDetail, BuyoutDetail, JointOwnershipDetail), wired into distribution board property cards with AnimatePresence expand/collapse
+- [ ] 13-03-PLAN.md -- PDF PdfSettlementSection component, pdfTypes extension, extractPdfData settlement extraction, PdfDocument wiring, and visual verification checkpoint
 
 ### Phase 14: Per-heir asset breakdown - individual kanban cards showing each heir's land parcels and assets separately
 

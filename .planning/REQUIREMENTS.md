@@ -109,6 +109,21 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **P12-08**: Confirmation dialog appears before import replaces current wizard data
 - [x] **P12-09**: Toast notifications for import errors (invalid JSON, wrong types, file too large) and import success
 
+### Land Settlement Methods
+
+- [ ] **P13-01**: Sell & Split calculates per-heir BDT payout from property value multiplied by Faraid share fractions
+- [ ] **P13-02**: Sell & Split allows optional actual sale price entry that overrides property value for recalculation
+- [ ] **P13-03**: Physical Division computes target sub-parcel values proportional to Faraid shares with auto-suggested parcel count
+- [ ] **P13-04**: Physical Division shows cash compensation when sub-parcel appraised values don't match Faraid targets
+- [ ] **P13-05**: Buyout extends existing calculateBuyout with heir group selection and per-group compensation breakdown
+- [ ] **P13-06**: Buyout supports optional installment payment plan with no interest (Islamic finance compliant)
+- [ ] **P13-07**: Joint Ownership displays ownership percentages matching Faraid shares for each heir group
+- [ ] **P13-08**: Joint Ownership provides optional income calculator distributing rent or crop income proportionally
+- [ ] **P13-09**: Property type extended with settlement field (null default) persisted in wizardStore and JSON export/import
+- [ ] **P13-10**: JSON import handles missing settlement field gracefully (defaults to null) for backward compatibility
+- [ ] **P13-11**: Settlement method selector on each property card in the distribution board with expandable detail panel
+- [ ] **P13-12**: PDF includes Settlement Plan section with per-property settlement details (method, amounts, sub-parcels, installments, ownership shares)
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -213,13 +228,25 @@ Which phases cover which requirements. Updated during roadmap creation.
 | P12-07 | Phase 12 | Planned |
 | P12-08 | Phase 12 | Planned |
 | P12-09 | Phase 12 | Planned |
+| P13-01 | Phase 13 | Planned |
+| P13-02 | Phase 13 | Planned |
+| P13-03 | Phase 13 | Planned |
+| P13-04 | Phase 13 | Planned |
+| P13-05 | Phase 13 | Planned |
+| P13-06 | Phase 13 | Planned |
+| P13-07 | Phase 13 | Planned |
+| P13-08 | Phase 13 | Planned |
+| P13-09 | Phase 13 | Planned |
+| P13-10 | Phase 13 | Planned |
+| P13-11 | Phase 13 | Planned |
+| P13-12 | Phase 13 | Planned |
 
 **Coverage:**
 - v1 requirements: 39 total
-- Post-v1 (Phase 9+): 27 total
-- Mapped to phases: 66
+- Post-v1 (Phase 9+): 39 total
+- Mapped to phases: 78
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-12*
-*Last updated: 2026-03-13 after Phase 12 planning (P12-01 through P12-09 added)*
+*Last updated: 2026-03-14 after Phase 13 planning (P13-01 through P13-12 added)*
