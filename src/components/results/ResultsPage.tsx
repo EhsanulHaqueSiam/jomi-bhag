@@ -22,6 +22,7 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
   const viewMode = useWizardStore((s) => s.viewMode)
   const totalEstateValue = useWizardStore((s) => s.totalEstateValue)
   const properties = useWizardStore((s) => s.properties)
+  const movableAssets = useWizardStore((s) => s.movableAssets)
   const setStep = useWizardStore((s) => s.setStep)
 
   const { downloadPdf, printPdf, isGenerating } = usePdfExport()
@@ -38,16 +39,17 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
           Inheritance Results
         </h2>
         <div className="flex items-center gap-3">
-          {properties.length > 0 && onNavigate && (
+          {(properties.length > 0 || movableAssets.length > 0) && onNavigate && (
             <button
               type="button"
-              onClick={() => onNavigate('division')}
+              onClick={() => onNavigate('distribution')}
               className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 8a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zm6-6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm2 6a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z" />
+                <path d="M3 3h6v6H3V3zm8 0h6v6h-6V3zM3 11h6v6H3v-6zm8 0h6v6h-6v-6z" opacity="0.6" />
+                <path d="M9 6l3-3m0 0l3 3m-3-3v8m-3 3l3 3m0 0l3-3m-3 3V9" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              Divide Land
+              Distribute Assets
             </button>
           )}
           <Button

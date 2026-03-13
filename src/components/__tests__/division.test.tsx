@@ -105,7 +105,7 @@ const baseStoreState = {
 // Tests
 // ---------------------------------------------------------------------------
 
-describe('Divide Land button visibility', () => {
+describe('Distribute Assets button visibility', () => {
   beforeEach(() => {
     useDivisionStore.setState({
       divisionResult: null,
@@ -116,14 +116,15 @@ describe('Divide Land button visibility', () => {
     })
   })
 
-  it('does not appear on ResultsPage when properties is empty', () => {
+  it('does not appear on ResultsPage when no assets', () => {
     useWizardStore.setState({
       ...baseStoreState,
       results: makeSimpleOutput(),
       properties: [],
+      movableAssets: [],
     })
     render(<App />)
-    expect(screen.queryByText('Divide Land')).not.toBeInTheDocument()
+    expect(screen.queryByText('Distribute Assets')).not.toBeInTheDocument()
   })
 
   it('appears on ResultsPage when properties exist', () => {
@@ -131,9 +132,10 @@ describe('Divide Land button visibility', () => {
       ...baseStoreState,
       results: makeSimpleOutput(),
       properties: testProperties,
+      movableAssets: [],
     })
     render(<App />)
-    expect(screen.getByText('Divide Land')).toBeInTheDocument()
+    expect(screen.getByText('Distribute Assets')).toBeInTheDocument()
   })
 })
 
