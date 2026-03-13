@@ -177,7 +177,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 9. Land Lot Division and Qurah Assignment | 2/2 | Complete    | 2026-03-13 |
 | 10. Movable Assets and Complete Estate Inventory | 3/3 | Complete    | 2026-03-13 |
 | 11. Interactive Asset Distribution | 3/3 | Complete    | 2026-03-13 |
-| 12. JSON Import and Export | 2/2 | Complete   | 2026-03-13 |
+| 12. JSON Import and Export | 2/2 | Complete    | 2026-03-13 |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
 **Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, livestock, custom items) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
@@ -232,3 +232,13 @@ Plans:
 Plans:
 - [ ] 12-01-PLAN.md -- Export schema types (ExportSchema, SCHEMA_VERSION), extractExportData pure function, generateExportFilename, import validateAndParseImport with partial data support, and comprehensive unit tests
 - [ ] 12-02-PLAN.md -- UI components (Toast, ImportDropZone, ImportConfirmDialog), hooks (useJsonExport, useJsonImport), ResultsPage export button wiring, StepRelationship import zone wiring, and integration tests
+
+### Phase 13: Land settlement methods - sell and split, physical division by value, buyouts, and joint ownership
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 12
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 13 to break down)
