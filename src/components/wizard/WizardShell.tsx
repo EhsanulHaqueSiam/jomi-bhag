@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
+import type { AppPage } from '@/types/scenario'
 import { useWizardStore } from '@/stores/wizardStore'
 import { StepIndicator } from '@/components/ui/StepIndicator'
 import { Button } from '@/components/ui/Button'
@@ -9,6 +10,10 @@ import { StepSiblings } from '@/components/wizard/StepSiblings'
 import { FamilyTree } from '@/components/wizard/FamilyTree'
 import { ResultsPage } from '@/components/results/ResultsPage'
 import { StepProperties } from '@/components/property/StepProperties'
+
+interface WizardShellProps {
+  onNavigate: (page: AppPage) => void
+}
 
 const stepVariants = {
   enter: (dir: number) => ({
@@ -30,7 +35,7 @@ const stepTransition = {
   ease: 'easeInOut' as const,
 }
 
-export function WizardShell() {
+export function WizardShell({ onNavigate }: WizardShellProps) {
   const currentStep = useWizardStore((s) => s.currentStep)
   const setStep = useWizardStore((s) => s.setStep)
   // Compute validity inline from relevant state so the component re-renders
@@ -112,7 +117,7 @@ export function WizardShell() {
             {currentStep === 2 && <StepFamily />}
             {currentStep === 3 && <StepSiblings />}
             {currentStep === 4 && <StepProperties />}
-            {currentStep === 5 && <ResultsPage />}
+            {currentStep === 5 && <ResultsPage onNavigate={onNavigate} />}
           </motion.div>
         </AnimatePresence>
       </div>

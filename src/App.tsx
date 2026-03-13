@@ -4,6 +4,7 @@ import type { AppPage } from '@/types/scenario'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { WizardShell } from '@/components/wizard/WizardShell'
 import { ScenariosPage } from '@/components/scenarios/ScenariosPage'
+import { LotDivisionPage } from '@/components/division/LotDivisionPage'
 
 function App() {
   const [page, setPage] = useState<AppPage>('wizard')
@@ -18,8 +19,9 @@ function App() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
         >
-          {page === 'wizard' && <WizardShell />}
+          {page === 'wizard' && <WizardShell onNavigate={setPage} />}
           {page === 'scenarios' && <ScenariosPage onNavigate={setPage} />}
+          {page === 'division' && <LotDivisionPage onNavigate={setPage} />}
         </motion.div>
       </AnimatePresence>
     </AppLayout>

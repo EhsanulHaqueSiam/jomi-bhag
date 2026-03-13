@@ -1,3 +1,4 @@
+import type { AppPage } from '@/types/scenario'
 import { useWizardStore } from '@/stores/wizardStore'
 import { usePdfExport } from '@/hooks/usePdfExport'
 import { ModeToggle } from '@/components/results/ModeToggle'
@@ -12,10 +13,15 @@ import { IslamicBasisSection } from '@/components/results/IslamicBasisSection'
 import { getAllReferences } from '@/core/faraid/references'
 import { Button } from '@/components/ui/Button'
 
-export function ResultsPage() {
+interface ResultsPageProps {
+  onNavigate?: (page: AppPage) => void
+}
+
+export function ResultsPage({ onNavigate }: ResultsPageProps) {
   const results = useWizardStore((s) => s.results)
   const viewMode = useWizardStore((s) => s.viewMode)
   const totalEstateValue = useWizardStore((s) => s.totalEstateValue)
+  const properties = useWizardStore((s) => s.properties)
   const setStep = useWizardStore((s) => s.setStep)
 
   const { downloadPdf, printPdf, isGenerating } = usePdfExport()
@@ -32,6 +38,18 @@ export function ResultsPage() {
           Inheritance Results
         </h2>
         <div className="flex items-center gap-3">
+          {properties.length > 0 && onNavigate && (
+            <button
+              type="button"
+              onClick={() => onNavigate('division')}
+              className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 8a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zm6-6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm2 6a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z" />
+              </svg>
+              Divide Land
+            </button>
+          )}
           <Button
             variant="ghost"
             onClick={downloadPdf}

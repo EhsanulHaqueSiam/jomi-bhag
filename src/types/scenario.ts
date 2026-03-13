@@ -16,4 +16,4 @@ export interface Scenario {
   summary: ScenarioSummary
 }
 
-export type AppPage = 'wizard' | 'scenarios'
+export type AppPage = 'wizard' | 'scenarios' | 'division'
