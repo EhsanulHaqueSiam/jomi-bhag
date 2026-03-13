@@ -173,7 +173,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 7. PDF Export and Print | 2/2 | Complete | 2026-03-13 |
 | 8. Persistence and Scenarios | 2/2 | Complete | 2026-03-13 |
 | 9. Land Lot Division and Qurah Assignment | 2/2 | Complete    | 2026-03-13 |
-| 10. Movable Assets and Complete Estate Inventory | 1/3 | In Progress|  |
+| 10. Movable Assets and Complete Estate Inventory | 2/3 | In Progress|  |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
 **Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, livestock, custom items) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
@@ -185,7 +185,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
   3. App calculates per-heir monetary share from total estate (land + movable assets combined)
   4. For indivisible assets (e.g., a car, a ring), app offers Islamic options: sell and divide proceeds, one heir buys out others at fair value, or Qurah (lot drawing) assignment
   5. All division strictly follows Faraid rules -- no asset type is exempt from Islamic inheritance division
-**Plans:** 1/3 plans executed
+**Plans:** 2/3 plans executed
 
 Plans:
 - [ ] 10-01-PLAN.md -- Movable asset types (discriminated union), data constants (gold/silver rates, vehicle/livestock types), valuation logic, indivisible buyout math, wizardStore CRUD extension with persist/fingerprint
