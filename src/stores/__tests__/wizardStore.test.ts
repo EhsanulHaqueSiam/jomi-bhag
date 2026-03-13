@@ -1,10 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest'
+import Fraction from 'fraction.js'
 import { useWizardStore } from '@/stores/wizardStore'
-import type { HeirType } from '@/core/faraid/types'
+import type { HeirType, FaraidOutput } from '@/core/faraid/types'
 
 const initialState = useWizardStore.getState()
 
 beforeEach(() => {
+  localStorage.clear()
+  useWizardStore.persist.clearStorage()
   useWizardStore.setState(initialState, true)
 })
 
@@ -535,5 +538,58 @@ describe('setMfloEnabled', () => {
     expect(useWizardStore.getState().mfloEnabled).toBe(true)
     useWizardStore.getState().setMfloEnabled(false)
     expect(useWizardStore.getState().mfloEnabled).toBe(false)
+  })
+})
+
+describe('persist middleware', () => {
+  it('persists relationship to localStorage after setting', () => {
+    useWizardStore.getState().setRelationship('father')
+    const raw = localStorage.getItem('jomi-bhag-wizard')
+    expect(raw).not.toBeNull()
+    expect(raw).toContain('father')
+  })
+
+  it('Fraction objects in results survive persist round-trip', () => {
+    const mockResults: FaraidOutput = {
+      shares: [
+        {
+          heirType: 'son',
+          count: 1,
+          sharePerHeir: new Fraction(1, 3),
+          totalShare: new Fraction(1, 3),
+          shareType: 'asaba',
+          explanation: 'test',
+        },
+      ],
+      adjustment: 'none',
+      totalBeforeAdjustment: new Fraction(1),
+      blockedHeirs: [],
+      specialCases: [],
+      mfloApplied: false,
+      steps: [],
+      references: [],
+    }
+
+    useWizardStore.setState({ results: mockResults })
+
+    // Read from localStorage directly to verify serialization
+    const raw = localStorage.getItem('jomi-bhag-wizard')
+    expect(raw).not.toBeNull()
+    expect(raw).toContain('__frac__')
+
+    // Simulate rehydration from localStorage
+    const parsed = JSON.parse(raw!)
+    // The raw JSON should have tagged fractions
+    expect(parsed.state.results.shares[0].totalShare).toEqual({ __frac__: '1/3' })
+  })
+
+  it('action functions are NOT serialized (partialize excludes them)', () => {
+    useWizardStore.getState().setRelationship('father')
+    const raw = localStorage.getItem('jomi-bhag-wizard')
+    expect(raw).not.toBeNull()
+    // Actions should not appear in persisted state
+    expect(raw).not.toContain('setRelationship')
+    expect(raw).not.toContain('calculateShares')
+    expect(raw).not.toContain('buildFaraidInput')
   })
 })

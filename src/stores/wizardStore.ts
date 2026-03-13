@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { FaraidInput, FaraidOutput, HeirInput, HeirType } from '@/core/faraid/types'
 import { calculateInheritance } from '@/core/faraid/engine'
 import {
@@ -9,6 +10,7 @@ import {
 import type { RelationshipType, WizardState } from '@/types/wizard'
 import type { Property } from '@/core/land/types'
 import { computePropertyTotal } from '@/core/land/types'
+import { fractionStorage } from './fractionStorage'
 
 interface WizardActions {
   setStep: (step: number) => void
@@ -55,7 +57,9 @@ function recalcAutoIncludes(
   return getAutoIncludes(relationship, userGender, motherAlive)
 }
 
-export const useWizardStore = create<WizardStore>()((set, get) => ({
+export const useWizardStore = create<WizardStore>()(
+  persist(
+    (set, get) => ({
   // Navigation
   currentStep: 1,
   completedSteps: [],
@@ -349,4 +353,37 @@ export const useWizardStore = create<WizardStore>()((set, get) => ({
       mfloEnabled: state.mfloEnabled,
     }
   },
-}))
+    }),
+    {
+      name: 'jomi-bhag-wizard',
+      storage: fractionStorage,
+      version: 1,
+      partialize: (state) => ({
+        currentStep: state.currentStep,
+        completedSteps: state.completedSteps,
+        relationship: state.relationship,
+        deceasedGender: state.deceasedGender,
+        userGender: state.userGender,
+        mfloEnabled: state.mfloEnabled,
+        motherAlive: state.motherAlive,
+        autoIncludes: state.autoIncludes,
+        wifeCount: state.wifeCount,
+        husbandPresent: state.husbandPresent,
+        sonCount: state.sonCount,
+        daughterCount: state.daughterCount,
+        siblingTypeExpanded: state.siblingTypeExpanded,
+        brotherFullCount: state.brotherFullCount,
+        brotherConsanguineCount: state.brotherConsanguineCount,
+        brotherUterineCount: state.brotherUterineCount,
+        sisterFullCount: state.sisterFullCount,
+        sisterConsanguineCount: state.sisterConsanguineCount,
+        sisterUterineCount: state.sisterUterineCount,
+        properties: state.properties,
+        expandedPropertyId: state.expandedPropertyId,
+        results: state.results,
+        totalEstateValue: state.totalEstateValue,
+        viewMode: state.viewMode,
+      }),
+    },
+  ),
+)
