@@ -1,5 +1,6 @@
 import type { FaraidOutput, HeirType } from '@/core/faraid/types'
 import type { Property } from '@/core/land/types'
+import type { MovableAsset } from '@/core/assets/types'
 
 /**
  * Relationship of the user to the deceased.
@@ -26,7 +27,7 @@ export const WIZARD_STEPS: WizardStep[] = [
   { number: 1, label: 'Relationship', shortLabel: 'Relationship' },
   { number: 2, label: 'Family', shortLabel: 'Family' },
   { number: 3, label: 'Siblings', shortLabel: 'Siblings' },
-  { number: 4, label: 'Properties', shortLabel: 'Properties' },
+  { number: 4, label: 'Estate Inventory', shortLabel: 'Estate' },
   { number: 5, label: 'Results', shortLabel: 'Results' },
 ]
 
@@ -165,6 +166,10 @@ export interface WizardState {
   // Step 4 (Properties)
   properties: Property[]
   expandedPropertyId: string | null
+
+  // Step 4 (Movable Assets)
+  movableAssets: MovableAsset[]
+  expandedAssetId: string | null
 
   // Step 5 (Results)
   results: FaraidOutput | null

@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import Fraction from 'fraction.js'
 import { useWizardStore } from '@/stores/wizardStore'
 import type { HeirType, FaraidOutput } from '@/core/faraid/types'
+import { WIZARD_STEPS } from '@/types/wizard'
 
 const initialState = useWizardStore.getState()
 
@@ -591,5 +592,98 @@ describe('persist middleware', () => {
     expect(raw).not.toContain('setRelationship')
     expect(raw).not.toContain('calculateShares')
     expect(raw).not.toContain('buildFaraidInput')
+  })
+})
+
+describe('movable asset CRUD', () => {
+  it('addMovableAsset creates asset with correct category and defaults', () => {
+    const id = useWizardStore.getState().addMovableAsset('gold_silver')
+    expect(id).toBeTruthy()
+    const state = useWizardStore.getState()
+    expect(state.movableAssets).toHaveLength(1)
+    const asset = state.movableAssets[0]
+    expect(asset.id).toBe(id)
+    expect(asset.category).toBe('gold_silver')
+    expect(asset.isIndivisible).toBe(false) // gold_silver default
+    if (asset.category === 'gold_silver') {
+      expect(asset.metalType).toBe('gold')
+      expect(asset.weightUnit).toBe('vori')
+      expect(asset.purity).toBe('22K')
+    }
+    expect(state.expandedAssetId).toBe(id)
+  })
+
+  it('addMovableAsset sets correct isIndivisible for vehicle', () => {
+    const id = useWizardStore.getState().addMovableAsset('vehicle')
+    const asset = useWizardStore.getState().movableAssets[0]
+    expect(asset.isIndivisible).toBe(true) // vehicle default
+    expect(asset.category).toBe('vehicle')
+  })
+
+  it('addMovableAsset sets livestock defaults', () => {
+    const id = useWizardStore.getState().addMovableAsset('livestock')
+    const asset = useWizardStore.getState().movableAssets[0]
+    expect(asset.category).toBe('livestock')
+    if (asset.category === 'livestock') {
+      expect(asset.livestockType).toBe('cow')
+      expect(asset.count).toBe(1)
+      expect(asset.perUnitValue).toBe(0)
+    }
+  })
+
+  it('removeMovableAsset removes the asset', () => {
+    const id1 = useWizardStore.getState().addMovableAsset('cash')
+    const id2 = useWizardStore.getState().addMovableAsset('vehicle')
+    expect(useWizardStore.getState().movableAssets).toHaveLength(2)
+    useWizardStore.getState().removeMovableAsset(id1)
+    expect(useWizardStore.getState().movableAssets).toHaveLength(1)
+    expect(useWizardStore.getState().movableAssets[0].id).toBe(id2)
+  })
+
+  it('removeMovableAsset clears expandedAssetId if matching', () => {
+    const id = useWizardStore.getState().addMovableAsset('cash')
+    expect(useWizardStore.getState().expandedAssetId).toBe(id)
+    useWizardStore.getState().removeMovableAsset(id)
+    expect(useWizardStore.getState().expandedAssetId).toBeNull()
+  })
+
+  it('updateMovableAsset patches the asset', () => {
+    const id = useWizardStore.getState().addMovableAsset('cash')
+    useWizardStore.getState().updateMovableAsset(id, { value: 500000 } as any)
+    const asset = useWizardStore.getState().movableAssets[0]
+    if (asset.category === 'cash') {
+      expect(asset.value).toBe(500000)
+    }
+  })
+})
+
+describe('movable asset totals', () => {
+  it('getMovableAssetsTotal returns sum of movable assets', () => {
+    const id1 = useWizardStore.getState().addMovableAsset('cash')
+    useWizardStore.getState().updateMovableAsset(id1, { value: 100000 } as any)
+    const id2 = useWizardStore.getState().addMovableAsset('cash')
+    useWizardStore.getState().updateMovableAsset(id2, { value: 200000 } as any)
+    expect(useWizardStore.getState().getMovableAssetsTotal()).toBe(300000)
+  })
+
+  it('getAllPropertiesTotal includes both property and movable asset totals', () => {
+    // Add a property with land value
+    const propId = useWizardStore.getState().addProperty()
+    useWizardStore.getState().updateProperty(propId, { landValue: 100000 })
+    // Add a movable asset
+    const assetId = useWizardStore.getState().addMovableAsset('cash')
+    useWizardStore.getState().updateMovableAsset(assetId, { value: 50000 } as any)
+    // Total should be property + movable
+    expect(useWizardStore.getState().getAllPropertiesTotal()).toBe(150000)
+  })
+})
+
+describe('wizard steps label', () => {
+  it('WIZARD_STEPS[3].label is Estate Inventory', () => {
+    expect(WIZARD_STEPS[3].label).toBe('Estate Inventory')
+  })
+
+  it('WIZARD_STEPS[3].shortLabel is Estate', () => {
+    expect(WIZARD_STEPS[3].shortLabel).toBe('Estate')
   })
 })

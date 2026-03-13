@@ -10,6 +10,9 @@ import {
 import type { RelationshipType, WizardState } from '@/types/wizard'
 import type { Property } from '@/core/land/types'
 import { computePropertyTotal } from '@/core/land/types'
+import type { MovableAsset, AssetCategory } from '@/core/assets/types'
+import { computeMovableAssetsTotal } from '@/core/assets/valuation'
+import { ASSET_CATEGORIES } from '@/data/movable-asset-data'
 import { fractionStorage } from './fractionStorage'
 
 interface WizardActions {
@@ -40,6 +43,11 @@ interface WizardActions {
   updateProperty: (id: string, patch: Partial<Property>) => void
   setExpandedPropertyId: (id: string | null) => void
   getAllPropertiesTotal: () => number
+  addMovableAsset: (category: AssetCategory) => string
+  removeMovableAsset: (id: string) => void
+  updateMovableAsset: (id: string, patch: Partial<MovableAsset>) => void
+  setExpandedAssetId: (id: string | null) => void
+  getMovableAssetsTotal: () => number
 }
 
 type WizardStore = WizardState & WizardActions
@@ -92,6 +100,10 @@ export const useWizardStore = create<WizardStore>()(
   // Step 4 (Properties)
   properties: [],
   expandedPropertyId: null,
+
+  // Step 4 (Movable Assets)
+  movableAssets: [],
+  expandedAssetId: null,
 
   // Step 5 (Results)
   results: null,
@@ -286,8 +298,93 @@ export const useWizardStore = create<WizardStore>()(
   },
 
   getAllPropertiesTotal: () => {
-    const { properties } = get()
-    return properties.reduce((sum, p) => sum + computePropertyTotal(p), 0)
+    const { properties, movableAssets } = get()
+    const propTotal = properties.reduce((sum, p) => sum + computePropertyTotal(p), 0)
+    const assetTotal = computeMovableAssetsTotal(movableAssets)
+    return propTotal + assetTotal
+  },
+
+  addMovableAsset: (category) => {
+    const id = crypto.randomUUID()
+    const catMeta = ASSET_CATEGORIES.find((c) => c.value === category)
+    const isIndivisible = catMeta?.defaultIndivisible ?? false
+
+    let newAsset: MovableAsset
+    switch (category) {
+      case 'gold_silver':
+        newAsset = {
+          id, category, isIndivisible, indivisibleResolution: null,
+          metalType: 'gold', weight: 0, weightUnit: 'vori', purity: '22K',
+          useAutoRate: true, overrideValue: null,
+        }
+        break
+      case 'cash':
+        newAsset = {
+          id, category, isIndivisible, indivisibleResolution: null,
+          value: 0,
+        }
+        break
+      case 'vehicle':
+        newAsset = {
+          id, category, isIndivisible, indivisibleResolution: null,
+          vehicleType: 'car', description: '', estimatedValue: 0,
+        }
+        break
+      case 'jewelry':
+        newAsset = {
+          id, category, isIndivisible, indivisibleResolution: null,
+          value: 0,
+        }
+        break
+      case 'furniture':
+        newAsset = {
+          id, category, isIndivisible, indivisibleResolution: null,
+          value: 0,
+        }
+        break
+      case 'livestock':
+        newAsset = {
+          id, category, isIndivisible, indivisibleResolution: null,
+          livestockType: 'cow', count: 1, perUnitValue: 0,
+        }
+        break
+      case 'custom':
+        newAsset = {
+          id, category, isIndivisible, indivisibleResolution: null,
+          name: '', estimatedValue: 0,
+        }
+        break
+    }
+
+    set((state) => ({
+      movableAssets: [...state.movableAssets, newAsset],
+      expandedAssetId: id,
+    }))
+    return id
+  },
+
+  removeMovableAsset: (id) => {
+    set((state) => ({
+      movableAssets: state.movableAssets.filter((a) => a.id !== id),
+      expandedAssetId:
+        state.expandedAssetId === id ? null : state.expandedAssetId,
+    }))
+  },
+
+  updateMovableAsset: (id, patch) => {
+    set((state) => ({
+      movableAssets: state.movableAssets.map((a) =>
+        a.id === id ? { ...a, ...patch } : a,
+      ) as MovableAsset[],
+    }))
+  },
+
+  setExpandedAssetId: (id) => {
+    set({ expandedAssetId: id })
+  },
+
+  getMovableAssetsTotal: () => {
+    return computeMovableAssetsTotal(get().movableAssets)
   },
 
   buildFaraidInput: () => {
@@ -380,6 +477,8 @@ export const useWizardStore = create<WizardStore>()(
         sisterUterineCount: state.sisterUterineCount,
         properties: state.properties,
         expandedPropertyId: state.expandedPropertyId,
+        movableAssets: state.movableAssets,
+        expandedAssetId: state.expandedAssetId,
         results: state.results,
         totalEstateValue: state.totalEstateValue,
         viewMode: state.viewMode,

@@ -95,6 +95,7 @@ export function computeStateFingerprint(state: WizardState): string {
     se: state.siblingTypeExpanded,
     p: state.properties.length,
     te: state.totalEstateValue,
+    mac: state.movableAssets.length,
   })
 }
 
@@ -122,6 +123,8 @@ function pickWizardState(s: WizardState): WizardState {
     sisterUterineCount: s.sisterUterineCount,
     properties: s.properties,
     expandedPropertyId: s.expandedPropertyId,
+    movableAssets: s.movableAssets,
+    expandedAssetId: s.expandedAssetId,
     results: s.results,
     totalEstateValue: s.totalEstateValue,
     viewMode: s.viewMode,
