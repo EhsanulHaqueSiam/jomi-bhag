@@ -87,12 +87,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Interactive Asset Distribution
 
-- [ ] **P11-01**: All assets (land parcels + movable assets) unified into a single distribution board with draggable cards per item
-- [ ] **P11-02**: Smart shuffle algorithm redistributes items weighted toward equilibrium (larger items to under-filled groups first, random tie-breaking)
-- [ ] **P11-03**: Equilibrium indicator shows green (within 2% of Faraid target), amber (within 5%), red (beyond 5%) per heir group
+- [x] **P11-01**: All assets (land parcels + movable assets) unified into a single distribution board with draggable cards per item
+- [x] **P11-02**: Smart shuffle algorithm redistributes items weighted toward equilibrium (larger items to under-filled groups first, random tie-breaking)
+- [x] **P11-03**: Equilibrium indicator shows green (within 2% of Faraid target), amber (within 5%), red (beyond 5%) per heir group
 - [ ] **P11-04**: Kanban-style drag-and-drop board with one column per heir group, asset cards draggable between columns
 - [ ] **P11-05**: Moving an asset between columns updates equilibrium bars and cash compensation in real-time
-- [ ] **P11-06**: One-level undo reverts the last move or randomize action
+- [x] **P11-06**: One-level undo reverts the last move or randomize action
 - [ ] **P11-07**: "Distribute Assets" button on Results page (replaces "Divide Land") navigates to distribution board when any assets exist
 - [ ] **P11-08**: Mobile long-press (500ms) activates drag; "Move to..." fallback buttons always available
 - [ ] **P11-09**: PDF report includes Distribution Summary section with group assignments, mixed asset types, and cash compensations
