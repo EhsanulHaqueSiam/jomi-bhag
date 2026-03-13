@@ -34,6 +34,9 @@ export interface PdfData {
   // Settlement plan (optional, per-property settlement details)
   settlements?: PdfSettlement[]
 
+  // Individual distribution (Phase 14, optional)
+  individualDistribution?: PdfIndividualDistribution
+
   // Metadata
   generatedAt: Date
 }
@@ -119,6 +122,36 @@ export interface PdfDistribution {
   groups: PdfDistributionGroup[]
   compensations: { from: string; to: string; amount: number }[]
   totalEstateValue: number
+}
+
+// Individual distribution types for PDF export (Phase 14)
+
+export interface PdfIndividualHeir {
+  id: string               // "son_0"
+  displayName: string      // "Son 1" or custom name
+  subtitle: string | null  // "Son 1" when custom name is set
+  heirType: string         // display label from HEIR_TYPE_LABELS
+  targetValue: number
+  assignedValue: number
+  equilibriumStatus: 'balanced' | 'close' | 'off'
+  equilibriumPercentage: number
+  items: PdfDistributionItem[]  // reuse existing type
+  cashAdjustment: number
+}
+
+export interface PdfIndividualCompensation {
+  fromName: string
+  toName: string
+  amount: number
+}
+
+export interface PdfIndividualDistribution {
+  heirsByType: { typeName: string; heirs: PdfIndividualHeir[] }[]
+  compensations: PdfIndividualCompensation[]
+  totalBalanced: number
+  totalHeirs: number
+  totalEstateValue: number    // for summary line
+  qurahUsed: boolean
 }
 
 // Settlement types for PDF export

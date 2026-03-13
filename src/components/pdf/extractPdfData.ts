@@ -24,7 +24,9 @@ import {
   calculateIncomeDistribution,
 } from '@/core/land/settlement'
 import { fromSqft } from '@/core/land/units'
-import type { PdfData, PdfShareRow, PdfProperty, PdfReference, PdfLotDivision, PdfMovableAsset, PdfDistribution, PdfDistributionItem, PdfSettlement, PdfSettlementDetail } from './pdfTypes'
+import type { PdfData, PdfShareRow, PdfProperty, PdfReference, PdfLotDivision, PdfMovableAsset, PdfDistribution, PdfDistributionItem, PdfSettlement, PdfSettlementDetail, PdfIndividualDistribution, PdfIndividualHeir } from './pdfTypes'
+import { useIndividualDistributionStore } from '@/stores/individualDistributionStore'
+import { getEquilibriumStatus } from '@/core/distribution/algorithm'
 
 function capitalize(s: string): string {
   if (!s) return s
@@ -347,6 +349,80 @@ export function extractPdfData(
   })
   const movableAssetsTotalValue = computeMovableAssetsTotal(movableAssets ?? [])
 
+  // Extract individual distribution data (Phase 14, optional)
+  let individualDistribution: PdfIndividualDistribution | undefined
+  const indivState = useIndividualDistributionStore.getState()
+  if (indivState.hasBeenUsed && indivState.individuals.length > 0) {
+    const itemMap = new Map(indivState.items.map((item) => [item.id, item]))
+
+    // Group individuals by heir type
+    const heirTypeGroups = new Map<string, PdfIndividualHeir[]>()
+    let totalBalanced = 0
+
+    for (const individual of indivState.individuals) {
+      const heirTypeLabel = HEIR_TYPE_LABELS[individual.heirType]
+      const customName = indivState.customNames[individual.id]
+      const displayName = customName || individual.displayName
+      const subtitle = customName ? individual.displayName : null
+
+      const equilibrium = getEquilibriumStatus(individual.assignedValue, individual.targetValue)
+      if (equilibrium.status === 'balanced') totalBalanced++
+
+      // Map assigned item IDs to PdfDistributionItem objects
+      const items: PdfDistributionItem[] = individual.assignedItems
+        .map((itemId) => {
+          const item = itemMap.get(itemId)
+          if (!item) return null
+          return {
+            label: item.label,
+            category: item.category,
+            type: item.type,
+            value: item.value,
+          }
+        })
+        .filter((item): item is PdfDistributionItem => item !== null)
+        .sort((a, b) => b.value - a.value)
+
+      const heir: PdfIndividualHeir = {
+        id: individual.id,
+        displayName,
+        subtitle,
+        heirType: heirTypeLabel,
+        targetValue: Math.round(individual.targetValue),
+        assignedValue: Math.round(individual.assignedValue),
+        equilibriumStatus: equilibrium.status,
+        equilibriumPercentage: equilibrium.percentage,
+        items,
+        cashAdjustment: Math.round(individual.cashAdjustment),
+      }
+
+      if (!heirTypeGroups.has(heirTypeLabel)) {
+        heirTypeGroups.set(heirTypeLabel, [])
+      }
+      heirTypeGroups.get(heirTypeLabel)!.push(heir)
+    }
+
+    const heirsByType = Array.from(heirTypeGroups.entries()).map(([typeName, heirs]) => ({
+      typeName,
+      heirs,
+    }))
+
+    const compensations = indivState.compensations.map((comp) => ({
+      fromName: indivState.customNames[comp.fromId] || comp.fromName,
+      toName: indivState.customNames[comp.toId] || comp.toName,
+      amount: Math.round(comp.amount),
+    }))
+
+    individualDistribution = {
+      heirsByType,
+      compensations,
+      totalBalanced,
+      totalHeirs: indivState.individuals.length,
+      totalEstateValue: totalEstateValue,
+      qurahUsed: indivState.qurahUsed,
+    }
+  }
+
   return {
     shares,
     activeShares,
@@ -369,6 +445,7 @@ export function extractPdfData(
     lotDivision,
     distribution,
     ...(settlements.length > 0 ? { settlements } : {}),
+    individualDistribution,
     generatedAt: new Date(),
   }
 }
