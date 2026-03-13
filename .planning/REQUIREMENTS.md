@@ -72,10 +72,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Land Lot Division
 
-- [ ] **P9-SC1**: Parcels auto-populated from Step 4 properties with name, area, and market price -- no re-entry needed
-- [ ] **P9-SC2**: App divides land parcels into groups matching each heir type's Faraid share using greedy best-fit algorithm with cash compensation for imbalances
-- [ ] **P9-SC3**: User can assign groups to heirs via Qurah (Islamic lot drawing) with staggered reveal, or manually reassign parcels between groups
-- [ ] **P9-SC4**: Division follows Islamic fair division rules -- whole parcels assigned, cash compensation bridges value gaps, Qurah practice with Quranic/Hadith reference
+- [x] **P9-SC1**: Parcels auto-populated from Step 4 properties with name, area, and market price -- no re-entry needed
+- [x] **P9-SC2**: App divides land parcels into groups matching each heir type's Faraid share using greedy best-fit algorithm with cash compensation for imbalances
+- [x] **P9-SC3**: User can assign groups to heirs via Qurah (Islamic lot drawing) with staggered reveal, or manually reassign parcels between groups
+- [x] **P9-SC4**: Division follows Islamic fair division rules -- whole parcels assigned, cash compensation bridges value gaps, Qurah practice with Quranic/Hadith reference
 
 ## v2 Requirements
 
