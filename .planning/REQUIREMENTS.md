@@ -105,9 +105,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **P12-04**: App imports JSON files and loads valid data into the wizard for editing and recalculation
 - [x] **P12-05**: Partial JSON accepted on import -- missing fields filled with sensible defaults (zero counts, empty arrays, null relationships)
 - [x] **P12-06**: Import validates types and enum values, rejects invalid/corrupted JSON with descriptive toast notification
-- [ ] **P12-07**: File selection via drag-and-drop zone with visual feedback on drag-over, or click-to-browse fallback
-- [ ] **P12-08**: Confirmation dialog appears before import replaces current wizard data
-- [ ] **P12-09**: Toast notifications for import errors (invalid JSON, wrong types, file too large) and import success
+- [x] **P12-07**: File selection via drag-and-drop zone with visual feedback on drag-over, or click-to-browse fallback
+- [x] **P12-08**: Confirmation dialog appears before import replaces current wizard data
+- [x] **P12-09**: Toast notifications for import errors (invalid JSON, wrong types, file too large) and import success
 
 ## v2 Requirements
 
