@@ -111,16 +111,16 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Land Settlement Methods
 
-- [ ] **P13-01**: Sell & Split calculates per-heir BDT payout from property value multiplied by Faraid share fractions
-- [ ] **P13-02**: Sell & Split allows optional actual sale price entry that overrides property value for recalculation
-- [ ] **P13-03**: Physical Division computes target sub-parcel values proportional to Faraid shares with auto-suggested parcel count
-- [ ] **P13-04**: Physical Division shows cash compensation when sub-parcel appraised values don't match Faraid targets
-- [ ] **P13-05**: Buyout extends existing calculateBuyout with heir group selection and per-group compensation breakdown
-- [ ] **P13-06**: Buyout supports optional installment payment plan with no interest (Islamic finance compliant)
-- [ ] **P13-07**: Joint Ownership displays ownership percentages matching Faraid shares for each heir group
-- [ ] **P13-08**: Joint Ownership provides optional income calculator distributing rent or crop income proportionally
-- [ ] **P13-09**: Property type extended with settlement field (null default) persisted in wizardStore and JSON export/import
-- [ ] **P13-10**: JSON import handles missing settlement field gracefully (defaults to null) for backward compatibility
+- [x] **P13-01**: Sell & Split calculates per-heir BDT payout from property value multiplied by Faraid share fractions
+- [x] **P13-02**: Sell & Split allows optional actual sale price entry that overrides property value for recalculation
+- [x] **P13-03**: Physical Division computes target sub-parcel values proportional to Faraid shares with auto-suggested parcel count
+- [x] **P13-04**: Physical Division shows cash compensation when sub-parcel appraised values don't match Faraid targets
+- [x] **P13-05**: Buyout extends existing calculateBuyout with heir group selection and per-group compensation breakdown
+- [x] **P13-06**: Buyout supports optional installment payment plan with no interest (Islamic finance compliant)
+- [x] **P13-07**: Joint Ownership displays ownership percentages matching Faraid shares for each heir group
+- [x] **P13-08**: Joint Ownership provides optional income calculator distributing rent or crop income proportionally
+- [x] **P13-09**: Property type extended with settlement field (null default) persisted in wizardStore and JSON export/import
+- [x] **P13-10**: JSON import handles missing settlement field gracefully (defaults to null) for backward compatibility
 - [ ] **P13-11**: Settlement method selector on each property card in the distribution board with expandable detail panel
 - [ ] **P13-12**: PDF includes Settlement Plan section with per-property settlement details (method, amounts, sub-parcels, installments, ownership shares)
 

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 14 context gathered
-last_updated: "2026-03-13T20:01:04.657Z"
-last_activity: 2026-03-13 -- Phase 12 plan 02 complete (JSON export/import UI layer)
+status: in_progress
+stopped_at: Phase 13 plan 01 complete
+last_updated: "2026-03-13T20:25:48Z"
+last_activity: 2026-03-14 -- Phase 13 plan 01 complete (settlement types and calculation functions)
 progress:
   total_phases: 14
   completed_phases: 12
-  total_plans: 28
-  completed_plans: 28
-  percent: 100
+  total_plans: 31
+  completed_plans: 29
+  percent: 94
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-13)
 
 **Core value:** Accurate, unbiased Islamic inheritance division -- the app strictly follows Faraid rules for every calculation without favoring any heir.
-**Current focus:** Phase 12 complete -- JSON import and export for assets. All plans complete.
+**Current focus:** Phase 13 in progress -- Land settlement methods (sell and split, physical division, buyouts, joint ownership).
 
 ## Current Position
 
-Phase: 12 of 12 (JSON Import and Export for Assets)
-Plan: 2 of 2 complete
-Status: Complete
-Last activity: 2026-03-13 -- Phase 12 plan 02 complete (JSON export/import UI layer)
+Phase: 13 of 14 (Land Settlement Methods)
+Plan: 1 of 3 complete
+Status: In Progress
+Last activity: 2026-03-14 -- Phase 13 plan 01 complete (settlement types and calculation functions)
 
-Progress: [██████████] 28/28 plans (100%)
+Progress: [██████████] 29/31 plans (94%)
 
 ## Performance Metrics
 
@@ -73,6 +73,7 @@ Progress: [██████████] 28/28 plans (100%)
 | Phase 11 P03 | 3min | 2 tasks | 6 files |
 | Phase 12 P01 | 4min | 2 tasks | 5 files |
 | Phase 12 P02 | 5min | 2 tasks | 8 files |
+| Phase 13 P01 | 4min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -185,6 +186,10 @@ Recent decisions affecting current work:
 - [Phase 12]: Movable assets with invalid category skipped entirely (cannot construct valid typed object)
 - [Phase 12]: StepRelationship no longer returns null when no relationship selected -- import zone always visible on Step 1
 - [Phase 12]: Import zone at bottom of Step 1 with "or import from file" divider for secondary discovery
+- [Phase 13]: LandSettlementMethod is separate type system from ResolutionMethod (land vs movable assets)
+- [Phase 13]: calculateLandBuyout reuses calculateBuyout from indivisible.ts, extends with installment plan
+- [Phase 13]: Installments use Math.round(total/count) with totalOwed preserved as original amount (no interest, Islamic finance)
+- [Phase 13]: Settlement validation in JSON import uses per-method parsing with null fallback for invalid data
 
 ### Pending Todos
 
@@ -206,6 +211,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T20:01:04.650Z
-Stopped at: Phase 14 context gathered
-Resume file: .planning/phases/14-per-heir-asset-breakdown-individual-kanban-cards-showing-each-heir-s-land-parcels-and-assets-separately/14-CONTEXT.md
+Last session: 2026-03-13T20:25:48Z
+Stopped at: Phase 13 plan 01 complete (settlement types and calculations)
+Resume file: .planning/phases/13-land-settlement-methods-sell-and-split-physical-division-by-value-buyouts-and-joint-ownership/13-01-SUMMARY.md
