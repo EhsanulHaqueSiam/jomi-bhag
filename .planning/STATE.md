@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 13 plan 03 complete (PDF settlement plan section)
-last_updated: "2026-03-13T20:32:55.648Z"
-last_activity: 2026-03-14 -- Phase 13 plan 03 complete (PDF settlement plan section)
+stopped_at: Phase 13 plan 02 complete (settlement UI components)
+last_updated: "2026-03-13T20:33:38Z"
+last_activity: 2026-03-14 -- Phase 13 plan 02 complete (settlement UI components)
 progress:
   total_phases: 14
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-13)
 Phase: 13 of 14 (Land Settlement Methods)
 Plan: 2 of 3 complete
 Status: In Progress
-Last activity: 2026-03-14 -- Phase 13 plan 03 complete (PDF settlement plan section)
+Last activity: 2026-03-14 -- Phase 13 plan 02 complete (settlement UI components)
 
 Progress: [██████████] 30/31 plans (97%)
 
@@ -74,6 +74,7 @@ Progress: [██████████] 30/31 plans (97%)
 | Phase 12 P01 | 4min | 2 tasks | 5 files |
 | Phase 12 P02 | 5min | 2 tasks | 8 files |
 | Phase 13 P01 | 4min | 2 tasks | 7 files |
+| Phase 13 P02 | 4min | 2 tasks | 9 files |
 | Phase 13 P03 | 3min | 2 tasks | 4 files |
 
 ## Accumulated Context
@@ -191,6 +192,9 @@ Recent decisions affecting current work:
 - [Phase 13]: calculateLandBuyout reuses calculateBuyout from indivisible.ts, extends with installment plan
 - [Phase 13]: Installments use Math.round(total/count) with totalOwed preserved as original amount (no interest, Islamic finance)
 - [Phase 13]: Settlement validation in JSON import uses per-method parsing with null fallback for invalid data
+- [Phase 13]: Settlement expand button placed below drag handle div, not inside it, to avoid DnD interference
+- [Phase 13]: Detail components receive data via props and fire callbacks -- no direct store coupling
+- [Phase 13]: EMPTY_SHARES stable constant in DistributionPage prevents Zustand selector infinite rerender
 - [Phase 13]: [Phase 13]: PdfSettlementSection uses per-method sub-component renderers for clean separation in PDF
 
 ### Pending Todos
@@ -213,6 +217,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T20:31:33Z
-Stopped at: Phase 13 plan 03 complete (PDF settlement plan section)
-Resume file: .planning/phases/13-land-settlement-methods-sell-and-split-physical-division-by-value-buyouts-and-joint-ownership/13-03-SUMMARY.md
+Last session: 2026-03-13T20:33:38Z
+Stopped at: Phase 13 plan 02 complete (settlement UI components)
+Resume file: .planning/phases/13-land-settlement-methods-sell-and-split-physical-division-by-value-buyouts-and-joint-ownership/13-02-SUMMARY.md

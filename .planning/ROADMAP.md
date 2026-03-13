@@ -178,7 +178,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 10. Movable Assets and Complete Estate Inventory | 3/3 | Complete    | 2026-03-13 |
 | 11. Interactive Asset Distribution | 3/3 | Complete    | 2026-03-13 |
 | 12. JSON Import and Export | 2/2 | Complete    | 2026-03-13 |
-| 13. Land Settlement Methods | 2/3 | In Progress|  |
+| 13. Land Settlement Methods | 3/3 | Complete   | 2026-03-13 |
 | 14. Per-Heir Asset Breakdown | 0/0 | Not started | - |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
@@ -247,7 +247,7 @@ Plans:
   5. Joint Ownership shows ownership percentages from Faraid shares with optional income calculator (rent/crop)
   6. Settlement data persists via wizardStore (survives navigation and refresh) and exports/imports via JSON
   7. PDF includes a Settlement Plan section with per-property settlement details
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] 13-01-PLAN.md -- Settlement types (discriminated union), 7 pure calculation functions (sell split, sub-parcel targets, physical division compensation, land buyout, installments, ownership shares, income distribution), Property type extension, wizardStore/JSON compatibility, and unit tests
