@@ -142,6 +142,21 @@ Plans:
 - [x] 08-01-PLAN.md -- Fraction-aware localStorage persistence (Zustand persist middleware with custom serializer), scenario types, wizardStore auto-save, scenariosStore with full CRUD (save/load/duplicate/delete/rename), name generation, and unsaved changes detection
 - [ ] 08-02-PLAN.md -- App page routing (wizard vs scenarios), AppLayout navigation (header + mobile bottom nav), ScenariosPage with scenario cards, ComparisonView with side-by-side diff highlighting, and visual verification
 
+### Phase 9: Land Lot Division and Qurah Assignment
+**Goal**: Users can divide existing property parcels (from Step 4) into groups matching each heir type's Faraid share, assign groups via Qurah (Islamic lot drawing) or manual reassignment, and see cash compensation for imbalances -- strictly following Islamic fair division rules
+**Depends on**: Phase 8
+**Requirements**: P9-SC1, P9-SC2, P9-SC3, P9-SC4
+**Success Criteria** (what must be TRUE):
+  1. Parcels are auto-populated from Step 4 properties with name, area, and market price already available
+  2. App divides land parcels into groups that match each heir's Faraid share as closely as possible using greedy best-fit algorithm
+  3. User can randomly assign groups to heirs (Qurah -- Islamic lot drawing) or manually reassign parcels between groups
+  4. Division and assignment strictly follow Islamic rules for fair property division, with cash compensation bridging imbalances
+**Plans:** 2 plans
+
+Plans:
+- [ ] 09-01-PLAN.md -- Pure division algorithm (greedy best-fit grouping, cash compensation, Qurah shuffle), division types, divisionStore (Zustand), and comprehensive unit tests
+- [ ] 09-02-PLAN.md -- Division UI components (LotDivisionPage, QurahCeremony, GroupCard, CompensationBanner, ParcelRow, QurahReference), ResultsPage "Divide Land" button, app routing extension, PDF export section, and component tests
+
 ## Progress
 
 **Execution Order:**
@@ -156,24 +171,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 5. Property Valuation | 2/2 | Complete   | 2026-03-12 |
 | 6. Charts and Visualization | 0/1 | Not started | - |
 | 7. PDF Export and Print | 2/2 | Complete | 2026-03-13 |
-| 8. Persistence and Scenarios | 1/2 | In Progress | - |
-| 9. Land Lot Division and Qurah Assignment | 0/0 | Not started | - |
+| 8. Persistence and Scenarios | 2/2 | Complete | 2026-03-13 |
+| 9. Land Lot Division and Qurah Assignment | 0/2 | Not started | - |
 | 10. Movable Assets and Complete Estate Inventory | 0/0 | Not started | - |
-
-### Phase 9: Land Lot Division and Qurah Assignment
-**Goal**: Users can enter named land parcels (name, quantity in BD units, market price with auto-suggest), and the app divides parcels into groups matching Faraid shares, then assigns groups to heirs via Qurah (Islamic lot drawing) or user-specified names -- strictly following Islamic fair division rules
-**Depends on**: Phase 5
-**Requirements**: TBD
-**Success Criteria** (what must be TRUE):
-  1. User can enter multiple named land parcels with name, quantity (decimal/shotok/katha/bigha), and current market price (auto-filled where possible, user-editable)
-  2. App divides land parcels into groups that match each heir's Faraid share as closely as possible
-  3. User can randomly assign groups to heirs (Qurah -- Islamic lot drawing) or manually name/assign each group
-  4. Division and assignment strictly follow Islamic rules for fair property division
-**Plans**: TBD
-
-Plans:
-- [ ] 09-01: Land parcel input and group division algorithm
-- [ ] 09-02: Qurah assignment and manual heir-to-group mapping
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
 **Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, investments, livestock, etc.) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence

@@ -1,7 +1,7 @@
 # Requirements: Jomi-Bhag
 
 **Defined:** 2026-03-12
-**Core Value:** Accurate, unbiased Islamic inheritance division — the app strictly follows Faraid rules for every calculation without favoring any heir.
+**Core Value:** Accurate, unbiased Islamic inheritance division -- the app strictly follows Faraid rules for every calculation without favoring any heir.
 
 ## v1 Requirements
 
@@ -24,14 +24,14 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **HEIR-02**: User can enter number of brothers (full, consanguine, uterine) and their spouse status
 - [x] **HEIR-03**: User can enter number of sisters (full, consanguine, uterine) and their spouse status
 - [x] **HEIR-04**: User can enter number of sons and daughters of the deceased
-- [x] **HEIR-05**: App assumes parents are deceased — division is among children/siblings and spouses
+- [x] **HEIR-05**: App assumes parents are deceased -- division is among children/siblings and spouses
 
 ### Property Input
 
 - [x] **PROP-01**: User can input land area in BD units (decimal/shotangsho, katha, bigha) with auto-conversion
 - [x] **PROP-02**: User can add multiple property entries of different types (agricultural, residential, commercial, mixed)
 - [x] **PROP-03**: User can input house/structure details (area, condition, estimated value) on land
-- [x] **PROP-04**: User can input tree/crop details (type, count, estimated value) — mango, jackfruit, coconut, bamboo, etc.
+- [x] **PROP-04**: User can input tree/crop details (type, count, estimated value) -- mango, jackfruit, coconut, bamboo, etc.
 - [x] **PROP-05**: User can input pond/water body details with area and estimated value
 - [x] **PROP-06**: App handles regional land unit variations (e.g., 1 Katha = 720 sqft Dhaka vs 1620 sqft Rajshahi) with user selection
 
@@ -40,7 +40,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **VALP-01**: App auto-suggests property prices from BD govt mouza rates by district/upazila
 - [x] **VALP-02**: User can override auto-suggested price with actual market value
 - [x] **VALP-03**: App calculates total estate value from all property entries combined
-- [x] **VALP-04**: App shows per-heir monetary amount based on share fraction × total estate value
+- [x] **VALP-04**: App shows per-heir monetary amount based on share fraction x total estate value
 
 ### Results Display
 
@@ -49,7 +49,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **RSLT-03**: App provides step-by-step calculation explanation showing how shares were derived
 - [x] **RSLT-04**: App displays pie chart showing proportional share distribution
 - [x] **RSLT-05**: App displays bar chart showing monetary amount per heir
-- [x] **RSLT-06**: App provides dual mode — simple view for general public, detailed view for legal professionals
+- [x] **RSLT-06**: App provides dual mode -- simple view for general public, detailed view for legal professionals
 
 ### Output & Export
 
@@ -67,8 +67,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **DSGN-01**: App has modern, exceptional UI design using React + TypeScript + TailwindCSS
 - [x] **DSGN-02**: App is fully mobile-responsive (responsive-first design)
-- [x] **DSGN-03**: App uses multi-step wizard flow (heir input → property input → valuation → results)
+- [x] **DSGN-03**: App uses multi-step wizard flow (heir input -> property input -> valuation -> results)
 - [x] **DSGN-04**: App works as a static site deployed on Netlify (client-side only)
+
+### Land Lot Division
+
+- [ ] **P9-SC1**: Parcels auto-populated from Step 4 properties with name, area, and market price -- no re-entry needed
+- [ ] **P9-SC2**: App divides land parcels into groups matching each heir type's Faraid share using greedy best-fit algorithm with cash compensation for imbalances
+- [ ] **P9-SC3**: User can assign groups to heirs via Qurah (Islamic lot drawing) with staggered reveal, or manually reassign parcels between groups
+- [ ] **P9-SC4**: Division follows Islamic fair division rules -- whole parcels assigned, cash compensation bridges value gaps, Qurah practice with Quranic/Hadith reference
 
 ## v2 Requirements
 
@@ -93,13 +100,13 @@ Deferred to future release. Tracked but not in current roadmap.
 
 | Feature | Reason |
 |---------|--------|
-| Multi-school fiqh support (Shafi'i, Maliki, etc.) | Bangladesh exclusively follows Hanafi — other schools add confusion and 4x complexity |
-| Will/Wasiyyah creation tool | Legal service requiring lawyer review — carries liability |
+| Multi-school fiqh support (Shafi'i, Maliki, etc.) | Bangladesh exclusively follows Hanafi -- other schools add confusion and 4x complexity |
+| Will/Wasiyyah creation tool | Legal service requiring lawyer review -- carries liability |
 | Country-specific civil law overlays | Tool's value is strict Islamic Faraid accuracy, not legal advice |
-| Real-time collaborative editing | Massive infrastructure complexity for marginal value — families discuss in person |
+| Real-time collaborative editing | Massive infrastructure complexity for marginal value -- families discuss in person |
 | Map-based land visualization | Requires cadastral data not digitally available in BD |
 | Monetization (ads, premium) | Explicitly free forever per project decision |
-| Non-Muslim inheritance law | Completely different legal frameworks — separate tool needed |
+| Non-Muslim inheritance law | Completely different legal frameworks -- separate tool needed |
 | Mobile native app | Web-first, responsive design serves mobile users |
 
 ## Traceability
@@ -147,12 +154,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRST-01 | Phase 8 | Complete |
 | PRST-02 | Phase 8 | Complete |
 | PRST-03 | Phase 8 | Complete |
+| P9-SC1 | Phase 9 | Planned |
+| P9-SC2 | Phase 9 | Planned |
+| P9-SC3 | Phase 9 | Planned |
+| P9-SC4 | Phase 9 | Planned |
 
 **Coverage:**
 - v1 requirements: 39 total
-- Mapped to phases: 39
+- Post-v1 (Phase 9+): 4 total
+- Mapped to phases: 43
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-12*
-*Last updated: 2026-03-13 after Plan 08-01 completion (PRST-01, PRST-03 complete)*
+*Last updated: 2026-03-13 after Phase 9 planning (P9-SC1 through P9-SC4 added)*
