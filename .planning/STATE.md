@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Phase 13 context gathered
-last_updated: "2026-03-13T17:49:36.486Z"
+stopped_at: Phase 14 context gathered
+last_updated: "2026-03-13T20:01:04.657Z"
 last_activity: 2026-03-13 -- Phase 12 plan 02 complete (JSON export/import UI layer)
 progress:
   total_phases: 14
@@ -206,6 +206,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T17:49:36.484Z
-Stopped at: Phase 13 context gathered
-Resume file: .planning/phases/13-land-settlement-methods-sell-and-split-physical-division-by-value-buyouts-and-joint-ownership/13-CONTEXT.md
+Last session: 2026-03-13T20:01:04.650Z
+Stopped at: Phase 14 context gathered
+Resume file: .planning/phases/14-per-heir-asset-breakdown-individual-kanban-cards-showing-each-heir-s-land-parcels-and-assets-separately/14-CONTEXT.md
