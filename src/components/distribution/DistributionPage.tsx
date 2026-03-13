@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import type { AppPage } from '@/types/scenario'
 import type { IndividualCompensation } from '@/core/distribution/individual-types'
@@ -10,6 +10,7 @@ import { DistributionBoard } from './DistributionBoard'
 import { DistributionControls } from './DistributionControls'
 import { ViewToggle } from './ViewToggle'
 import { IndividualBoard } from './IndividualBoard'
+import { IndividualQurahCeremony } from './IndividualQurahCeremony'
 import type { DistributionView } from './ViewToggle'
 import type { LandSettlement } from '@/core/land/settlement-types'
 
@@ -25,25 +26,14 @@ const bdtFormatter = new Intl.NumberFormat('en-IN', {
 
 /** Controls bar for individual view: Draw Lots (Qurah) + Undo. */
 function IndividualControls({
-  onQurah,
   onUndo,
   canUndo,
   onStartCeremony,
 }: {
-  onQurah: () => void
   onUndo: () => void
   canUndo: boolean
   onStartCeremony: () => void
 }) {
-  const [isShuffling, setIsShuffling] = useState(false)
-
-  const handleQurah = useCallback(() => {
-    setIsShuffling(true)
-    onQurah()
-    onStartCeremony()
-    setTimeout(() => setIsShuffling(false), 200)
-  }, [onQurah, onStartCeremony])
-
   return (
     <div className="flex items-center justify-end gap-2">
       {/* Undo button */}
@@ -75,12 +65,11 @@ function IndividualControls({
         )}
       </AnimatePresence>
 
-      {/* Draw Lots (Qurah) button */}
+      {/* Draw Lots (Qurah) button - opens ceremony overlay */}
       <button
         type="button"
-        onClick={handleQurah}
-        disabled={isShuffling}
-        className="inline-flex items-center gap-1.5 rounded-lg bg-gold-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-gold-700 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 disabled:opacity-60"
+        onClick={onStartCeremony}
+        className="inline-flex items-center gap-1.5 rounded-lg bg-gold-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-gold-700 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -134,6 +123,8 @@ interface DistributionPageProps {
 export function DistributionPage({ onNavigate }: DistributionPageProps) {
   const [view, setView] = useState<DistributionView>('group')
   const [showQurahCeremony, setShowQurahCeremony] = useState(false)
+  const [revealedCount, setRevealedCount] = useState(0)
+  const revealIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   // Group distribution store
   const distributionResult = useDistributionStore((s) => s.distributionResult)
@@ -161,6 +152,7 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
   const indRename = useIndividualDistributionStore((s) => s.renameIndividual)
   const indSplit = useIndividualDistributionStore((s) => s.splitItem)
   const indMerge = useIndividualDistributionStore((s) => s.mergeItem)
+  const indQurahUsed = useIndividualDistributionStore((s) => s.qurahUsed)
   const indIsStale = useIndividualDistributionStore((s) => s.isStale)
   const indGetEquilibriumSummary = useIndividualDistributionStore(
     (s) => s.getEquilibriumSummary,
@@ -189,6 +181,60 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
       }
     }
   }, [view]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Cleanup reveal interval on unmount
+  useEffect(() => {
+    return () => {
+      if (revealIntervalRef.current) {
+        clearInterval(revealIntervalRef.current)
+      }
+    }
+  }, [])
+
+  const handleCeremonyDraw = useCallback(() => {
+    // Clear any existing interval
+    if (revealIntervalRef.current) {
+      clearInterval(revealIntervalRef.current)
+    }
+
+    // Perform the shuffle
+    indQurahShuffle()
+
+    // Reset revealed count
+    setRevealedCount(0)
+
+    // Check reduced motion preference
+    const prefersReduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (prefersReduced) {
+      // Instant reveal
+      setRevealedCount(indIndividuals.length)
+    } else {
+      // Staggered reveal at 200ms per individual
+      let count = 0
+      revealIntervalRef.current = setInterval(() => {
+        count++
+        setRevealedCount(count)
+        if (count >= indIndividuals.length) {
+          if (revealIntervalRef.current) {
+            clearInterval(revealIntervalRef.current)
+            revealIntervalRef.current = null
+          }
+        }
+      }, 200)
+    }
+  }, [indQurahShuffle, indIndividuals.length])
+
+  const handleCeremonyClose = useCallback(() => {
+    setShowQurahCeremony(false)
+    if (revealIntervalRef.current) {
+      clearInterval(revealIntervalRef.current)
+      revealIntervalRef.current = null
+    }
+    setRevealedCount(0)
+  }, [])
 
   const handleBackToResults = () => {
     setStep(5)
@@ -266,7 +312,6 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
         <>
           {/* Controls: Qurah + Undo */}
           <IndividualControls
-            onQurah={indQurahShuffle}
             onUndo={indUndo}
             canUndo={canUndoIndividual}
             onStartCeremony={() => setShowQurahCeremony(true)}
@@ -295,8 +340,17 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
         </>
       )}
 
-      {/* Placeholder for Plan 03 IndividualQurahCeremony overlay */}
-      {showQurahCeremony && null}
+      {/* Individual Qurah Ceremony overlay */}
+      {showQurahCeremony && (
+        <IndividualQurahCeremony
+          individuals={indIndividuals}
+          customNames={indCustomNames}
+          onDraw={handleCeremonyDraw}
+          onClose={handleCeremonyClose}
+          hasDrawn={indQurahUsed}
+          revealedCount={revealedCount}
+        />
+      )}
     </div>
   )
 }
