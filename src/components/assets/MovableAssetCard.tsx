@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useWizardStore } from '@/stores/wizardStore'
 import { computeAssetValue } from '@/core/assets/valuation'
 import type { MovableAsset } from '@/core/assets/types'
+import type { ShareResult } from '@/core/faraid/types'
 import { ASSET_CATEGORIES } from '@/data/movable-asset-data'
 import { GoldSilverForm } from './GoldSilverForm'
 import { VehicleForm } from './VehicleForm'
@@ -11,6 +12,7 @@ import { SimpleValueForm } from './SimpleValueForm'
 import { IndivisibleCard } from './IndivisibleCard'
 
 const displayFormatter = new Intl.NumberFormat('en-IN')
+const EMPTY_SHARES: ShareResult[] = []
 
 /** Get a display label for an asset based on its category and data */
 function getAssetLabel(asset: MovableAsset): string {
@@ -93,7 +95,7 @@ export function MovableAssetCard({ assetId }: MovableAssetCardProps) {
   const setExpandedAssetId = useWizardStore((s) => s.setExpandedAssetId)
   const updateMovableAsset = useWizardStore((s) => s.updateMovableAsset)
   const removeMovableAsset = useWizardStore((s) => s.removeMovableAsset)
-  const shares = useWizardStore((s) => s.results?.shares ?? [])
+  const shares = useWizardStore((s) => s.results?.shares ?? EMPTY_SHARES)
 
   if (!asset) return null
 

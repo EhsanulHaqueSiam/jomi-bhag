@@ -21,11 +21,23 @@ export interface PdfData {
   pieChartImage: string | null
   barChartImage: string | null
 
+  // Movable Assets
+  movableAssets: PdfMovableAsset[]
+  movableAssetsTotal: number
+
   // Lot Division (optional)
   lotDivision?: PdfLotDivision
 
   // Metadata
   generatedAt: Date
+}
+
+export interface PdfMovableAsset {
+  category: string       // display label
+  itemName: string       // auto-label or custom name
+  value: number          // computed value
+  isIndivisible: boolean
+  resolution: string | null  // "Sell & Divide", "Buyout by Son", "Qurah", or null
 }
 
 export interface PdfLotDivisionGroup {

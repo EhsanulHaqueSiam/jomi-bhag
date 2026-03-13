@@ -2,6 +2,10 @@ import type { FaraidOutput } from '@/core/faraid/types'
 import type { Property } from '@/core/land/types'
 import { computePropertyTotal } from '@/core/land/types'
 import type { DivisionResult } from '@/core/land/division'
+import type { MovableAsset } from '@/core/assets/types'
+import { computeAssetValue, computeMovableAssetsTotal } from '@/core/assets/valuation'
+import { ASSET_CATEGORIES } from '@/data/movable-asset-data'
+import { LIVESTOCK_TYPES, VEHICLE_TYPES } from '@/data/movable-asset-data'
 import {
   fractionToString,
   fractionToPercent,
@@ -10,7 +14,7 @@ import {
   SHARE_TYPE_LABELS,
 } from '@/core/utils/display'
 import { getAllReferences } from '@/core/faraid/references'
-import type { PdfData, PdfShareRow, PdfProperty, PdfReference, PdfLotDivision } from './pdfTypes'
+import type { PdfData, PdfShareRow, PdfProperty, PdfReference, PdfLotDivision, PdfMovableAsset } from './pdfTypes'
 
 function capitalize(s: string): string {
   if (!s) return s
@@ -22,6 +26,52 @@ function capitalize(s: string): string {
  * All Fraction objects are converted to pre-formatted strings.
  * No Zustand hooks, no DOM access -- pure data transformation.
  */
+/** Generate a display name for a movable asset */
+function getAssetItemName(asset: MovableAsset): string {
+  switch (asset.category) {
+    case 'gold_silver': {
+      const metal = asset.metalType === 'gold' ? 'Gold' : 'Silver'
+      const weight = asset.weight > 0 ? ` ${asset.weight} ${asset.weightUnit}` : ''
+      const purity = asset.purity ? ` ${asset.purity}` : ''
+      return `${metal}${weight}${purity}`
+    }
+    case 'vehicle': {
+      if (asset.description) return asset.description
+      const vType = VEHICLE_TYPES.find((v) => v.value === asset.vehicleType)
+      return vType?.label ?? 'Vehicle'
+    }
+    case 'livestock': {
+      const lType = LIVESTOCK_TYPES.find((l) => l.value === asset.livestockType)
+      const label = lType?.label ?? 'Livestock'
+      return asset.count > 1 ? `${asset.count} ${label}` : label
+    }
+    case 'custom':
+      return asset.name || 'Custom Item'
+    case 'cash':
+      return 'Cash/Bank Deposits'
+    case 'jewelry':
+      return 'Jewelry (non-gold)'
+    case 'furniture':
+      return 'Furniture/Household'
+  }
+}
+
+/** Map resolution to a display string */
+function getResolutionLabel(asset: MovableAsset): string | null {
+  const res = asset.indivisibleResolution
+  if (!res) return null
+  switch (res.method) {
+    case 'sell_divide':
+      return 'Sell & Divide'
+    case 'buyout':
+      return `Buyout by ${HEIR_TYPE_LABELS[res.buyerHeirType]}`
+    case 'qurah':
+      return res.assignedHeirType
+        ? `Qurah - ${HEIR_TYPE_LABELS[res.assignedHeirType]}`
+        : 'Qurah'
+  }
+}
+
 export function extractPdfData(
   results: FaraidOutput,
   properties: Property[],
@@ -29,6 +79,7 @@ export function extractPdfData(
   pieChartImage: string | null,
   barChartImage: string | null,
   divisionResult?: DivisionResult | null,
+  movableAssets?: MovableAsset[],
 ): PdfData {
   // Map all shares to PdfShareRow
   const shares: PdfShareRow[] = results.shares.map((share) => ({
@@ -113,6 +164,19 @@ export function extractPdfData(
     }
   }
 
+  // Map movable assets to PdfMovableAsset
+  const pdfMovableAssets: PdfMovableAsset[] = (movableAssets ?? []).map((asset) => {
+    const catMeta = ASSET_CATEGORIES.find((c) => c.value === asset.category)
+    return {
+      category: catMeta?.label ?? asset.category,
+      itemName: getAssetItemName(asset),
+      value: computeAssetValue(asset),
+      isIndivisible: asset.isIndivisible,
+      resolution: asset.isIndivisible ? getResolutionLabel(asset) : null,
+    }
+  })
+  const movableAssetsTotalValue = computeMovableAssetsTotal(movableAssets ?? [])
+
   return {
     shares,
     activeShares,
@@ -128,6 +192,8 @@ export function extractPdfData(
     references,
     properties: pdfProperties,
     totalEstateValue,
+    movableAssets: pdfMovableAssets,
+    movableAssetsTotal: movableAssetsTotalValue,
     pieChartImage,
     barChartImage,
     lotDivision,

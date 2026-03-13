@@ -7,6 +7,7 @@ import { PdfHeader } from './PdfHeader'
 import { PdfHeirTable } from './PdfHeirTable'
 import { PdfChartSection } from './PdfChartSection'
 import { PdfPropertySection } from './PdfPropertySection'
+import { PdfMovableAssetsSection } from './PdfMovableAssetsSection'
 import { PdfLotDivisionSection } from './PdfLotDivisionSection'
 import { PdfStepsSection } from './PdfStepsSection'
 import { PdfReferencesSection } from './PdfReferencesSection'
@@ -47,7 +48,15 @@ export function PdfDocument({ data }: { data: PdfData }) {
           totalEstateValue={data.totalEstateValue}
         />
 
-        {/* 4b. Land Division */}
+        {/* 4b. Movable Assets */}
+        {data.movableAssets.length > 0 && (
+          <PdfMovableAssetsSection
+            movableAssets={data.movableAssets}
+            movableAssetsTotal={data.movableAssetsTotal}
+          />
+        )}
+
+        {/* 4c. Land Division */}
         {data.lotDivision && (
           <PdfLotDivisionSection lotDivision={data.lotDivision} />
         )}

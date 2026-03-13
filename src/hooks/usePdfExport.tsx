@@ -50,6 +50,7 @@ export function usePdfExport() {
       pieChartImage,
       barChartImage,
       divisionResult,
+      state.movableAssets,
     )
 
     // Generate PDF blob

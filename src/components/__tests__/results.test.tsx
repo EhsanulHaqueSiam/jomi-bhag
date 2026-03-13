@@ -5,6 +5,7 @@ import App from '@/App'
 import { useWizardStore } from '@/stores/wizardStore'
 import type { FaraidOutput, ShareResult } from '@/core/faraid/types'
 import type { Property } from '@/core/land/types'
+import type { MovableAsset, VehicleAsset, CashAsset } from '@/core/assets/types'
 
 // ---------------------------------------------------------------------------
 // Mock FaraidOutput factories
@@ -507,7 +508,7 @@ describe('VALP-03: EstateBreakdownCard', () => {
 // ---------------------------------------------------------------------------
 
 describe('VALP-04: HeirCard per-property distribution', () => {
-  it('shows "View property shares" toggle when properties exist and estate value > 0', () => {
+  it('shows "View asset shares" toggle when properties exist and estate value > 0', () => {
     useWizardStore.setState({
       ...baseStoreState,
       results: makeSimpleOutput(),
@@ -516,7 +517,7 @@ describe('VALP-04: HeirCard per-property distribution', () => {
     })
     render(<App />)
 
-    const toggles = screen.getAllByText('View property shares')
+    const toggles = screen.getAllByText('View asset shares')
     expect(toggles.length).toBeGreaterThan(0)
   })
 
@@ -529,8 +530,8 @@ describe('VALP-04: HeirCard per-property distribution', () => {
     })
     render(<App />)
 
-    // Click first "View property shares" (Husband card: 1/4 share)
-    const toggles = screen.getAllByText('View property shares')
+    // Click first "View asset shares" (Husband card: 1/4 share)
+    const toggles = screen.getAllByText('View asset shares')
     fireEvent.click(toggles[0])
 
     // Husband (1/4): prop-1 total=1000000, 1/4 * 1000000 = 250000 = BDT 2,50,000
@@ -554,7 +555,7 @@ describe('VALP-04: HeirCard per-property distribution', () => {
     render(<App />)
 
     // Daughter card (count=2): second toggle button
-    const toggles = screen.getAllByText('View property shares')
+    const toggles = screen.getAllByText('View asset shares')
     // First is Husband card, second is Daughter card
     fireEvent.click(toggles[1])
 
@@ -580,15 +581,102 @@ describe('VALP-04: HeirCard per-property distribution', () => {
     expect(screen.getAllByText('Add properties or enter estate value to see BDT amounts').length).toBeGreaterThan(0)
   })
 
-  it('does NOT show property toggle when no properties', () => {
+  it('does NOT show asset toggle when no properties and no movable assets', () => {
     useWizardStore.setState({
       ...baseStoreState,
       results: makeSimpleOutput(),
       properties: [],
+      movableAssets: [],
       totalEstateValue: 1000000,
     })
     render(<App />)
 
-    expect(screen.queryByText('View property shares')).not.toBeInTheDocument()
+    expect(screen.queryByText('View asset shares')).not.toBeInTheDocument()
+  })
+})
+
+// ---------------------------------------------------------------------------
+// Movable asset test helpers
+// ---------------------------------------------------------------------------
+
+const testVehicle: VehicleAsset = {
+  id: 'asset-v1',
+  category: 'vehicle',
+  isIndivisible: true,
+  indivisibleResolution: null,
+  vehicleType: 'car',
+  description: 'Toyota Corolla',
+  estimatedValue: 500000,
+}
+
+const testCash: CashAsset = {
+  id: 'asset-c1',
+  category: 'cash',
+  isIndivisible: false,
+  indivisibleResolution: null,
+  value: 200000,
+}
+
+const testMovableAssets: MovableAsset[] = [testVehicle, testCash]
+
+// ---------------------------------------------------------------------------
+// Movable Assets - EstateBreakdownCard integration
+// ---------------------------------------------------------------------------
+
+describe('Movable Assets: EstateBreakdownCard integration', () => {
+  it('shows "Movable Assets" category when movable assets exist', () => {
+    useWizardStore.setState({
+      ...baseStoreState,
+      results: makeSimpleOutput(),
+      properties: twoProperties,
+      movableAssets: testMovableAssets,
+      totalEstateValue: 2150000, // 1450000 properties + 700000 movable
+    })
+    render(<App />)
+
+    expect(screen.getByText('Movable Assets')).toBeInTheDocument()
+  })
+
+  it('total includes both property and movable asset values', () => {
+    useWizardStore.setState({
+      ...baseStoreState,
+      results: makeSimpleOutput(),
+      properties: twoProperties,
+      movableAssets: testMovableAssets,
+      totalEstateValue: 2150000,
+    })
+    render(<App />)
+
+    // The estate value should display 2150000 formatted as 21,50,000
+    expect(screen.getByText(/21,50,000/)).toBeInTheDocument()
+  })
+})
+
+// ---------------------------------------------------------------------------
+// Movable Assets: HeirCard integration
+// ---------------------------------------------------------------------------
+
+describe('Movable Assets: HeirCard integration', () => {
+  it('shows movable asset rows in expandable section', async () => {
+    useWizardStore.setState({
+      ...baseStoreState,
+      results: makeSimpleOutput(),
+      properties: twoProperties,
+      movableAssets: testMovableAssets,
+      totalEstateValue: 2150000,
+    })
+    render(<App />)
+
+    // Click the "View asset shares" toggle on first heir card (Husband: 1/4)
+    const toggles = screen.getAllByText('View asset shares')
+    expect(toggles.length).toBeGreaterThan(0)
+    fireEvent.click(toggles[0])
+
+    await waitFor(() => {
+      // Should show Vehicle category row
+      expect(screen.getByText('Vehicle')).toBeInTheDocument()
+      // Should show Cash/Bank Deposits category row
+      expect(screen.getByText('Cash/Bank Deposits')).toBeInTheDocument()
+    })
   })
 })
