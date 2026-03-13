@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 09-02-PLAN.md
-last_updated: "2026-03-13T11:22:43.599Z"
-last_activity: 2026-03-13 -- Phase 9 complete (division algorithm, store, UI, and PDF)
+status: executing
+stopped_at: Completed 10-01-PLAN.md
+last_updated: "2026-03-13T12:44:10.902Z"
+last_activity: 2026-03-13 -- Phase 10 plan 01 complete (movable asset data foundation)
 progress:
   total_phases: 12
   completed_phases: 9
-  total_plans: 20
-  completed_plans: 20
-  percent: 100
+  total_plans: 23
+  completed_plans: 21
+  percent: 91
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-13)
 
 **Core value:** Accurate, unbiased Islamic inheritance division -- the app strictly follows Faraid rules for every calculation without favoring any heir.
-**Current focus:** Phase 9 complete -- Division algorithm, store, UI components, routing, and PDF export all done.
+**Current focus:** Phase 10 in progress -- Movable asset data foundation complete (types, valuation, buyout, store CRUD).
 
 ## Current Position
 
-Phase: 9 of 12 (Land Lot Division and Qurah Assignment)
-Plan: 2 of 2 complete
-Status: Phase Complete
-Last activity: 2026-03-13 -- Phase 9 complete (division algorithm, store, UI, and PDF)
+Phase: 10 of 12 (Movable Assets and Complete Estate Inventory)
+Plan: 1 of 3 complete
+Status: In Progress
+Last activity: 2026-03-13 -- Phase 10 plan 01 complete (movable asset data foundation)
 
-Progress: [██████████] 20/20 plans (100%)
+Progress: [█████████░] 21/23 plans (91%)
 
 ## Performance Metrics
 
@@ -65,6 +65,7 @@ Progress: [██████████] 20/20 plans (100%)
 | Phase 08 P02 | 5min | 2 tasks | 7 files |
 | Phase 09 P01 | 3min | 2 tasks | 3 files |
 | Phase 09 P02 | 4min | 3 tasks | 16 files |
+| Phase 10 P01 | 4min | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -153,6 +154,9 @@ Recent decisions affecting current work:
 - [Phase 09]: ParcelRow uses native select for Move to... control (simplicity over custom dropdown)
 - [Phase 09]: Staggered reveal uses setInterval(400ms) with revealedGroupCount for progressive card appearance
 - [Phase 09]: PdfLotDivisionSection conditionally rendered when lotDivision data exists in PdfData
+- [Phase 10]: Tola equals vori in BD context (both 11.664g) -- separate unit options for user familiarity
+- [Phase 10]: BAJUS approximate gold rates hardcoded (22K: 133000 BDT/vori) with user override support
+- [Phase 10]: Buyout compensation uses Math.round for integer BDT in proportional distribution
 
 ### Pending Todos
 
@@ -172,6 +176,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T11:16:00Z
-Stopped at: Completed 09-02-PLAN.md
-Resume file: Phase 9 complete
+Last session: 2026-03-13T12:44:10.901Z
+Stopped at: Completed 10-01-PLAN.md
+Resume file: None
