@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 13 plan 02 complete (settlement UI components)
-last_updated: "2026-03-13T20:40:12.630Z"
-last_activity: 2026-03-14 -- Phase 13 plan 02 complete (settlement UI components)
+stopped_at: Phase 14 plan 01 complete (individual distribution data foundation)
+last_updated: "2026-03-13T21:23:12.000Z"
+last_activity: 2026-03-14 -- Phase 14 plan 01 complete (individual distribution data foundation)
 progress:
   total_phases: 14
   completed_phases: 13
-  total_plans: 31
-  completed_plans: 31
-  percent: 97
+  total_plans: 35
+  completed_plans: 32
+  percent: 91
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-13)
 
 **Core value:** Accurate, unbiased Islamic inheritance division -- the app strictly follows Faraid rules for every calculation without favoring any heir.
-**Current focus:** Phase 13 in progress -- Land settlement methods (sell and split, physical division, buyouts, joint ownership).
+**Current focus:** Phase 14 in progress -- Per-heir asset breakdown (individual kanban cards showing each heir's land parcels and assets separately).
 
 ## Current Position
 
-Phase: 13 of 14 (Land Settlement Methods)
-Plan: 2 of 3 complete
+Phase: 14 of 14 (Per-Heir Asset Breakdown)
+Plan: 1 of 4 complete
 Status: In Progress
-Last activity: 2026-03-14 -- Phase 13 plan 02 complete (settlement UI components)
+Last activity: 2026-03-14 -- Phase 14 plan 01 complete (individual distribution data foundation)
 
-Progress: [██████████] 30/31 plans (97%)
+Progress: [██████████] 32/35 plans (91%)
 
 ## Performance Metrics
 
@@ -76,6 +76,7 @@ Progress: [██████████] 30/31 plans (97%)
 | Phase 13 P01 | 4min | 2 tasks | 7 files |
 | Phase 13 P02 | 4min | 2 tasks | 9 files |
 | Phase 13 P03 | 3min | 2 tasks | 4 files |
+| Phase 14 P01 | 7min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -196,6 +197,11 @@ Recent decisions affecting current work:
 - [Phase 13]: Detail components receive data via props and fire callbacks -- no direct store coupling
 - [Phase 13]: EMPTY_SHARES stable constant in DistributionPage prevents Zustand selector infinite rerender
 - [Phase 13]: [Phase 13]: PdfSettlementSection uses per-method sub-component renderers for clean separation in PDF
+- [Phase 14]: splitParcel last sub-parcel gets remainder value to prevent floating point rounding drift
+- [Phase 14]: COMPENSATION_THRESHOLD at 100 BDT filters trivial transfers from individual compensation output
+- [Phase 14]: computeIndividualFingerprint includes heir type counts so heir additions/removals invalidate state
+- [Phase 14]: Stable empty array constants (EMPTY_INDIVIDUALS, EMPTY_ITEMS, EMPTY_COMPENSATIONS) prevent Zustand selector infinite rerender
+- [Phase 14]: Individual column ID convention: ${heirType}_${index} (e.g. son_0, daughter_1)
 
 ### Pending Todos
 
@@ -217,6 +223,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T20:33:38Z
-Stopped at: Phase 13 plan 02 complete (settlement UI components)
-Resume file: .planning/phases/13-land-settlement-methods-sell-and-split-physical-division-by-value-buyouts-and-joint-ownership/13-02-SUMMARY.md
+Last session: 2026-03-13T21:23:12Z
+Stopped at: Phase 14 plan 01 complete (individual distribution data foundation)
+Resume file: .planning/phases/14-per-heir-asset-breakdown-individual-kanban-cards-showing-each-heir-s-land-parcels-and-assets-separately/14-01-SUMMARY.md

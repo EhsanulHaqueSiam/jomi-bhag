@@ -127,12 +127,12 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Per-Heir Asset Breakdown
 
 - [ ] **P14-01**: Individual columns expand from group distribution: each heir type group's items split equally among its individual members
-- [ ] **P14-02**: Parcel split algorithm creates sub-parcels with proportional values that sum exactly to the original (no rounding drift)
+- [x] **P14-02**: Parcel split algorithm creates sub-parcels with proportional values that sum exactly to the original (no rounding drift)
 - [ ] **P14-03**: Parcel merge reverses a split, restoring the original item
-- [ ] **P14-04**: Individual Qurah shuffle redistributes all items across all individuals using weighted-random algorithm
-- [ ] **P14-05**: Cash compensation between individuals minimizes the number of transfers using greedy matching
-- [ ] **P14-06**: Individual distribution fingerprint includes heir type counts so heir changes invalidate state
-- [ ] **P14-07**: individualDistributionStore persists to localStorage via Zustand persist middleware with fractionStorage
+- [x] **P14-04**: Individual Qurah shuffle redistributes all items across all individuals using weighted-random algorithm
+- [x] **P14-05**: Cash compensation between individuals minimizes the number of transfers using greedy matching
+- [x] **P14-06**: Individual distribution fingerprint includes heir type counts so heir changes invalidate state
+- [x] **P14-07**: individualDistributionStore persists to localStorage via Zustand persist middleware with fractionStorage
 - [ ] **P14-08**: Segmented control toggle ("By Group" / "By Individual") with role='tablist' accessibility on distribution page
 - [ ] **P14-09**: Individual columns grouped by heir type with section headers and type-based accent colors (sons=emerald, daughters=rose, etc.)
 - [ ] **P14-10**: Full DnD between all individual columns (cross-type allowed) with same sensors as Phase 11
