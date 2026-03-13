@@ -95,7 +95,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **P11-06**: One-level undo reverts the last move or randomize action
 - [x] **P11-07**: "Distribute Assets" button on Results page (replaces "Divide Land") navigates to distribution board when any assets exist
 - [x] **P11-08**: Mobile long-press (500ms) activates drag; "Move to..." fallback buttons always available
-- [ ] **P11-09**: PDF report includes Distribution Summary section with group assignments, mixed asset types, and cash compensations
+- [x] **P11-09**: PDF report includes Distribution Summary section with group assignments, mixed asset types, and cash compensations
 
 ## v2 Requirements
 
