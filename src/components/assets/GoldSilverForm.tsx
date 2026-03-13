@@ -46,7 +46,7 @@ export function GoldSilverForm({ asset, onUpdate }: GoldSilverFormProps) {
     onUpdate({ purity: e.target.value as GoldPurity, overrideValue: null })
   }
 
-  const handleApplyRate = (calculated: number) => {
+  const handleApplyRate = (_calculated: number) => {
     onUpdate({ overrideValue: null })
   }
 

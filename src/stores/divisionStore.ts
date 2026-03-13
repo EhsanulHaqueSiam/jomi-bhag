@@ -5,7 +5,6 @@ import {
   divideParcels,
   qurahShuffle,
   moveParcel as moveParcelFn,
-  calculateCompensations,
 } from '@/core/land/division'
 import { computePropertyTotal } from '@/core/land/types'
 import { HEIR_TYPE_LABELS } from '@/core/utils/display'

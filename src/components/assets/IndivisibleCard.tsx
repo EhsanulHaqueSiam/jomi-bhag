@@ -95,7 +95,7 @@ export function IndivisibleCard({ asset, shares, onUpdate }: IndivisibleCardProp
       ? calculateBuyout(assetValue, buyoutBuyer, shares)
       : null
 
-  const optionCards: { method: ResolutionMethod; label: string; icon: JSX.Element }[] = [
+  const optionCards: { method: ResolutionMethod; label: string; icon: React.ReactNode }[] = [
     {
       method: 'sell_divide',
       label: 'Sell & Divide',

@@ -6,7 +6,7 @@ interface QurahCeremonyProps {
 
 export function QurahCeremony({
   onDraw,
-  isRevealed,
+  isRevealed: _isRevealed,
   hasDrawn,
 }: QurahCeremonyProps) {
   return (

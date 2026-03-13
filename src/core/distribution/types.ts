@@ -1,5 +1,8 @@
 // Stub - types to be implemented
 import type { HeirType } from '@/core/faraid/types'
+import type { CashCompensation } from '@/core/land/division'
+
+export type { CashCompensation } from '@/core/land/division'
 
 export interface DistributionItem {
   id: string
@@ -33,5 +36,3 @@ export interface DistributionResult {
   totalEstateValue: number
   compensations: CashCompensation[]
 }
-
-export type { CashCompensation } from '@/core/land/division'

@@ -2,7 +2,7 @@ import type { HeirType } from '@/core/faraid/types'
 import type { DivisionGroup } from '@/core/land/division'
 import type { Property, PropertyType } from '@/core/land/types'
 import { computePropertyTotal } from '@/core/land/types'
-import { HEIR_TYPE_LABELS, SHARE_TYPE_LABELS } from '@/core/utils/display'
+import { HEIR_TYPE_LABELS } from '@/core/utils/display'
 import { PROPERTY_TYPES } from '@/data/bd-land-data'
 import { ParcelRow } from './ParcelRow'
 

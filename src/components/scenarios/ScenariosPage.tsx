@@ -93,7 +93,7 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
   const performLoad = (id: string) => {
     const state = loadScenario(id)
     if (state) {
-      useWizardStore.setState(state, true)
+      useWizardStore.setState(state)
       updateLastSavedHash()
       onNavigate('wizard')
     }
