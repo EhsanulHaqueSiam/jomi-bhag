@@ -197,6 +197,7 @@ None yet.
 - Phase 11 added: Interactive asset distribution with drag-and-drop equilibrium -- land lots and assets distributed among heir groups with randomize, drag-and-drop, and green equality indicator
 - Phase 12 added: JSON import and export for assets -- import JSON with partial fields, edit in GUI, export complete data
 - Phase 13 added: Land settlement methods -- sell and split, physical division by value, buyouts, and joint ownership for complete land resolution
+- Phase 14 added: Per-heir asset breakdown -- individual kanban cards showing each heir's land parcels and assets separately (Brother-1 card with their land + assets, not grouped by heir type)
 
 ### Blockers/Concerns
 
