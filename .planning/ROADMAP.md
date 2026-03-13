@@ -136,11 +136,11 @@ Plans:
   1. Calculations are automatically saved to browser localStorage and persist across page refreshes without requiring login
   2. User can compare multiple saved scenarios side by side to evaluate "what if" variations
   3. User can load a previously saved calculation and modify it to create a new scenario
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 08-01: localStorage persistence with Zustand persist
-- [ ] 08-02: Scenario comparison and load/modify
+- [ ] 08-01-PLAN.md -- Fraction-aware localStorage persistence (Zustand persist middleware with custom serializer), scenario types, wizardStore auto-save, scenariosStore with full CRUD (save/load/duplicate/delete/rename), name generation, and unsaved changes detection
+- [ ] 08-02-PLAN.md -- App page routing (wizard vs scenarios), AppLayout navigation (header + mobile bottom nav), ScenariosPage with scenario cards, ComparisonView with side-by-side diff highlighting, and visual verification
 
 ## Progress
 
@@ -190,3 +190,23 @@ Plans:
 Plans:
 - [ ] 10-01: Movable asset input forms by category with valuation
 - [ ] 10-02: Indivisible asset handling (sale/buyout/Qurah) and combined estate calculation
+
+### Phase 11: Interactive asset distribution with drag-and-drop equilibrium
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 10
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 11 to break down)
+
+### Phase 12: JSON import and export for assets
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 11
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 12 to break down)
