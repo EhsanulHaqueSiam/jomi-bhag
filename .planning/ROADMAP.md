@@ -18,7 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 4: Property Input System** - Multi-property entry with BD land units, regional conversion, houses, trees/crops, and ponds (completed 2026-03-12)
 - [x] **Phase 5: Property Valuation** - Estate value calculation with mouza rate auto-suggestion, user override, and per-heir monetary distribution (completed 2026-03-12)
 - [ ] **Phase 6: Charts and Visualization** - Pie chart for proportional shares and bar chart for monetary comparison
-- [ ] **Phase 7: PDF Export and Print** - Downloadable PDF report with full division details, Quranic references, and print-friendly layout
+- [x] **Phase 7: PDF Export and Print** - Downloadable PDF report with full division details, Quranic references, and print-friendly layout
 - [ ] **Phase 8: Persistence and Scenarios** - localStorage saving, scenario comparison, and load/modify previous calculations
 - [ ] **Phase 9: Land Lot Division and Qurah Assignment** - Named land parcels divided into heir groups per Faraid shares, Qurah-based random or user-named assignment, strictly Islamic fair division
 - [ ] **Phase 10: Movable Assets and Complete Estate Inventory** - Gold, silver, cash, vehicles, jewelry, furniture, investments, livestock, and all non-land assets with Islamic rules for indivisible item division
@@ -125,8 +125,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 07-01-PLAN.md -- PDF document infrastructure: @react-pdf/renderer + html-to-image installation, TTF fonts (Inter + Noto Naskh Arabic), PdfData type, extractPdfData function, pdfStyles/pdfFonts/pdfColors, all PDF section components (header, heir table, charts, property breakdown, steps, references, disclaimer), PdfDocument root, and data extraction tests
-- [ ] 07-02-PLAN.md -- usePdfExport hook (chart capture + lazy PDF generation + download/print), ResultsPage button integration (Download PDF + Print), integration tests, and visual verification checkpoint
+- [x] 07-01-PLAN.md -- PDF document infrastructure: @react-pdf/renderer + html-to-image installation, TTF fonts (Inter + Noto Naskh Arabic), PdfData type, extractPdfData function, pdfStyles/pdfFonts/pdfColors, all PDF section components (header, heir table, charts, property breakdown, steps, references, disclaimer), PdfDocument root, and data extraction tests
+- [x] 07-02-PLAN.md -- usePdfExport hook (chart capture + lazy PDF generation + download/print), ResultsPage button integration (Download PDF + Print), integration tests, and visual verification checkpoint
 
 ### Phase 8: Persistence and Scenarios
 **Goal**: Users can save their calculations and compare different inheritance scenarios without creating an account
@@ -155,7 +155,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 4. Property Input System | 2/2 | Complete   | 2026-03-12 |
 | 5. Property Valuation | 2/2 | Complete   | 2026-03-12 |
 | 6. Charts and Visualization | 0/1 | Not started | - |
-| 7. PDF Export and Print | 0/2 | Not started | - |
+| 7. PDF Export and Print | 2/2 | Complete | 2026-03-13 |
 | 8. Persistence and Scenarios | 0/2 | Not started | - |
 | 9. Land Lot Division and Qurah Assignment | 0/0 | Not started | - |
 | 10. Movable Assets and Complete Estate Inventory | 0/0 | Not started | - |

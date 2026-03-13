@@ -54,7 +54,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Output & Export
 
 - [x] **OUTP-01**: App generates downloadable PDF report with heir breakdown, property details, shares, and Quranic references
-- [ ] **OUTP-02**: App provides print-friendly output with clean layout
+- [x] **OUTP-02**: App provides print-friendly output with clean layout
 - [x] **OUTP-03**: PDF includes disclaimer about consulting a lawyer for legal registration
 
 ### Persistence
@@ -142,7 +142,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RSLT-04 | Phase 6 | Complete |
 | RSLT-05 | Phase 6 | Complete |
 | OUTP-01 | Phase 7 | Complete |
-| OUTP-02 | Phase 7 | Pending |
+| OUTP-02 | Phase 7 | Complete |
 | OUTP-03 | Phase 7 | Complete |
 | PRST-01 | Phase 8 | Pending |
 | PRST-02 | Phase 8 | Pending |
