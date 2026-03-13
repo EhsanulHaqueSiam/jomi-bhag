@@ -109,10 +109,10 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. A pie chart displays proportional share distribution across all heirs
   2. A bar chart displays monetary amount per heir for direct comparison
-**Plans**: TBD
+**Plans:** 1 plan
 
 Plans:
-- [ ] 06-01: Pie and bar chart components with Recharts
+- [ ] 06-01-PLAN.md -- Recharts installation, pie chart (donut with emerald gradient + center heir count), horizontal bar chart (BDT amounts), ChartSection wrapper, ResultsPage integration, and chart integration tests
 
 ### Phase 7: PDF Export and Print
 **Goal**: Users can download or print a complete inheritance division report
@@ -161,13 +161,13 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 10. Movable Assets and Complete Estate Inventory | 0/0 | Not started | - |
 
 ### Phase 9: Land Lot Division and Qurah Assignment
-**Goal**: Users can enter named land parcels (name, quantity in BD units, market price with auto-suggest), and the app divides parcels into groups matching Faraid shares, then assigns groups to heirs via Qurah (Islamic lot drawing) or user-specified names — strictly following Islamic fair division rules
+**Goal**: Users can enter named land parcels (name, quantity in BD units, market price with auto-suggest), and the app divides parcels into groups matching Faraid shares, then assigns groups to heirs via Qurah (Islamic lot drawing) or user-specified names -- strictly following Islamic fair division rules
 **Depends on**: Phase 5
 **Requirements**: TBD
 **Success Criteria** (what must be TRUE):
   1. User can enter multiple named land parcels with name, quantity (decimal/shotok/katha/bigha), and current market price (auto-filled where possible, user-editable)
   2. App divides land parcels into groups that match each heir's Faraid share as closely as possible
-  3. User can randomly assign groups to heirs (Qurah — Islamic lot drawing) or manually name/assign each group
+  3. User can randomly assign groups to heirs (Qurah -- Islamic lot drawing) or manually name/assign each group
   4. Division and assignment strictly follow Islamic rules for fair property division
 **Plans**: TBD
 
@@ -184,7 +184,7 @@ Plans:
   2. Each asset has estimated market value (user-entered or guided estimation)
   3. App calculates per-heir monetary share from total estate (land + movable assets combined)
   4. For indivisible assets (e.g., a car, a ring), app offers Islamic options: sell and divide proceeds, one heir buys out others at fair value, or Qurah (lot drawing) assignment
-  5. All division strictly follows Faraid rules — no asset type is exempt from Islamic inheritance division
+  5. All division strictly follows Faraid rules -- no asset type is exempt from Islamic inheritance division
 **Plans**: TBD
 
 Plans:
