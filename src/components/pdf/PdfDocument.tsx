@@ -7,6 +7,7 @@ import { PdfHeader } from './PdfHeader'
 import { PdfHeirTable } from './PdfHeirTable'
 import { PdfChartSection } from './PdfChartSection'
 import { PdfPropertySection } from './PdfPropertySection'
+import { PdfLotDivisionSection } from './PdfLotDivisionSection'
 import { PdfStepsSection } from './PdfStepsSection'
 import { PdfReferencesSection } from './PdfReferencesSection'
 import { PdfDisclaimer } from './PdfDisclaimer'
@@ -45,6 +46,11 @@ export function PdfDocument({ data }: { data: PdfData }) {
           properties={data.properties}
           totalEstateValue={data.totalEstateValue}
         />
+
+        {/* 4b. Land Division */}
+        {data.lotDivision && (
+          <PdfLotDivisionSection lotDivision={data.lotDivision} />
+        )}
 
         {/* 5. Step-by-Step Calculation */}
         <PdfStepsSection steps={data.steps} />

@@ -21,8 +21,26 @@ export interface PdfData {
   pieChartImage: string | null
   barChartImage: string | null
 
+  // Lot Division (optional)
+  lotDivision?: PdfLotDivision
+
   // Metadata
   generatedAt: Date
+}
+
+export interface PdfLotDivisionGroup {
+  heirType: string // display label
+  count: number
+  targetValue: number
+  assignedProperties: { nickname: string; value: number }[]
+  assignedValue: number
+  cashAdjustment: number
+}
+
+export interface PdfLotDivision {
+  groups: PdfLotDivisionGroup[]
+  compensations: { from: string; to: string; amount: number }[]
+  totalEstateValue: number
 }
 
 export interface PdfShareRow {

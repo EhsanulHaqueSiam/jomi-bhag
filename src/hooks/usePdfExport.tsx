@@ -40,12 +40,16 @@ export function usePdfExport() {
       import('@/components/pdf/extractPdfData'),
     ])
 
+    const divisionState = (await import('@/stores/divisionStore')).useDivisionStore.getState()
+    const divisionResult = divisionState.divisionResult
+
     const pdfData = extractPdfData(
       state.results,
       state.properties,
       state.totalEstateValue,
       pieChartImage,
       barChartImage,
+      divisionResult,
     )
 
     // Generate PDF blob

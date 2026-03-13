@@ -1,6 +1,7 @@
 import type { FaraidOutput } from '@/core/faraid/types'
 import type { Property } from '@/core/land/types'
 import { computePropertyTotal } from '@/core/land/types'
+import type { DivisionResult } from '@/core/land/division'
 import {
   fractionToString,
   fractionToPercent,
@@ -9,7 +10,7 @@ import {
   SHARE_TYPE_LABELS,
 } from '@/core/utils/display'
 import { getAllReferences } from '@/core/faraid/references'
-import type { PdfData, PdfShareRow, PdfProperty, PdfReference } from './pdfTypes'
+import type { PdfData, PdfShareRow, PdfProperty, PdfReference, PdfLotDivision } from './pdfTypes'
 
 function capitalize(s: string): string {
   if (!s) return s
@@ -27,6 +28,7 @@ export function extractPdfData(
   totalEstateValue: number,
   pieChartImage: string | null,
   barChartImage: string | null,
+  divisionResult?: DivisionResult | null,
 ): PdfData {
   // Map all shares to PdfShareRow
   const shares: PdfShareRow[] = results.shares.map((share) => ({
@@ -83,6 +85,34 @@ export function extractPdfData(
     totalValue: computePropertyTotal(prop),
   }))
 
+  // Map division result to PdfLotDivision (optional)
+  let lotDivision: PdfLotDivision | undefined
+  if (divisionResult) {
+    const propMap = new Map(properties.map((p) => [p.id, p]))
+    lotDivision = {
+      groups: divisionResult.groups.map((group) => ({
+        heirType: HEIR_TYPE_LABELS[group.heirType],
+        count: group.count,
+        targetValue: Math.round(group.targetValue),
+        assignedProperties: group.assignedProperties.map((id) => {
+          const prop = propMap.get(id)
+          return {
+            nickname: prop?.nickname || id,
+            value: prop ? computePropertyTotal(prop) : 0,
+          }
+        }),
+        assignedValue: Math.round(group.assignedValue),
+        cashAdjustment: Math.round(group.cashAdjustment),
+      })),
+      compensations: divisionResult.compensations.map((comp) => ({
+        from: HEIR_TYPE_LABELS[comp.fromGroup],
+        to: HEIR_TYPE_LABELS[comp.toGroup],
+        amount: Math.round(comp.amount),
+      })),
+      totalEstateValue: divisionResult.totalEstateValue,
+    }
+  }
+
   return {
     shares,
     activeShares,
@@ -100,6 +130,7 @@ export function extractPdfData(
     totalEstateValue,
     pieChartImage,
     barChartImage,
+    lotDivision,
     generatedAt: new Date(),
   }
 }
