@@ -85,6 +85,18 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **P10-SC4**: For indivisible assets (vehicles, jewelry, livestock, custom items), app offers three Islamic options: sell and divide proceeds, one heir buys out others at fair value, or Qurah (lot drawing) assignment
 - [x] **P10-SC5**: All division strictly follows Faraid rules -- no asset type is exempt from Islamic inheritance division
 
+### Interactive Asset Distribution
+
+- [ ] **P11-01**: All assets (land parcels + movable assets) unified into a single distribution board with draggable cards per item
+- [ ] **P11-02**: Smart shuffle algorithm redistributes items weighted toward equilibrium (larger items to under-filled groups first, random tie-breaking)
+- [ ] **P11-03**: Equilibrium indicator shows green (within 2% of Faraid target), amber (within 5%), red (beyond 5%) per heir group
+- [ ] **P11-04**: Kanban-style drag-and-drop board with one column per heir group, asset cards draggable between columns
+- [ ] **P11-05**: Moving an asset between columns updates equilibrium bars and cash compensation in real-time
+- [ ] **P11-06**: One-level undo reverts the last move or randomize action
+- [ ] **P11-07**: "Distribute Assets" button on Results page (replaces "Divide Land") navigates to distribution board when any assets exist
+- [ ] **P11-08**: Mobile long-press (500ms) activates drag; "Move to..." fallback buttons always available
+- [ ] **P11-09**: PDF report includes Distribution Summary section with group assignments, mixed asset types, and cash compensations
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -171,13 +183,22 @@ Which phases cover which requirements. Updated during roadmap creation.
 | P10-SC3 | Phase 10 | Planned |
 | P10-SC4 | Phase 10 | Planned |
 | P10-SC5 | Phase 10 | Planned |
+| P11-01 | Phase 11 | Planned |
+| P11-02 | Phase 11 | Planned |
+| P11-03 | Phase 11 | Planned |
+| P11-04 | Phase 11 | Planned |
+| P11-05 | Phase 11 | Planned |
+| P11-06 | Phase 11 | Planned |
+| P11-07 | Phase 11 | Planned |
+| P11-08 | Phase 11 | Planned |
+| P11-09 | Phase 11 | Planned |
 
 **Coverage:**
 - v1 requirements: 39 total
-- Post-v1 (Phase 9+): 9 total
-- Mapped to phases: 48
+- Post-v1 (Phase 9+): 18 total
+- Mapped to phases: 57
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-12*
-*Last updated: 2026-03-13 after Phase 10 planning (P10-SC1 through P10-SC5 added)*
+*Last updated: 2026-03-13 after Phase 11 planning (P11-01 through P11-09 added)*

@@ -22,6 +22,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 8: Persistence and Scenarios** - localStorage saving, scenario comparison, and load/modify previous calculations
 - [x] **Phase 9: Land Lot Division and Qurah Assignment** - Named land parcels divided into heir groups per Faraid shares, Qurah-based random or user-named assignment, strictly Islamic fair division (completed 2026-03-13)
 - [x] **Phase 10: Movable Assets and Complete Estate Inventory** - Gold, silver, cash, vehicles, jewelry, furniture, investments, livestock, and all non-land assets with Islamic rules for indivisible item division (completed 2026-03-13)
+- [ ] **Phase 11: Interactive Asset Distribution** - Drag-and-drop Kanban board for distributing all assets among heir groups with real-time equilibrium indicators and smart randomization
 
 ## Phase Details
 
@@ -160,7 +161,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -174,6 +175,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 8. Persistence and Scenarios | 2/2 | Complete | 2026-03-13 |
 | 9. Land Lot Division and Qurah Assignment | 2/2 | Complete    | 2026-03-13 |
 | 10. Movable Assets and Complete Estate Inventory | 3/3 | Complete    | 2026-03-13 |
+| 11. Interactive Asset Distribution | 0/3 | Not started | - |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
 **Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, livestock, custom items) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
@@ -192,15 +194,24 @@ Plans:
 - [ ] 10-02-PLAN.md -- Category-specific UI forms (gold/silver with rate suggestion, vehicle, livestock, custom, simple BDT), asset card list, Step 4 expansion to Estate Inventory, WizardShell wiring
 - [ ] 10-03-PLAN.md -- IndivisibleCard resolution UI (sell/buyout/qurah), EstateBreakdownCard + HeirCard extensions for movable assets, PDF export section
 
-### Phase 11: Interactive asset distribution with drag-and-drop equilibrium
-
-**Goal:** [To be planned]
-**Requirements**: TBD
-**Depends on:** Phase 10
-**Plans:** 0 plans
+### Phase 11: Interactive Asset Distribution with Drag-and-Drop Equilibrium
+**Goal**: Users can distribute all assets (land parcels + movable assets) among heir groups via a drag-and-drop Kanban board with real-time equilibrium indicators, smart randomization toward Faraid share targets, and one-level undo -- replacing and upgrading Phase 9's simpler UI
+**Depends on**: Phase 10
+**Requirements**: P11-01, P11-02, P11-03, P11-04, P11-05, P11-06, P11-07, P11-08, P11-09
+**Success Criteria** (what must be TRUE):
+  1. All assets (land parcels and movable assets) appear as draggable cards on a unified Kanban board with one column per heir group
+  2. Each column has a colored equilibrium bar (green within 2%, amber within 5%, red beyond 5% of Faraid target)
+  3. User can drag items between columns; equilibrium bars and cash compensation update in real-time
+  4. Randomize button produces weighted-random near-equilibrium distribution; undo reverts last action
+  5. Mobile: 500ms long-press activates drag; "Move to..." fallback buttons always available
+  6. "Distribute Assets" button on Results page navigates to distribution board when any assets exist
+  7. PDF report includes Distribution Summary section showing final group assignments with mixed asset types
+**Plans:** 3 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 11 to break down)
+- [ ] 11-01-PLAN.md -- Distribution types (DistributionItem, DistributionGroup, EquilibriumStatus), pure algorithm (buildDistributionItems, smartShuffle, getEquilibriumStatus, moveItem), distributionStore with one-level undo, and comprehensive unit tests
+- [ ] 11-02-PLAN.md -- @dnd-kit installation, DnD Kanban UI (DistributionBoard, HeirColumn, AssetCard, EquilibriumBar, SummaryBanner, DistributionControls, MobileFallback), app routing, ResultsPage "Distribute Assets" button, and component tests
+- [ ] 11-03-PLAN.md -- PDF PdfDistributionSection with mixed asset types, extractPdfData extension, usePdfExport wiring, and integration tests
 
 ### Phase 12: JSON import and export for assets
 
