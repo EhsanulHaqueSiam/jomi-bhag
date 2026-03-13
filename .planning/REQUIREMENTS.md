@@ -60,7 +60,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Persistence
 
 - [x] **PRST-01**: App saves calculations to browser localStorage without requiring login
-- [ ] **PRST-02**: User can compare multiple scenarios side by side ("What if" comparison)
+- [x] **PRST-02**: User can compare multiple scenarios side by side ("What if" comparison)
 - [x] **PRST-03**: User can load and modify previously saved calculations
 
 ### Design & UX
@@ -145,7 +145,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | OUTP-02 | Phase 7 | Complete |
 | OUTP-03 | Phase 7 | Complete |
 | PRST-01 | Phase 8 | Complete |
-| PRST-02 | Phase 8 | Pending |
+| PRST-02 | Phase 8 | Complete |
 | PRST-03 | Phase 8 | Complete |
 
 **Coverage:**
