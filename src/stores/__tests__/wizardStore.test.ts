@@ -338,9 +338,25 @@ describe('step validation', () => {
     expect(useWizardStore.getState().isStepValid(1)).toBe(false)
   })
 
-  it('isStepValid(1) true when relationship selected (non-other)', () => {
-    useWizardStore.getState().setRelationship('father')
+  it('isStepValid(1) true when relationship selected (non-other, no gender needed)', () => {
+    useWizardStore.getState().setRelationship('brother')
     expect(useWizardStore.getState().isStepValid(1)).toBe(true)
+  })
+
+  it('isStepValid(1) false for "father" without userGender', () => {
+    useWizardStore.getState().setRelationship('father')
+    expect(useWizardStore.getState().isStepValid(1)).toBe(false)
+  })
+
+  it('isStepValid(1) true for "father" with userGender set', () => {
+    useWizardStore.getState().setRelationship('father')
+    useWizardStore.getState().setUserGender('male')
+    expect(useWizardStore.getState().isStepValid(1)).toBe(true)
+  })
+
+  it('isStepValid(1) false for "mother" without userGender', () => {
+    useWizardStore.getState().setRelationship('mother')
+    expect(useWizardStore.getState().isStepValid(1)).toBe(false)
   })
 
   it('isStepValid(1) false for "other" without deceasedGender', () => {

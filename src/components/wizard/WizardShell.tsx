@@ -43,12 +43,14 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
   // never changes, so subscribing to it alone won't trigger re-renders).
   const relationship = useWizardStore((s) => s.relationship)
   const deceasedGender = useWizardStore((s) => s.deceasedGender)
+  const userGender = useWizardStore((s) => s.userGender)
 
   const isCurrentStepValid = (() => {
     switch (currentStep) {
       case 1:
         if (!relationship) return false
         if (relationship === 'other' && !deceasedGender) return false
+        if ((relationship === 'father' || relationship === 'mother') && !userGender) return false
         return true
       case 2:
         return true

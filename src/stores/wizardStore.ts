@@ -212,15 +212,19 @@ export const useWizardStore = create<WizardStore>()(
   calculateShares: () => {
     const state = get()
     const input = state.buildFaraidInput()
-    const results: FaraidOutput = calculateInheritance(input)
-    const newCompleted = [...state.completedSteps]
-    if (!newCompleted.includes(3)) {
-      newCompleted.push(3)
+    try {
+      const results: FaraidOutput = calculateInheritance(input)
+      const newCompleted = [...state.completedSteps]
+      if (!newCompleted.includes(3)) {
+        newCompleted.push(3)
+      }
+      if (!newCompleted.includes(4)) {
+        newCompleted.push(4)
+      }
+      set({ results, currentStep: 5, completedSteps: newCompleted })
+    } catch (err) {
+      console.error('Faraid calculation failed:', err)
     }
-    if (!newCompleted.includes(4)) {
-      newCompleted.push(4)
-    }
-    set({ results, currentStep: 5, completedSteps: newCompleted })
   },
 
   setTotalEstateValue: (value) => {
@@ -239,6 +243,9 @@ export const useWizardStore = create<WizardStore>()(
         if (!state.relationship) return false
         // "other" requires explicit deceasedGender
         if (state.relationship === 'other' && !state.deceasedGender)
+          return false
+        // "father"/"mother" requires userGender (son/daughter selection)
+        if ((state.relationship === 'father' || state.relationship === 'mother') && !state.userGender)
           return false
         return true
       case 2:
