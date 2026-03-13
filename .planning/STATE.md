@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 14 plan 01 complete (individual distribution data foundation)
-last_updated: "2026-03-13T21:23:12.000Z"
-last_activity: 2026-03-14 -- Phase 14 plan 01 complete (individual distribution data foundation)
+stopped_at: Phase 14 plan 02 complete (individual distribution UI components)
+last_updated: "2026-03-13T21:33:46.000Z"
+last_activity: 2026-03-14 -- Phase 14 plan 02 complete (individual distribution UI components)
 progress:
   total_phases: 14
   completed_phases: 13
   total_plans: 35
-  completed_plans: 32
-  percent: 91
+  completed_plans: 33
+  percent: 94
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-13)
 ## Current Position
 
 Phase: 14 of 14 (Per-Heir Asset Breakdown)
-Plan: 1 of 4 complete
+Plan: 2 of 4 complete
 Status: In Progress
-Last activity: 2026-03-14 -- Phase 14 plan 01 complete (individual distribution data foundation)
+Last activity: 2026-03-14 -- Phase 14 plan 02 complete (individual distribution UI components)
 
-Progress: [██████████] 32/35 plans (91%)
+Progress: [██████████] 33/35 plans (94%)
 
 ## Performance Metrics
 
@@ -77,6 +77,7 @@ Progress: [██████████] 32/35 plans (91%)
 | Phase 13 P02 | 4min | 2 tasks | 9 files |
 | Phase 13 P03 | 3min | 2 tasks | 4 files |
 | Phase 14 P01 | 7min | 2 tasks | 5 files |
+| Phase 14 P02 | 6min | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -202,6 +203,10 @@ Recent decisions affecting current work:
 - [Phase 14]: computeIndividualFingerprint includes heir type counts so heir additions/removals invalidate state
 - [Phase 14]: Stable empty array constants (EMPTY_INDIVIDUALS, EMPTY_ITEMS, EMPTY_COMPENSATIONS) prevent Zustand selector infinite rerender
 - [Phase 14]: Individual column ID convention: ${heirType}_${index} (e.g. son_0, daughter_1)
+- [Phase 14]: HeirIcon extracted to shared src/components/ui/HeirIcon.tsx with typed Set<HeirType> feminineHeirs
+- [Phase 14]: IndividualColumn dual border: top=equilibrium color, left=heir-type accent color (emerald/rose/blue/amber/purple)
+- [Phase 14]: IndividualControls Qurah button uses gold-600 to distinguish from group Randomize emerald-600
+- [Phase 14]: showQurahCeremony state prepared in DistributionPage as placeholder for Plan 03 ceremony overlay
 
 ### Pending Todos
 
@@ -223,6 +228,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T21:23:12Z
-Stopped at: Phase 14 plan 01 complete (individual distribution data foundation)
-Resume file: .planning/phases/14-per-heir-asset-breakdown-individual-kanban-cards-showing-each-heir-s-land-parcels-and-assets-separately/14-01-SUMMARY.md
+Last session: 2026-03-13T21:33:46Z
+Stopped at: Phase 14 plan 02 complete (individual distribution UI components)
+Resume file: .planning/phases/14-per-heir-asset-breakdown-individual-kanban-cards-showing-each-heir-s-land-parcels-and-assets-separately/14-02-SUMMARY.md
