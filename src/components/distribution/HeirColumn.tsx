@@ -1,9 +1,11 @@
 import { useDroppable } from '@dnd-kit/core'
 import type { DistributionGroup, DistributionItem } from '@/core/distribution/types'
+import type { Property } from '@/core/land/types'
+import type { ShareResult, HeirType } from '@/core/faraid/types'
+import type { LandSettlement } from '@/core/land/settlement-types'
 import { EquilibriumBar, getColumnBorderColor } from './EquilibriumBar'
 import { AssetCard } from './AssetCard'
 import { MobileFallback } from './MobileFallback'
-import type { HeirType } from '@/core/faraid/types'
 
 const bdtFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -18,9 +20,20 @@ interface HeirColumnProps {
   items: DistributionItem[]
   allGroups: DistributionGroup[]
   onMoveItem: (itemId: string, from: HeirType, to: HeirType) => void
+  properties: Property[]
+  shares: ShareResult[]
+  onSettlementUpdate: (propertyId: string, settlement: LandSettlement | null) => void
 }
 
-export function HeirColumn({ group, items, allGroups, onMoveItem }: HeirColumnProps) {
+export function HeirColumn({
+  group,
+  items,
+  allGroups,
+  onMoveItem,
+  properties,
+  shares,
+  onSettlementUpdate,
+}: HeirColumnProps) {
   const { isOver, setNodeRef } = useDroppable({
     id: group.heirType,
   })
@@ -71,20 +84,35 @@ export function HeirColumn({ group, items, allGroups, onMoveItem }: HeirColumnPr
             Drag items here
           </div>
         ) : (
-          items.map((item) => (
-            <div key={item.id} className="space-y-1">
-              <AssetCard
-                item={item}
-                groupId={group.heirType}
-              />
-              <MobileFallback
-                item={item}
-                currentGroupHeirType={group.heirType}
-                allGroups={allGroups}
-                onMove={onMoveItem}
-              />
-            </div>
-          ))
+          items.map((item) => {
+            const matchingProperty =
+              item.type === 'property'
+                ? properties.find((p) => p.id === item.id)
+                : undefined
+
+            return (
+              <div key={item.id} className="space-y-1">
+                <AssetCard
+                  item={item}
+                  groupId={group.heirType}
+                  property={matchingProperty}
+                  shares={item.type === 'property' ? shares : undefined}
+                  onSettlementUpdate={
+                    item.type === 'property'
+                      ? (settlement) =>
+                          onSettlementUpdate(item.id, settlement)
+                      : undefined
+                  }
+                />
+                <MobileFallback
+                  item={item}
+                  currentGroupHeirType={group.heirType}
+                  allGroups={allGroups}
+                  onMove={onMoveItem}
+                />
+              </div>
+            )
+          })
         )}
       </div>
     </div>

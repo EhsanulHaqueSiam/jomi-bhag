@@ -11,7 +11,10 @@ import {
 } from '@dnd-kit/core'
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core'
 import type { HeirType } from '@/core/faraid/types'
+import type { ShareResult } from '@/core/faraid/types'
 import type { DistributionItem, DistributionGroup } from '@/core/distribution/types'
+import type { Property } from '@/core/land/types'
+import type { LandSettlement } from '@/core/land/settlement-types'
 import { SummaryBanner } from './SummaryBanner'
 import { HeirColumn } from './HeirColumn'
 import { AssetCard } from './AssetCard'
@@ -22,6 +25,9 @@ interface DistributionBoardProps {
   balancedCount: number
   totalCount: number
   onMoveItem: (itemId: string, from: HeirType, to: HeirType) => void
+  properties: Property[]
+  shares: ShareResult[]
+  onSettlementUpdate: (propertyId: string, settlement: LandSettlement | null) => void
 }
 
 export function DistributionBoard({
@@ -30,6 +36,9 @@ export function DistributionBoard({
   balancedCount,
   totalCount,
   onMoveItem,
+  properties,
+  shares,
+  onSettlementUpdate,
 }: DistributionBoardProps) {
   const [activeItem, setActiveItem] = useState<DistributionItem | null>(null)
 
@@ -118,6 +127,9 @@ export function DistributionBoard({
                 items={itemsByGroup.get(group.heirType) ?? []}
                 allGroups={groups}
                 onMoveItem={onMoveItem}
+                properties={properties}
+                shares={shares}
+                onSettlementUpdate={onSettlementUpdate}
               />
             </div>
           ))}

@@ -1,10 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import type { AppPage } from '@/types/scenario'
 import { useDistributionStore } from '@/stores/distributionStore'
 import { useWizardStore } from '@/stores/wizardStore'
 import { CompensationBanner } from '@/components/division/CompensationBanner'
 import { DistributionBoard } from './DistributionBoard'
 import { DistributionControls } from './DistributionControls'
+import type { LandSettlement } from '@/core/land/settlement-types'
+
+const EMPTY_SHARES: import('@/core/faraid/types').ShareResult[] = []
 
 interface DistributionPageProps {
   onNavigate: (page: AppPage) => void
@@ -23,6 +26,11 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
   )
 
   const setStep = useWizardStore((s) => s.setStep)
+  const properties = useWizardStore((s) => s.properties)
+  const results = useWizardStore((s) => s.results)
+  const updateProperty = useWizardStore((s) => s.updateProperty)
+
+  const shares = results?.shares ?? EMPTY_SHARES
 
   // Compute distribution on mount if needed
   useEffect(() => {
@@ -35,6 +43,13 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
     setStep(5)
     onNavigate('wizard')
   }
+
+  const handleSettlementUpdate = useCallback(
+    (propertyId: string, settlement: LandSettlement | null) => {
+      updateProperty(propertyId, { settlement })
+    },
+    [updateProperty],
+  )
 
   const canUndo = previousSnapshot !== null
   const summary = getEquilibriumSummary()
@@ -80,6 +95,9 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
         balancedCount={summary.balanced}
         totalCount={summary.total}
         onMoveItem={moveItem}
+        properties={properties}
+        shares={shares}
+        onSettlementUpdate={handleSettlementUpdate}
       />
     </div>
   )

@@ -1,5 +1,10 @@
+import { useState } from 'react'
 import { useDraggable } from '@dnd-kit/core'
 import type { DistributionItem } from '@/core/distribution/types'
+import type { Property } from '@/core/land/types'
+import type { ShareResult } from '@/core/faraid/types'
+import type { LandSettlement } from '@/core/land/settlement-types'
+import { SettlementPanel } from './SettlementPanel'
 
 const bdtFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -109,45 +114,103 @@ interface AssetCardProps {
   item: DistributionItem
   groupId: string
   isOverlay?: boolean
+  property?: Property
+  shares?: ShareResult[]
+  onSettlementUpdate?: (settlement: LandSettlement | null) => void
 }
 
-export function AssetCard({ item, groupId, isOverlay }: AssetCardProps) {
+export function AssetCard({
+  item,
+  groupId,
+  isOverlay,
+  property,
+  shares,
+  onSettlementUpdate,
+}: AssetCardProps) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: item.id,
     data: { groupId },
   })
 
+  const [expanded, setExpanded] = useState(false)
+
   const [bgColor, textColor, borderColor] = getCategoryColors(item.category)
 
+  const isProperty = item.type === 'property'
+  const showSettlement =
+    isProperty && !isOverlay && property && shares && onSettlementUpdate
+
   return (
-    <div
-      ref={!isOverlay ? setNodeRef : undefined}
-      {...(!isOverlay ? { ...listeners, ...attributes } : {})}
-      className={[
-        'flex items-center gap-2 rounded-lg border px-3 py-2 cursor-grab active:cursor-grabbing select-none',
-        borderColor,
-        isOverlay ? 'shadow-lg ring-2 ring-emerald-400 bg-white' : 'bg-white',
-        isDragging && !isOverlay ? 'opacity-50' : '',
-      ]
-        .filter(Boolean)
-        .join(' ')}
-    >
-      {/* Category badge */}
-      <span
-        className={`inline-flex items-center justify-center rounded p-1 ${bgColor} ${textColor}`}
+    <div ref={!isOverlay ? setNodeRef : undefined}>
+      {/* Drag handle area */}
+      <div
+        {...(!isOverlay ? { ...listeners, ...attributes } : {})}
+        className={[
+          'flex items-center gap-2 rounded-lg border px-3 py-2 cursor-grab active:cursor-grabbing select-none',
+          borderColor,
+          isOverlay
+            ? 'shadow-lg ring-2 ring-emerald-400 bg-white'
+            : 'bg-white',
+          isDragging && !isOverlay ? 'opacity-50' : '',
+        ]
+          .filter(Boolean)
+          .join(' ')}
       >
-        <CategoryIcon category={item.category} />
-      </span>
+        {/* Category badge */}
+        <span
+          className={`inline-flex items-center justify-center rounded p-1 ${bgColor} ${textColor}`}
+        >
+          <CategoryIcon category={item.category} />
+        </span>
 
-      {/* Label */}
-      <span className="min-w-0 flex-1 truncate text-sm font-medium text-gray-800">
-        {item.label}
-      </span>
+        {/* Label */}
+        <span className="min-w-0 flex-1 truncate text-sm font-medium text-gray-800">
+          {item.label}
+        </span>
 
-      {/* BDT value */}
-      <span className="shrink-0 text-sm font-semibold text-gray-900">
-        {bdtFormatter.format(item.value)}
-      </span>
+        {/* BDT value */}
+        <span className="shrink-0 text-sm font-semibold text-gray-900">
+          {bdtFormatter.format(item.value)}
+        </span>
+      </div>
+
+      {/* Settlement expand button -- separate from drag handle */}
+      {showSettlement && (
+        <button
+          type="button"
+          onClick={() => setExpanded((prev) => !prev)}
+          className="mt-1 flex w-full items-center justify-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+        >
+          <span>Settlement</span>
+          <svg
+            className={`h-3 w-3 transition-transform ${expanded ? 'rotate-180' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+            />
+          </svg>
+        </button>
+      )}
+
+      {/* Settlement panel -- rendered outside drag area */}
+      {showSettlement && expanded && (
+        <div className="mt-1">
+          <SettlementPanel
+            propertyId={item.id}
+            propertyValue={item.value}
+            settlement={property.settlement}
+            shares={shares}
+            landInputUnit={property.landInputUnit}
+            onUpdate={onSettlementUpdate}
+          />
+        </div>
+      )}
     </div>
   )
 }
