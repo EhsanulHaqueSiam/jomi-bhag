@@ -124,6 +124,32 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **P13-11**: Settlement method selector on each property card in the distribution board with expandable detail panel
 - [x] **P13-12**: PDF includes Settlement Plan section with per-property settlement details (method, amounts, sub-parcels, installments, ownership shares)
 
+### Per-Heir Asset Breakdown
+
+- [ ] **P14-01**: Individual columns expand from group distribution: each heir type group's items split equally among its individual members
+- [ ] **P14-02**: Parcel split algorithm creates sub-parcels with proportional values that sum exactly to the original (no rounding drift)
+- [ ] **P14-03**: Parcel merge reverses a split, restoring the original item
+- [ ] **P14-04**: Individual Qurah shuffle redistributes all items across all individuals using weighted-random algorithm
+- [ ] **P14-05**: Cash compensation between individuals minimizes the number of transfers using greedy matching
+- [ ] **P14-06**: Individual distribution fingerprint includes heir type counts so heir changes invalidate state
+- [ ] **P14-07**: individualDistributionStore persists to localStorage via Zustand persist middleware with fractionStorage
+- [ ] **P14-08**: Segmented control toggle ("By Group" / "By Individual") with role='tablist' accessibility on distribution page
+- [ ] **P14-09**: Individual columns grouped by heir type with section headers and type-based accent colors (sons=emerald, daughters=rose, etc.)
+- [ ] **P14-10**: Full DnD between all individual columns (cross-type allowed) with same sensors as Phase 11
+- [ ] **P14-11**: Inline rename: click name to edit, Enter to save, Escape to cancel, custom name as primary with original as subtitle
+- [ ] **P14-12**: Parcel split dialog: user enters split areas, validation ensures sum equals original, each sub-parcel becomes draggable card
+- [ ] **P14-13**: Per-individual equilibrium bars: green within 2%, amber within 5%, red beyond 5% of target BDT value
+- [ ] **P14-14**: Mobile "Move to..." dropdown shows flat list of all individual heir names
+- [ ] **P14-15**: HeirIcon (male/female silhouette) shown on each individual column header
+- [ ] **P14-16**: Individual Qurah ceremony overlay with bismillah header, staggered reveal at 200ms per column, prefers-reduced-motion support
+- [ ] **P14-17**: JSON export includes custom heir names and individual distribution assignments when individual view was used
+- [ ] **P14-18**: JSON import restores custom names and individual assignments (missing fields use defaults for backward compat)
+- [ ] **P14-19**: Scenarios save and restore individual distribution state including custom names
+- [ ] **P14-20**: Both views fully independent -- switching never affects the other's state
+- [ ] **P14-21**: PDF "Individual Asset Breakdown" section appears only when individual view was used, placed after Distribution Summary
+- [ ] **P14-22**: PDF individual sections grouped by heir type with equilibrium indicators, compensation table, and summary line
+- [ ] **P14-23**: PDF includes Qurah reference in individual section when Qurah was used
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -240,13 +266,36 @@ Which phases cover which requirements. Updated during roadmap creation.
 | P13-10 | Phase 13 | Planned |
 | P13-11 | Phase 13 | Planned |
 | P13-12 | Phase 13 | Planned |
+| P14-01 | Phase 14 | Planned |
+| P14-02 | Phase 14 | Planned |
+| P14-03 | Phase 14 | Planned |
+| P14-04 | Phase 14 | Planned |
+| P14-05 | Phase 14 | Planned |
+| P14-06 | Phase 14 | Planned |
+| P14-07 | Phase 14 | Planned |
+| P14-08 | Phase 14 | Planned |
+| P14-09 | Phase 14 | Planned |
+| P14-10 | Phase 14 | Planned |
+| P14-11 | Phase 14 | Planned |
+| P14-12 | Phase 14 | Planned |
+| P14-13 | Phase 14 | Planned |
+| P14-14 | Phase 14 | Planned |
+| P14-15 | Phase 14 | Planned |
+| P14-16 | Phase 14 | Planned |
+| P14-17 | Phase 14 | Planned |
+| P14-18 | Phase 14 | Planned |
+| P14-19 | Phase 14 | Planned |
+| P14-20 | Phase 14 | Planned |
+| P14-21 | Phase 14 | Planned |
+| P14-22 | Phase 14 | Planned |
+| P14-23 | Phase 14 | Planned |
 
 **Coverage:**
 - v1 requirements: 39 total
-- Post-v1 (Phase 9+): 39 total
-- Mapped to phases: 78
+- Post-v1 (Phase 9+): 62 total
+- Mapped to phases: 101
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-12*
-*Last updated: 2026-03-14 after Phase 13 planning (P13-01 through P13-12 added)*
+*Last updated: 2026-03-14 after Phase 14 planning (P14-01 through P14-23 added)*

@@ -179,7 +179,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 11. Interactive Asset Distribution | 3/3 | Complete    | 2026-03-13 |
 | 12. JSON Import and Export | 2/2 | Complete    | 2026-03-13 |
 | 13. Land Settlement Methods | 3/3 | Complete    | 2026-03-13 |
-| 14. Per-Heir Asset Breakdown | 0/0 | Not started | - |
+| 14. Per-Heir Asset Breakdown | 0/4 | Not started | - |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
 **Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, livestock, custom items) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
@@ -254,12 +254,24 @@ Plans:
 - [ ] 13-02-PLAN.md -- SettlementPanel component with 4 method detail sub-components (SellSplitDetail, PhysicalDivisionDetail, BuyoutDetail, JointOwnershipDetail), wired into distribution board property cards with AnimatePresence expand/collapse
 - [ ] 13-03-PLAN.md -- PDF PdfSettlementSection component, pdfTypes extension, extractPdfData settlement extraction, PdfDocument wiring, and visual verification checkpoint
 
-### Phase 14: Per-heir asset breakdown - individual kanban cards showing each heir's land parcels and assets separately
-
-**Goal:** [To be planned]
-**Requirements**: TBD
-**Depends on:** Phase 13
-**Plans:** 0 plans
+### Phase 14: Per-Heir Asset Breakdown
+**Goal**: Users can toggle to an individual-level distribution view showing one column per individual heir (Son 1, Son 2, Daughter 1, etc.) with full drag-and-drop, parcel splitting for precise area-based division, cash compensation between individuals, Qurah ceremony, inline rename, and PDF individual breakdown section -- enabling families to assign specific parcels to specific people
+**Depends on**: Phase 13
+**Requirements**: P14-01, P14-02, P14-03, P14-04, P14-05, P14-06, P14-07, P14-08, P14-09, P14-10, P14-11, P14-12, P14-13, P14-14, P14-15, P14-16, P14-17, P14-18, P14-19, P14-20, P14-21, P14-22, P14-23
+**Success Criteria** (what must be TRUE):
+  1. User can toggle between "By Group" and "By Individual" views on the distribution page via accessible segmented control
+  2. Individual view shows one column per individual heir, grouped by heir type with section headers and accent colors
+  3. User can drag items between any individual columns (cross-type allowed) with real-time equilibrium updates
+  4. User can split property parcels into sub-parcels for precise area-based division
+  5. User can rename individual heirs inline (click-to-edit with keyboard support)
+  6. Qurah ceremony redistributes all items across all individuals with staggered reveal
+  7. Cash compensation between individuals minimizes the number of transfers
+  8. Custom names and individual distribution state persist via localStorage, JSON export/import, and scenarios
+  9. PDF includes "Individual Asset Breakdown" section only when individual view was used
+**Plans:** 4 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 14 to break down)
+- [ ] 14-01-PLAN.md -- Individual distribution types (IndividualColumn, SplitParcel, IndividualCompensation), pure algorithm functions (expand, subdivide, split/merge, shuffle, compensate), individualDistributionStore with persist middleware, and unit tests
+- [ ] 14-02-PLAN.md -- UI components (ViewToggle, IndividualBoard, IndividualColumn, InlineRename, ParcelSplitDialog, IndividualMobileFallback), HeirIcon extraction, DistributionPage integration with view toggle, and component tests
+- [ ] 14-03-PLAN.md -- IndividualQurahCeremony overlay with staggered reveal, JSON export/import extension for individual data, scenario persistence extension, and integration tests
+- [ ] 14-04-PLAN.md -- PDF PdfIndividualSection component with heir-type grouping, equilibrium indicators, compensation table, extractPdfData extension, PdfDocument wiring, and integration tests
