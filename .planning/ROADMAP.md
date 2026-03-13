@@ -139,7 +139,7 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 08-01-PLAN.md -- Fraction-aware localStorage persistence (Zustand persist middleware with custom serializer), scenario types, wizardStore auto-save, scenariosStore with full CRUD (save/load/duplicate/delete/rename), name generation, and unsaved changes detection
+- [x] 08-01-PLAN.md -- Fraction-aware localStorage persistence (Zustand persist middleware with custom serializer), scenario types, wizardStore auto-save, scenariosStore with full CRUD (save/load/duplicate/delete/rename), name generation, and unsaved changes detection
 - [ ] 08-02-PLAN.md -- App page routing (wizard vs scenarios), AppLayout navigation (header + mobile bottom nav), ScenariosPage with scenario cards, ComparisonView with side-by-side diff highlighting, and visual verification
 
 ## Progress
@@ -156,7 +156,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 5. Property Valuation | 2/2 | Complete   | 2026-03-12 |
 | 6. Charts and Visualization | 0/1 | Not started | - |
 | 7. PDF Export and Print | 2/2 | Complete | 2026-03-13 |
-| 8. Persistence and Scenarios | 0/2 | Not started | - |
+| 8. Persistence and Scenarios | 1/2 | In Progress | - |
 | 9. Land Lot Division and Qurah Assignment | 0/0 | Not started | - |
 | 10. Movable Assets and Complete Estate Inventory | 0/0 | Not started | - |
 

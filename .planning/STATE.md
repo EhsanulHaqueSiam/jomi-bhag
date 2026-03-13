@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 12 context gathered
-last_updated: "2026-03-13T08:55:45.621Z"
-last_activity: 2026-03-13 -- Phase 7 Plan 02 complete (usePdfExport hook, Download PDF + Print buttons in ResultsPage)
+status: in-progress
+stopped_at: Phase 08 Plan 01 complete
+last_updated: "2026-03-13T09:22:37Z"
+last_activity: 2026-03-13 -- Phase 8 Plan 01 complete (fractionStorage, wizardStore persist, scenariosStore CRUD)
 progress:
   total_phases: 12
   completed_phases: 7
-  total_plans: 16
-  completed_plans: 16
-  percent: 100
+  total_plans: 18
+  completed_plans: 17
+  percent: 94
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-13)
 
 **Core value:** Accurate, unbiased Islamic inheritance division -- the app strictly follows Faraid rules for every calculation without favoring any heir.
-**Current focus:** Phase 7 in progress -- PDF Export and Print (PDF document components and data extraction)
+**Current focus:** Phase 8 in progress -- Persistence and Scenarios (localStorage auto-save and scenario management)
 
 ## Current Position
 
-Phase: 7 of 10 (PDF Export and Print)
-Plan: 2 of 2 complete
-Status: Phase Complete
-Last activity: 2026-03-13 -- Phase 7 Plan 02 complete (usePdfExport hook, Download PDF + Print buttons in ResultsPage)
+Phase: 8 of 12 (Persistence and Scenarios)
+Plan: 1 of 2 complete
+Status: In Progress
+Last activity: 2026-03-13 -- Phase 8 Plan 01 complete (fractionStorage, wizardStore persist, scenariosStore CRUD)
 
-Progress: [██████████] 16/16 plans (100%)
+Progress: [█████████░] 17/18 plans (94%)
 
 ## Performance Metrics
 
@@ -61,6 +61,7 @@ Progress: [██████████] 16/16 plans (100%)
 | Phase 06 P01 | 5min | 2 tasks | 8 files |
 | Phase 07 P01 | 5min | 2 tasks | 20 files |
 | Phase 07 P02 | 2min | 1 task | 5 files |
+| Phase 08 P01 | 7min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -131,6 +132,10 @@ Recent decisions affecting current work:
 - [Phase 07]: usePdfExport hook uses getState() non-reactively; all @react-pdf imports lazy-loaded via dynamic import()
 - [Phase 07]: Download uses anchor click pattern; Print uses hidden iframe + onload + window.print()
 - [Phase 07]: Hook file .tsx extension required for JSX in dynamic import callback
+- [Phase 08]: Fraction serialization uses __frac__ tag with toFraction() string representation
+- [Phase 08]: Zustand persist partialize explicitly lists all WizardState fields to exclude action functions
+- [Phase 08]: Node 25 localStorage polyfill in test-setup.ts for jsdom compatibility
+- [Phase 08]: State fingerprint uses JSON.stringify of key heir/property counts for fast change detection
 
 ### Pending Todos
 
@@ -150,6 +155,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T08:55:45.620Z
-Stopped at: Phase 12 context gathered
-Resume file: .planning/phases/12-json-import-and-export-for-assets/12-CONTEXT.md
+Last session: 2026-03-13T09:22:37Z
+Stopped at: Completed 08-01-PLAN.md
+Resume file: .planning/phases/08-persistence-and-scenarios/08-02-PLAN.md
