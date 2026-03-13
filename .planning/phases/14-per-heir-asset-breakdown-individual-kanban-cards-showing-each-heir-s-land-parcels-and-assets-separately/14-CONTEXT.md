@@ -46,9 +46,9 @@ Add an individual-level distribution view as a tab/toggle on the Phase 11 distri
 - AssetCard and IndividualColumn wrapped in React.memo for performance
 - No virtualization needed — typical cases have ≤10 heirs and ≤60 assets
 
-### Area-Based Equilibrium
-- Equilibrium measured by LAND AREA (shotok), not BDT value — this is the primary metric for land division
-- Per-individual equilibrium bars: green within ±2% of target shotok, amber within ±5%, red beyond ±5%
+### Value-Based Equilibrium
+- Equilibrium measured by BDT value (same as Phase 11) — properties have monetary values from mouza rates or user-entered market prices
+- Per-individual equilibrium bars: green within ±2% of target BDT value, amber within ±5%, red beyond ±5%
 - Summary banner at top: "5/7 heirs balanced ✔" pattern
 - Celebratory animation when all individuals are green (same pattern as Phase 11)
 - Cross-type moves allowed freely — equilibrium bars show deviations, no warnings or restrictions
@@ -145,7 +145,7 @@ Add an individual-level distribution view as a tab/toggle on the Phase 11 distri
 ## Specific Ideas
 
 - **Real-world use case:** User has 58 land parcels totaling 332.5 shotok to divide among 5 sons and 2 daughters. Each son gets 55.42 shotok (2/12), each daughter gets 27.71 shotok (1/12). This is THE primary use case for the app.
-- Area-based equilibrium is essential — this family divides by LAND AREA (shotok), not monetary value. The green bar lighting up when a son's column reaches ~55.42 shotok is the core "aha moment"
+- Value-based equilibrium (BDT) — properties will have monetary values from mouza rates or user-entered market prices. The green bar lighting up when a son's column reaches their target BDT value is the core "aha moment"
 - Some parcels share names because the same physical land was listed multiple times in manual division attempts — each entry is a separate parcel in the app
 - Parcel splitting is critical: 58 parcels of 2-20 shotok sizes won't divide exactly into 7 individual targets. Splitting "Beki (9 shotok)" into "Beki (5)" + "Beki (4)" enables precise division
 - Cash compensation is the Islamic-approved fallback when perfect area division isn't possible even with splitting
