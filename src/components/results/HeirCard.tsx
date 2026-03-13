@@ -13,6 +13,8 @@ import { useWizardStore } from '@/stores/wizardStore'
 import { computePropertyTotal } from '@/core/land/types'
 import type { PropertyType } from '@/core/land/types'
 import { PROPERTY_TYPES } from '@/data/bd-land-data'
+import { computeAssetValue } from '@/core/assets/valuation'
+import { ASSET_CATEGORIES } from '@/data/movable-asset-data'
 
 const bdtFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -79,6 +81,7 @@ function HeirIcon({ isFeminine }: { isFeminine: boolean }) {
 
 export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
   const properties = useWizardStore((s) => s.properties)
+  const movableAssets = useWizardStore((s) => s.movableAssets)
   const [showProperties, setShowProperties] = useState(false)
 
   const label = HEIR_TYPE_LABELS[share.heirType] ?? share.heirType
@@ -97,7 +100,6 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
   const isAwl = adjustmentNote?.startsWith('Awl')
 
   // Per-property amounts
-  const hasPropertiesAndValue = properties.length > 0 && totalEstateValue > 0
   const propertyAmounts = properties.map((p) => {
     const propTotal = computePropertyTotal(p)
     const sameType = properties.filter((pp) => pp.type === p.type)
@@ -110,6 +112,23 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
       totalAmount: Math.round(share.totalShare.valueOf() * propTotal),
     }
   })
+
+  // Per-category movable asset amounts
+  const movableCategoryAmounts = ASSET_CATEGORIES
+    .map((cat) => {
+      const catAssets = movableAssets.filter((a) => a.category === cat.value)
+      const catTotal = catAssets.reduce((sum, a) => sum + computeAssetValue(a), 0)
+      return {
+        label: cat.label,
+        catTotal,
+        eachAmount: Math.round(share.sharePerHeir.valueOf() * catTotal),
+        totalAmount: Math.round(share.totalShare.valueOf() * catTotal),
+      }
+    })
+    .filter((c) => c.catTotal > 0)
+
+  const hasAssetsOrProperties =
+    (properties.length > 0 || movableCategoryAmounts.length > 0) && totalEstateValue > 0
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm md:p-5">
@@ -198,15 +217,15 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
         </p>
       )}
 
-      {/* Per-property expandable section */}
-      {hasPropertiesAndValue && (
+      {/* Per-asset expandable section */}
+      {hasAssetsOrProperties && (
         <div className="mt-2">
           <button
             type="button"
             onClick={() => setShowProperties(!showProperties)}
             className="text-xs font-medium text-emerald-700 underline hover:text-emerald-800"
           >
-            {showProperties ? 'Hide property shares' : 'View property shares'}
+            {showProperties ? 'Hide asset shares' : 'View asset shares'}
           </button>
 
           <AnimatePresence initial={false}>
@@ -238,6 +257,32 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
                         ) : (
                           <span className="font-medium text-emerald-700">
                             {bdtFormatter.format(pa.totalAmount)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Movable asset category rows */}
+                  {movableCategoryAmounts.map((mc) => (
+                    <div
+                      key={mc.label}
+                      className="flex items-baseline justify-between border-t border-gray-100 py-1.5 text-sm"
+                    >
+                      <span className="text-gray-600">{mc.label}</span>
+                      <div className="flex items-baseline gap-2">
+                        {hasMultiple ? (
+                          <>
+                            <span className="text-xs text-gray-500">
+                              Each: {bdtFormatter.format(mc.eachAmount)}
+                            </span>
+                            <span className="font-medium text-emerald-700">
+                              Total ({share.count}): {bdtFormatter.format(mc.totalAmount)}
+                            </span>
+                          </>
+                        ) : (
+                          <span className="font-medium text-emerald-700">
+                            {bdtFormatter.format(mc.totalAmount)}
                           </span>
                         )}
                       </div>

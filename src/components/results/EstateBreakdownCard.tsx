@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useWizardStore } from '@/stores/wizardStore'
 import { computeEstateBreakdown } from '@/core/land/valuation'
+import { computeAssetValue } from '@/core/assets/valuation'
 import type { PropertyType } from '@/core/land/types'
 import { PROPERTY_TYPES } from '@/data/bd-land-data'
+import { ASSET_CATEGORIES } from '@/data/movable-asset-data'
 
 const displayFormatter = new Intl.NumberFormat('en-IN')
 
@@ -16,17 +18,20 @@ function getAutoLabel(type: PropertyType | null, index: number): string {
 
 export function EstateBreakdownCard() {
   const properties = useWizardStore((s) => s.properties)
+  const movableAssets = useWizardStore((s) => s.movableAssets)
   const totalEstateValue = useWizardStore((s) => s.totalEstateValue)
   const setTotalEstateValue = useWizardStore((s) => s.setTotalEstateValue)
   const getAllPropertiesTotal = useWizardStore((s) => s.getAllPropertiesTotal)
+  const getMovableAssetsTotal = useWizardStore((s) => s.getMovableAssetsTotal)
 
   const [isFocused, setIsFocused] = useState(false)
   const [isOverriding, setIsOverriding] = useState(false)
   const [showProperties, setShowProperties] = useState(false)
 
+  const movableAssetsTotal = getMovableAssetsTotal()
   const propertiesTotal = getAllPropertiesTotal()
   const hasProperties = propertiesTotal > 0
-  const breakdown = computeEstateBreakdown(properties)
+  const breakdown = computeEstateBreakdown(properties, movableAssetsTotal)
 
   // Auto-set estate value from properties total when not overriding
   useEffect(() => {
@@ -84,11 +89,23 @@ export function EstateBreakdownCard() {
     )
   }
 
+  // Group movable assets by category for detail view
+  const movableCategoryTotals = ASSET_CATEGORIES
+    .map((cat) => {
+      const assets = movableAssets.filter((a) => a.category === cat.value)
+      const total = assets.reduce((sum, a) => sum + computeAssetValue(a), 0)
+      return { label: cat.label, total }
+    })
+    .filter((c) => c.total > 0)
+
   const categories = [
     { label: 'Land', value: breakdown.land },
     { label: 'Structures', value: breakdown.structures },
     { label: 'Trees/Crops', value: breakdown.trees },
     { label: 'Ponds', value: breakdown.ponds },
+    ...(movableAssetsTotal > 0
+      ? [{ label: 'Movable Assets', value: movableAssetsTotal }]
+      : []),
   ]
 
   return (
@@ -102,7 +119,7 @@ export function EstateBreakdownCard() {
       </div>
 
       {/* Category grid */}
-      <div className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-4">
+      <div className={`mt-3 grid grid-cols-2 gap-2 ${categories.length > 4 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'}`}>
         {categories.map((cat) => (
           <div key={cat.label} className="rounded-lg bg-white/70 px-3 py-2">
             <div className="text-xs text-gray-500">{cat.label}</div>
@@ -210,6 +227,25 @@ export function EstateBreakdownCard() {
                     </div>
                   )
                 })}
+
+                {/* Movable assets per-category breakdown */}
+                {movableCategoryTotals.length > 0 && (
+                  <div className="rounded-lg bg-white/80 px-3 py-2 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium text-gray-800">Movable Assets</span>
+                      <span className="font-medium text-emerald-700">
+                        &#2547;{displayFormatter.format(movableAssetsTotal)}
+                      </span>
+                    </div>
+                    <div className="mt-1 flex flex-wrap gap-3 text-xs text-gray-500">
+                      {movableCategoryTotals.map((cat) => (
+                        <span key={cat.label}>
+                          {cat.label}: &#2547;{displayFormatter.format(cat.total)}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </motion.div>
           )}

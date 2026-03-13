@@ -6,6 +6,7 @@ export interface EstateBreakdown {
   structures: number
   trees: number
   ponds: number
+  movableAssets: number
   total: number
   byProperty: {
     property: Property
@@ -22,7 +23,7 @@ export interface EstateBreakdown {
  * Returns category totals (land, structures, trees, ponds) and per-property breakdown.
  * Handles itemized vs non-itemized trees consistently with computePropertyTotal.
  */
-export function computeEstateBreakdown(properties: Property[]): EstateBreakdown {
+export function computeEstateBreakdown(properties: Property[], movableAssetsTotal?: number): EstateBreakdown {
   const byProperty = properties.map((p) => {
     const treesVal = p.trees
       ? p.trees.isItemized
@@ -40,12 +41,15 @@ export function computeEstateBreakdown(properties: Property[]): EstateBreakdown 
     }
   })
 
+  const propTotal = byProperty.reduce((s, p) => s + p.total, 0)
+
   return {
     land: byProperty.reduce((s, p) => s + p.land, 0),
     structures: byProperty.reduce((s, p) => s + p.structures, 0),
     trees: byProperty.reduce((s, p) => s + p.trees, 0),
     ponds: byProperty.reduce((s, p) => s + p.ponds, 0),
-    total: byProperty.reduce((s, p) => s + p.total, 0),
+    movableAssets: movableAssetsTotal ?? 0,
+    total: propTotal + (movableAssetsTotal ?? 0),
     byProperty,
   }
 }

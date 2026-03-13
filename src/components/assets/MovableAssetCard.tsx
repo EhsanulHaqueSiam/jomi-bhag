@@ -8,6 +8,7 @@ import { VehicleForm } from './VehicleForm'
 import { LivestockForm } from './LivestockForm'
 import { CustomItemForm } from './CustomItemForm'
 import { SimpleValueForm } from './SimpleValueForm'
+import { IndivisibleCard } from './IndivisibleCard'
 
 const displayFormatter = new Intl.NumberFormat('en-IN')
 
@@ -92,6 +93,7 @@ export function MovableAssetCard({ assetId }: MovableAssetCardProps) {
   const setExpandedAssetId = useWizardStore((s) => s.setExpandedAssetId)
   const updateMovableAsset = useWizardStore((s) => s.updateMovableAsset)
   const removeMovableAsset = useWizardStore((s) => s.removeMovableAsset)
+  const shares = useWizardStore((s) => s.results?.shares ?? [])
 
   if (!asset) return null
 
@@ -218,6 +220,15 @@ export function MovableAssetCard({ assetId }: MovableAssetCardProps) {
                   This item is indivisible
                 </span>
               </label>
+
+              {/* Indivisible resolution card */}
+              {asset.isIndivisible && value > 0 && (
+                <IndivisibleCard
+                  asset={asset}
+                  shares={shares}
+                  onUpdate={(resolution) => updateMovableAsset(assetId, { indivisibleResolution: resolution })}
+                />
+              )}
 
               {/* Delete and collapse controls */}
               <div className="flex items-center justify-between pt-2 border-t border-gray-100">
