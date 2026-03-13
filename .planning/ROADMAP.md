@@ -20,7 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 6: Charts and Visualization** - Pie chart for proportional shares and bar chart for monetary comparison
 - [x] **Phase 7: PDF Export and Print** - Downloadable PDF report with full division details, Quranic references, and print-friendly layout
 - [ ] **Phase 8: Persistence and Scenarios** - localStorage saving, scenario comparison, and load/modify previous calculations
-- [ ] **Phase 9: Land Lot Division and Qurah Assignment** - Named land parcels divided into heir groups per Faraid shares, Qurah-based random or user-named assignment, strictly Islamic fair division
+- [x] **Phase 9: Land Lot Division and Qurah Assignment** - Named land parcels divided into heir groups per Faraid shares, Qurah-based random or user-named assignment, strictly Islamic fair division (completed 2026-03-13)
 - [ ] **Phase 10: Movable Assets and Complete Estate Inventory** - Gold, silver, cash, vehicles, jewelry, furniture, investments, livestock, and all non-land assets with Islamic rules for indivisible item division
 
 ## Phase Details
@@ -151,7 +151,7 @@ Plans:
   2. App divides land parcels into groups that match each heir's Faraid share as closely as possible using greedy best-fit algorithm
   3. User can randomly assign groups to heirs (Qurah -- Islamic lot drawing) or manually reassign parcels between groups
   4. Division and assignment strictly follow Islamic rules for fair property division, with cash compensation bridging imbalances
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 09-01-PLAN.md -- Pure division algorithm (greedy best-fit grouping, cash compensation, Qurah shuffle), division types, divisionStore (Zustand), and comprehensive unit tests
@@ -172,7 +172,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 6. Charts and Visualization | 0/1 | Not started | - |
 | 7. PDF Export and Print | 2/2 | Complete | 2026-03-13 |
 | 8. Persistence and Scenarios | 2/2 | Complete | 2026-03-13 |
-| 9. Land Lot Division and Qurah Assignment | 0/2 | Not started | - |
+| 9. Land Lot Division and Qurah Assignment | 2/2 | Complete   | 2026-03-13 |
 | 10. Movable Assets and Complete Estate Inventory | 0/0 | Not started | - |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
