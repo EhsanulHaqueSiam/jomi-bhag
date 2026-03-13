@@ -179,7 +179,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 11. Interactive Asset Distribution | 3/3 | Complete    | 2026-03-13 |
 | 12. JSON Import and Export | 2/2 | Complete    | 2026-03-13 |
 | 13. Land Settlement Methods | 3/3 | Complete    | 2026-03-13 |
-| 14. Per-Heir Asset Breakdown | 2/4 | In Progress|  |
+| 14. Per-Heir Asset Breakdown | 4/4 | Complete   | 2026-03-13 |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
 **Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, livestock, custom items) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
@@ -268,7 +268,7 @@ Plans:
   7. Cash compensation between individuals minimizes the number of transfers
   8. Custom names and individual distribution state persist via localStorage, JSON export/import, and scenarios
   9. PDF includes "Individual Asset Breakdown" section only when individual view was used
-**Plans:** 2/4 plans executed
+**Plans:** 4/4 plans complete
 
 Plans:
 - [ ] 14-01-PLAN.md -- Individual distribution types (IndividualColumn, SplitParcel, IndividualCompensation), pure algorithm functions (expand, subdivide, split/merge, shuffle, compensate), individualDistributionStore with persist middleware, and unit tests

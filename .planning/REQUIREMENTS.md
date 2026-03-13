@@ -146,9 +146,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **P14-18**: JSON import restores custom names and individual assignments (missing fields use defaults for backward compat)
 - [ ] **P14-19**: Scenarios save and restore individual distribution state including custom names
 - [ ] **P14-20**: Both views fully independent -- switching never affects the other's state
-- [ ] **P14-21**: PDF "Individual Asset Breakdown" section appears only when individual view was used, placed after Distribution Summary
-- [ ] **P14-22**: PDF individual sections grouped by heir type with equilibrium indicators, compensation table, and summary line
-- [ ] **P14-23**: PDF includes Qurah reference in individual section when Qurah was used
+- [x] **P14-21**: PDF "Individual Asset Breakdown" section appears only when individual view was used, placed after Distribution Summary
+- [x] **P14-22**: PDF individual sections grouped by heir type with equilibrium indicators, compensation table, and summary line
+- [x] **P14-23**: PDF includes Qurah reference in individual section when Qurah was used
 
 ## v2 Requirements
 
