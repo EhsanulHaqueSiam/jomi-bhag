@@ -276,6 +276,7 @@ export const useWizardStore = create<WizardStore>()(
       house: null,
       trees: null,
       pond: null,
+      settlement: null,
     }
     set((state) => ({
       properties: [...state.properties, newProperty],

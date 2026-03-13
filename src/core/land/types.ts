@@ -1,3 +1,5 @@
+import type { LandSettlement } from './settlement-types'
+
 export type PropertyType = 'agricultural' | 'residential' | 'commercial' | 'mixed'
 export type LandUnit = 'decimal' | 'katha' | 'bigha' | 'sqft'
 export type Division =
@@ -51,6 +53,7 @@ export interface Property {
   house: HouseDetail | null
   trees: TreeDetail | null
   pond: PondDetail | null
+  settlement: LandSettlement | null
 }
 
 /** Compute total value for a single property */

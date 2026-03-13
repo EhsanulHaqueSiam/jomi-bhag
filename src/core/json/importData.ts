@@ -1,6 +1,9 @@
 import type { WizardState, RelationshipType } from '@/types/wizard'
 import { getAutoIncludes } from '@/types/wizard'
 import type { Property, PropertyType, Division, LandUnit } from '@/core/land/types'
+import type { LandSettlement, SubParcel } from '@/core/land/settlement-types'
+import { ALL_HEIR_TYPES } from '@/core/faraid/types'
+import type { HeirType } from '@/core/faraid/types'
 import type {
   MovableAsset,
   AssetCategory,
@@ -49,6 +52,12 @@ const VALID_VEHICLE_TYPES = new Set<string>([
 const VALID_LIVESTOCK_TYPES = new Set<string>([
   'cow', 'goat', 'chicken', 'duck', 'pigeon', 'fish_pond',
 ])
+const VALID_SETTLEMENT_METHODS = new Set<string>([
+  'sell_split', 'physical_division', 'buyout', 'joint_ownership',
+])
+const VALID_HEIR_TYPE_SET = new Set<string>(ALL_HEIR_TYPES)
+const VALID_INCOME_TYPES = new Set<string>(['rent', 'crop'])
+const VALID_INCOME_PERIODS = new Set<string>(['monthly', 'yearly'])
 
 // ── Helpers ──────────────────────────────────────────────────────────────
 
@@ -70,6 +79,63 @@ function asString(val: unknown, fallback: string): string {
 
 function asEnum<T extends string>(val: unknown, valid: Set<string>, fallback: T | null): T | null {
   return typeof val === 'string' && valid.has(val) ? (val as T) : fallback
+}
+
+// ── Settlement validation ────────────────────────────────────────────────
+
+function validateSubParcel(raw: unknown): SubParcel | null {
+  if (!isObject(raw)) return null
+  if (typeof raw.id !== 'string' || typeof raw.name !== 'string') return null
+  return {
+    id: raw.id,
+    name: raw.name,
+    areaSqft: asNumber(raw.areaSqft, 0),
+    areaInputUnit: (asEnum<LandUnit>(raw.areaInputUnit, VALID_LAND_UNITS, null) ?? 'sqft') as LandUnit,
+    appraisedValue: asNumber(raw.appraisedValue, 0),
+  }
+}
+
+function validateSettlement(raw: unknown): LandSettlement | null {
+  if (!isObject(raw)) return null
+  const method = asEnum(raw.method, VALID_SETTLEMENT_METHODS, null)
+  if (!method) return null
+
+  switch (method) {
+    case 'sell_split':
+      return {
+        method: 'sell_split',
+        actualSalePrice: typeof raw.actualSalePrice === 'number' ? raw.actualSalePrice : null,
+      }
+    case 'physical_division': {
+      const subParcels: SubParcel[] = []
+      if (Array.isArray(raw.subParcels)) {
+        for (const sp of raw.subParcels) {
+          const parsed = validateSubParcel(sp)
+          if (parsed) subParcels.push(parsed)
+        }
+      }
+      return { method: 'physical_division', subParcels }
+    }
+    case 'buyout': {
+      const buyerHeirType = asEnum<HeirType>(raw.buyerHeirType, VALID_HEIR_TYPE_SET, null)
+      if (!buyerHeirType) return null
+      return {
+        method: 'buyout',
+        buyerHeirType,
+        useInstallments: asBoolean(raw.useInstallments, false),
+        installmentCount: asNumber(raw.installmentCount, 3),
+      }
+    }
+    case 'joint_ownership':
+      return {
+        method: 'joint_ownership',
+        incomeAmount: typeof raw.incomeAmount === 'number' ? raw.incomeAmount : null,
+        incomeType: asEnum<'rent' | 'crop'>(raw.incomeType, VALID_INCOME_TYPES, null),
+        incomePeriod: asEnum<'monthly' | 'yearly'>(raw.incomePeriod, VALID_INCOME_PERIODS, null),
+      }
+    default:
+      return null
+  }
 }
 
 // ── Property validation ─────────────────────────────────────────────────
@@ -116,6 +182,7 @@ function validateProperty(raw: unknown): Property | null {
           estimatedValue: asNumber(raw.pond.estimatedValue, 0),
         }
       : null,
+    settlement: validateSettlement(raw.settlement),
   }
 }
 

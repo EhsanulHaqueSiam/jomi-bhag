@@ -488,4 +488,116 @@ describe('validateAndParseImport', () => {
     if (!result.success) return
     expect(result.state.properties[0].division).toBeNull()
   })
+
+  // ── Settlement import tests ──────────────────────────────────────────
+
+  it('importing property without settlement field defaults to settlement: null', () => {
+    const data = {
+      schemaVersion: SCHEMA_VERSION,
+      appVersion: '1.0.0',
+      exportDate: new Date().toISOString(),
+      data: {
+        properties: [
+          {
+            nickname: 'Farm',
+            type: 'agricultural',
+            landAreaSqft: 5000,
+            landValue: 200000,
+            // no settlement field
+          },
+        ],
+      },
+    }
+    const result = validateAndParseImport(data)
+
+    expect(result.success).toBe(true)
+    if (!result.success) return
+    expect(result.state.properties[0].settlement).toBeNull()
+  })
+
+  it('importing property with valid sell_split settlement preserves data', () => {
+    const data = {
+      schemaVersion: SCHEMA_VERSION,
+      appVersion: '1.0.0',
+      exportDate: new Date().toISOString(),
+      data: {
+        properties: [
+          {
+            ...makeProperty(),
+            settlement: {
+              method: 'sell_split',
+              actualSalePrice: 750000,
+            },
+          },
+        ],
+      },
+    }
+    const result = validateAndParseImport(data)
+
+    expect(result.success).toBe(true)
+    if (!result.success) return
+    const settlement = result.state.properties[0].settlement
+    expect(settlement).not.toBeNull()
+    expect(settlement!.method).toBe('sell_split')
+    if (settlement!.method === 'sell_split') {
+      expect(settlement!.actualSalePrice).toBe(750000)
+    }
+  })
+
+  it('importing property with invalid settlement method falls back to null', () => {
+    const data = {
+      schemaVersion: SCHEMA_VERSION,
+      appVersion: '1.0.0',
+      exportDate: new Date().toISOString(),
+      data: {
+        properties: [
+          {
+            ...makeProperty(),
+            settlement: {
+              method: 'teleport',
+            },
+          },
+        ],
+      },
+    }
+    const result = validateAndParseImport(data)
+
+    expect(result.success).toBe(true)
+    if (!result.success) return
+    expect(result.state.properties[0].settlement).toBeNull()
+  })
+
+  it('importing property with physical_division and subParcels is parsed correctly', () => {
+    const data = {
+      schemaVersion: SCHEMA_VERSION,
+      appVersion: '1.0.0',
+      exportDate: new Date().toISOString(),
+      data: {
+        properties: [
+          {
+            ...makeProperty(),
+            settlement: {
+              method: 'physical_division',
+              subParcels: [
+                { id: 'sp1', name: 'Front lot', areaSqft: 2000, areaInputUnit: 'sqft', appraisedValue: 300000 },
+                { id: 'sp2', name: 'Back lot', areaSqft: 3000, areaInputUnit: 'sqft', appraisedValue: 200000 },
+              ],
+            },
+          },
+        ],
+      },
+    }
+    const result = validateAndParseImport(data)
+
+    expect(result.success).toBe(true)
+    if (!result.success) return
+    const settlement = result.state.properties[0].settlement
+    expect(settlement).not.toBeNull()
+    expect(settlement!.method).toBe('physical_division')
+    if (settlement!.method === 'physical_division') {
+      expect(settlement!.subParcels).toHaveLength(2)
+      expect(settlement!.subParcels[0].name).toBe('Front lot')
+      expect(settlement!.subParcels[1].appraisedValue).toBe(200000)
+    }
+  })
 })
