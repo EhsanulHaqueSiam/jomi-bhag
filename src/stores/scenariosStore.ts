@@ -4,6 +4,7 @@ import type { Scenario, ScenarioSummary } from '@/types/scenario'
 import type { WizardState } from '@/types/wizard'
 import { fractionStorage } from './fractionStorage'
 import { useWizardStore } from './wizardStore'
+import { useIndividualDistributionStore } from './individualDistributionStore'
 
 export const MAX_SCENARIOS = 20
 
@@ -226,6 +227,17 @@ export const useScenariosStore = create<ScenariosStore>()(
           summary: buildSummary(wizardState),
         }
 
+        // Include individual distribution state if it was used
+        const indState = useIndividualDistributionStore.getState()
+        if (indState.hasBeenUsed) {
+          scenario.individualDistribution = {
+            individuals: indState.individuals,
+            items: indState.items,
+            customNames: indState.customNames,
+            qurahUsed: indState.qurahUsed,
+          }
+        }
+
         const hash = computeStateFingerprint(wizardState)
         set({
           scenarios: [...scenarios, scenario],
@@ -237,6 +249,25 @@ export const useScenariosStore = create<ScenariosStore>()(
       loadScenario: (id: string) => {
         const scenario = get().scenarios.find((s) => s.id === id)
         if (!scenario) return null
+
+        // Restore individual distribution state if saved
+        if (scenario.individualDistribution) {
+          useIndividualDistributionStore.setState({
+            individuals: scenario.individualDistribution.individuals,
+            items: scenario.individualDistribution.items,
+            customNames: scenario.individualDistribution.customNames,
+            qurahUsed: scenario.individualDistribution.qurahUsed,
+            hasBeenUsed: true,
+            previousSnapshot: null,
+            // Reset reveal state
+            revealedCount: 0,
+            isRevealed: false,
+          })
+        } else {
+          // Reset individual distribution when loading scenario without it
+          useIndividualDistributionStore.getState().reset()
+        }
+
         return scenario.state
       },
 

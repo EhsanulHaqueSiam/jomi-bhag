@@ -1,4 +1,6 @@
 import type { WizardState } from '@/types/wizard'
+import type { IndividualColumn } from '@/core/distribution/individual-types'
+import type { DistributionItem } from '@/core/distribution/types'
 
 export interface ScenarioSummary {
   heirSummary: string
@@ -14,6 +16,12 @@ export interface Scenario {
   updatedAt: string
   state: WizardState
   summary: ScenarioSummary
+  individualDistribution?: {
+    individuals: IndividualColumn[]
+    items: DistributionItem[]
+    customNames: Record<string, string>
+    qurahUsed: boolean
+  } | null
 }
 
 export type AppPage = 'wizard' | 'scenarios' | 'division' | 'distribution'

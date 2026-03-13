@@ -46,6 +46,13 @@ export interface ExportData {
 
   // Estate value
   totalEstateValue: number
+
+  // Individual distribution (Phase 14, optional)
+  customHeirNames?: Record<string, string> // individualId -> custom name
+  individualDistribution?: {
+    assignments: { individualId: string; assignedItemIds: string[] }[]
+    qurahUsed: boolean
+  } | null
 }
 
 /** Default values for every input field -- used by import for missing fields */

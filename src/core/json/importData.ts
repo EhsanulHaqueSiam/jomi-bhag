@@ -23,7 +23,15 @@ import { SCHEMA_VERSION, DEFAULT_WIZARD_INPUTS } from '@/core/json/schema'
 
 /** Result of import validation */
 export type ImportResult =
-  | { success: true; state: WizardState }
+  | {
+      success: true
+      state: WizardState
+      customHeirNames?: Record<string, string>
+      individualDistribution?: {
+        assignments: { individualId: string; assignedItemIds: string[] }[]
+        qurahUsed: boolean
+      } | null
+    }
   | { success: false; error: string }
 
 // ── Valid enum sets ──────────────────────────────────────────────────────
@@ -393,5 +401,50 @@ export function validateAndParseImport(raw: unknown): ImportResult {
     viewMode: 'simple',
   }
 
-  return { success: true, state }
+  // ── Parse individual distribution fields (Phase 14, optional) ──
+
+  const result: ImportResult & { success: true } = { success: true, state }
+
+  // customHeirNames: Record<string, string>
+  if (isObject(data.customHeirNames)) {
+    const names: Record<string, string> = {}
+    let hasValid = false
+    for (const [key, val] of Object.entries(data.customHeirNames as Record<string, unknown>)) {
+      if (typeof key === 'string' && typeof val === 'string') {
+        names[key] = val
+        hasValid = true
+      }
+    }
+    if (hasValid) {
+      result.customHeirNames = names
+    }
+  }
+
+  // individualDistribution: { assignments, qurahUsed }
+  if (isObject(data.individualDistribution)) {
+    const indDist = data.individualDistribution as Record<string, unknown>
+    if (Array.isArray(indDist.assignments)) {
+      const assignments: { individualId: string; assignedItemIds: string[] }[] = []
+      for (const entry of indDist.assignments) {
+        if (
+          isObject(entry) &&
+          typeof entry.individualId === 'string' &&
+          Array.isArray(entry.assignedItemIds)
+        ) {
+          assignments.push({
+            individualId: entry.individualId,
+            assignedItemIds: (entry.assignedItemIds as unknown[]).filter(
+              (id): id is string => typeof id === 'string',
+            ),
+          })
+        }
+      }
+      result.individualDistribution = {
+        assignments,
+        qurahUsed: asBoolean(indDist.qurahUsed, false),
+      }
+    }
+  }
+
+  return result
 }
