@@ -172,7 +172,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 6. Charts and Visualization | 0/1 | Not started | - |
 | 7. PDF Export and Print | 2/2 | Complete | 2026-03-13 |
 | 8. Persistence and Scenarios | 2/2 | Complete | 2026-03-13 |
-| 9. Land Lot Division and Qurah Assignment | 2/2 | Complete   | 2026-03-13 |
+| 9. Land Lot Division and Qurah Assignment | 2/2 | Complete    | 2026-03-13 |
 | 10. Movable Assets and Complete Estate Inventory | 0/0 | Not started | - |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
