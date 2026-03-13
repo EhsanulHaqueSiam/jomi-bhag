@@ -31,6 +31,9 @@ export interface PdfData {
   // Distribution (optional, supersedes lotDivision when present)
   distribution?: PdfDistribution
 
+  // Settlement plan (optional, per-property settlement details)
+  settlements?: PdfSettlement[]
+
   // Metadata
   generatedAt: Date
 }
@@ -116,4 +119,58 @@ export interface PdfDistribution {
   groups: PdfDistributionGroup[]
   compensations: { from: string; to: string; amount: number }[]
   totalEstateValue: number
+}
+
+// Settlement types for PDF export
+
+export interface PdfSubParcel {
+  name: string
+  area: string           // pre-formatted with unit (e.g., "2.5 katha")
+  appraisedValue: number
+}
+
+export interface PdfSettlementSellSplit {
+  method: 'sell_split'
+  effectivePrice: number  // actualSalePrice or property value
+  isOverridden: boolean   // true if user entered actual sale price
+  payouts: { heirType: string; amount: number }[]
+}
+
+export interface PdfSettlementPhysicalDivision {
+  method: 'physical_division'
+  subParcels: PdfSubParcel[]
+  totalSubParcelValue: number
+  propertyValue: number
+  compensation: number    // difference
+}
+
+export interface PdfSettlementBuyout {
+  method: 'buyout'
+  buyer: string           // display label
+  compensationOwed: number
+  perGroupPayments: { heirType: string; amount: number }[]
+  installmentPlan: { perInstallment: number; count: number } | null
+}
+
+export interface PdfSettlementJointOwnership {
+  method: 'joint_ownership'
+  ownershipShares: { heirType: string; percentage: number }[]
+  income: {
+    type: string          // "Rent" or "Crop Income"
+    period: string        // "Monthly" or "Yearly"
+    amount: number
+    distribution: { heirType: string; amount: number }[]
+  } | null
+}
+
+export type PdfSettlementDetail =
+  | PdfSettlementSellSplit
+  | PdfSettlementPhysicalDivision
+  | PdfSettlementBuyout
+  | PdfSettlementJointOwnership
+
+export interface PdfSettlement {
+  propertyName: string
+  propertyValue: number
+  detail: PdfSettlementDetail
 }

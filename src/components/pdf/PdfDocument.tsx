@@ -10,6 +10,7 @@ import { PdfPropertySection } from './PdfPropertySection'
 import { PdfMovableAssetsSection } from './PdfMovableAssetsSection'
 import { PdfLotDivisionSection } from './PdfLotDivisionSection'
 import { PdfDistributionSection } from './PdfDistributionSection'
+import { PdfSettlementSection } from './PdfSettlementSection'
 import { PdfStepsSection } from './PdfStepsSection'
 import { PdfReferencesSection } from './PdfReferencesSection'
 import { PdfDisclaimer } from './PdfDisclaimer'
@@ -63,6 +64,11 @@ export function PdfDocument({ data }: { data: PdfData }) {
         ) : data.lotDivision ? (
           <PdfLotDivisionSection lotDivision={data.lotDivision} />
         ) : null}
+
+        {/* 4d. Settlement Plan */}
+        {data.settlements && data.settlements.length > 0 && (
+          <PdfSettlementSection settlements={data.settlements} />
+        )}
 
         {/* 5. Step-by-Step Calculation */}
         <PdfStepsSection steps={data.steps} />

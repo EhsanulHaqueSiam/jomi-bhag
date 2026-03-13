@@ -15,7 +15,16 @@ import {
 } from '@/core/utils/display'
 import { getAllReferences } from '@/core/faraid/references'
 import type { DistributionResult } from '@/core/distribution/types'
-import type { PdfData, PdfShareRow, PdfProperty, PdfReference, PdfLotDivision, PdfMovableAsset, PdfDistribution, PdfDistributionItem } from './pdfTypes'
+import {
+  calculateSellSplit,
+  calculatePhysicalDivisionCompensation,
+  computeSubParcelTargets,
+  calculateLandBuyout,
+  calculateOwnershipShares,
+  calculateIncomeDistribution,
+} from '@/core/land/settlement'
+import { fromSqft } from '@/core/land/units'
+import type { PdfData, PdfShareRow, PdfProperty, PdfReference, PdfLotDivision, PdfMovableAsset, PdfDistribution, PdfDistributionItem, PdfSettlement, PdfSettlementDetail } from './pdfTypes'
 
 function capitalize(s: string): string {
   if (!s) return s
@@ -138,6 +147,125 @@ export function extractPdfData(
     totalValue: computePropertyTotal(prop),
   }))
 
+  // Extract settlement data from properties with non-null settlement
+  const settledProperties = properties.filter((p) => p.settlement != null)
+  const settlements: PdfSettlement[] = settledProperties.map((prop) => {
+    const settlement = prop.settlement!
+    const propValue = computePropertyTotal(prop)
+    let detail: PdfSettlementDetail
+
+    switch (settlement.method) {
+      case 'sell_split': {
+        const effectivePrice = settlement.actualSalePrice ?? propValue
+        const payouts = calculateSellSplit(effectivePrice, results.shares)
+        detail = {
+          method: 'sell_split',
+          effectivePrice,
+          isOverridden: settlement.actualSalePrice !== null,
+          payouts: payouts.map((p) => ({
+            heirType: HEIR_TYPE_LABELS[p.heirType],
+            amount: p.amount,
+          })),
+        }
+        break
+      }
+      case 'physical_division': {
+        const targets = computeSubParcelTargets(propValue, results.shares)
+        const comp = calculatePhysicalDivisionCompensation(
+          settlement.subParcels,
+          targets,
+        )
+        const areaUnit = settlement.subParcels[0]?.areaInputUnit ?? 'decimal'
+        const division = prop.division ?? 'dhaka'
+        detail = {
+          method: 'physical_division',
+          subParcels: settlement.subParcels.map((sp) => ({
+            name: sp.name,
+            area: `${Math.round(fromSqft(sp.areaSqft, areaUnit, division) * 100) / 100} ${areaUnit}`,
+            appraisedValue: sp.appraisedValue,
+          })),
+          totalSubParcelValue: comp.totalSubParcelValue,
+          propertyValue: propValue,
+          compensation: comp.difference,
+        }
+        break
+      }
+      case 'buyout': {
+        const buyoutResult = calculateLandBuyout(
+          propValue,
+          settlement.buyerHeirType,
+          results.shares,
+          settlement.useInstallments,
+          settlement.installmentCount,
+        )
+        detail = {
+          method: 'buyout',
+          buyer: HEIR_TYPE_LABELS[settlement.buyerHeirType],
+          compensationOwed: buyoutResult.compensationOwed,
+          perGroupPayments: buyoutResult.perGroupPayments.map((p) => ({
+            heirType: HEIR_TYPE_LABELS[p.heirType],
+            amount: p.amount,
+          })),
+          installmentPlan: buyoutResult.installmentPlan
+            ? {
+                perInstallment: buyoutResult.installmentPlan.perInstallment,
+                count: buyoutResult.installmentPlan.count,
+              }
+            : null,
+        }
+        break
+      }
+      case 'joint_ownership': {
+        const ownershipShares = calculateOwnershipShares(results.shares)
+        const incomeTypeLabel =
+          settlement.incomeType === 'rent' ? 'Rent' : 'Crop Income'
+        const incomePeriodLabel =
+          settlement.incomePeriod === 'monthly' ? 'Monthly' : 'Yearly'
+        let income: {
+          type: string
+          period: string
+          amount: number
+          distribution: { heirType: string; amount: number }[]
+        } | null = null
+        if (
+          settlement.incomeAmount !== null &&
+          settlement.incomeAmount > 0 &&
+          settlement.incomeType !== null &&
+          settlement.incomePeriod !== null
+        ) {
+          const dist = calculateIncomeDistribution(
+            settlement.incomeAmount,
+            results.shares,
+          )
+          income = {
+            type: incomeTypeLabel,
+            period: incomePeriodLabel,
+            amount: settlement.incomeAmount,
+            distribution: dist.map((d) => ({
+              heirType: HEIR_TYPE_LABELS[d.heirType],
+              amount: d.amount,
+            })),
+          }
+        }
+        detail = {
+          method: 'joint_ownership',
+          ownershipShares: ownershipShares.map((s) => ({
+            heirType: HEIR_TYPE_LABELS[s.heirType],
+            percentage: s.percentage,
+          })),
+          income,
+        }
+        break
+      }
+    }
+
+    return {
+      propertyName: prop.nickname,
+      propertyValue: propValue,
+      detail,
+    }
+  })
+
   // Map division result to PdfLotDivision (optional)
   let lotDivision: PdfLotDivision | undefined
   if (divisionResult) {
@@ -240,6 +368,7 @@ export function extractPdfData(
     barChartImage,
     lotDivision,
     distribution,
+    ...(settlements.length > 0 ? { settlements } : {}),
     generatedAt: new Date(),
   }
 }
