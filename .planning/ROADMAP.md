@@ -173,23 +173,24 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 7. PDF Export and Print | 2/2 | Complete | 2026-03-13 |
 | 8. Persistence and Scenarios | 2/2 | Complete | 2026-03-13 |
 | 9. Land Lot Division and Qurah Assignment | 2/2 | Complete    | 2026-03-13 |
-| 10. Movable Assets and Complete Estate Inventory | 0/0 | Not started | - |
+| 10. Movable Assets and Complete Estate Inventory | 0/3 | Not started | - |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
-**Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, investments, livestock, etc.) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
+**Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, livestock, custom items) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
 **Depends on**: Phase 5
-**Requirements**: TBD
+**Requirements**: P10-SC1, P10-SC2, P10-SC3, P10-SC4, P10-SC5
 **Success Criteria** (what must be TRUE):
-  1. User can input movable assets by category: gold/silver (weight + purity), cash/bank deposits, vehicles, jewelry, furniture/household items, investments/shares, livestock, and custom items
+  1. User can input movable assets by category: gold/silver (weight + purity), cash/bank deposits, vehicles, jewelry, furniture/household items, livestock, and custom items
   2. Each asset has estimated market value (user-entered or guided estimation)
   3. App calculates per-heir monetary share from total estate (land + movable assets combined)
   4. For indivisible assets (e.g., a car, a ring), app offers Islamic options: sell and divide proceeds, one heir buys out others at fair value, or Qurah (lot drawing) assignment
   5. All division strictly follows Faraid rules -- no asset type is exempt from Islamic inheritance division
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 10-01: Movable asset input forms by category with valuation
-- [ ] 10-02: Indivisible asset handling (sale/buyout/Qurah) and combined estate calculation
+- [ ] 10-01-PLAN.md -- Movable asset types (discriminated union), data constants (gold/silver rates, vehicle/livestock types), valuation logic, indivisible buyout math, wizardStore CRUD extension with persist/fingerprint
+- [ ] 10-02-PLAN.md -- Category-specific UI forms (gold/silver with rate suggestion, vehicle, livestock, custom, simple BDT), asset card list, Step 4 expansion to Estate Inventory, WizardShell wiring
+- [ ] 10-03-PLAN.md -- IndivisibleCard resolution UI (sell/buyout/qurah), EstateBreakdownCard + HeirCard extensions for movable assets, PDF export section
 
 ### Phase 11: Interactive asset distribution with drag-and-drop equilibrium
 

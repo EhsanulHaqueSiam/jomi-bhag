@@ -77,6 +77,14 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **P9-SC3**: User can assign groups to heirs via Qurah (Islamic lot drawing) with staggered reveal, or manually reassign parcels between groups
 - [x] **P9-SC4**: Division follows Islamic fair division rules -- whole parcels assigned, cash compensation bridges value gaps, Qurah practice with Quranic/Hadith reference
 
+### Movable Assets and Estate Inventory
+
+- [ ] **P10-SC1**: User can input movable assets by category: gold/silver (weight + purity), cash/bank deposits, vehicles, jewelry, furniture/household items, livestock, and custom items
+- [ ] **P10-SC2**: Each asset has estimated market value via user entry or guided estimation (gold rate suggestion, livestock count x per-unit value)
+- [ ] **P10-SC3**: App calculates per-heir monetary share from total estate (land properties + movable assets combined)
+- [ ] **P10-SC4**: For indivisible assets (vehicles, jewelry, livestock, custom items), app offers three Islamic options: sell and divide proceeds, one heir buys out others at fair value, or Qurah (lot drawing) assignment
+- [ ] **P10-SC5**: All division strictly follows Faraid rules -- no asset type is exempt from Islamic inheritance division
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -158,13 +166,18 @@ Which phases cover which requirements. Updated during roadmap creation.
 | P9-SC2 | Phase 9 | Planned |
 | P9-SC3 | Phase 9 | Planned |
 | P9-SC4 | Phase 9 | Planned |
+| P10-SC1 | Phase 10 | Planned |
+| P10-SC2 | Phase 10 | Planned |
+| P10-SC3 | Phase 10 | Planned |
+| P10-SC4 | Phase 10 | Planned |
+| P10-SC5 | Phase 10 | Planned |
 
 **Coverage:**
 - v1 requirements: 39 total
-- Post-v1 (Phase 9+): 4 total
-- Mapped to phases: 43
+- Post-v1 (Phase 9+): 9 total
+- Mapped to phases: 48
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-12*
-*Last updated: 2026-03-13 after Phase 9 planning (P9-SC1 through P9-SC4 added)*
+*Last updated: 2026-03-13 after Phase 10 planning (P10-SC1 through P10-SC5 added)*
