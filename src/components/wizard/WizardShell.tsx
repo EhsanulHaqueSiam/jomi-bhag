@@ -9,7 +9,7 @@ import { StepFamily } from '@/components/wizard/StepFamily'
 import { StepSiblings } from '@/components/wizard/StepSiblings'
 import { FamilyTree } from '@/components/wizard/FamilyTree'
 import { ResultsPage } from '@/components/results/ResultsPage'
-import { StepProperties } from '@/components/property/StepProperties'
+import { StepEstateInventory } from '@/components/assets/StepEstateInventory'
 
 interface WizardShellProps {
   onNavigate: (page: AppPage) => void
@@ -116,7 +116,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
             {currentStep === 1 && <StepRelationship />}
             {currentStep === 2 && <StepFamily />}
             {currentStep === 3 && <StepSiblings />}
-            {currentStep === 4 && <StepProperties />}
+            {currentStep === 4 && <StepEstateInventory />}
             {currentStep === 5 && <ResultsPage onNavigate={onNavigate} />}
           </motion.div>
         </AnimatePresence>
