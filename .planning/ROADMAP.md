@@ -115,18 +115,18 @@ Plans:
 - [ ] 06-01-PLAN.md -- Recharts installation, pie chart (donut with emerald gradient + center heir count), horizontal bar chart (BDT amounts), ChartSection wrapper, ResultsPage integration, and chart integration tests
 
 ### Phase 7: PDF Export and Print
-**Goal**: Users can download or print a complete inheritance division report
+**Goal**: Users can download or print a complete inheritance division report with formal legal document layout
 **Depends on**: Phase 6
 **Requirements**: OUTP-01, OUTP-02, OUTP-03
 **Success Criteria** (what must be TRUE):
   1. User can download a PDF report containing heir breakdown, property details, share allocations, and Quranic references
   2. The PDF includes a disclaimer about consulting a lawyer for legal registration
   3. The app provides a print-friendly output with clean layout (no UI chrome, proper page breaks)
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 07-01: PDF generation with @react-pdf/renderer
-- [ ] 07-02: Print stylesheet and disclaimer
+- [ ] 07-01-PLAN.md -- PDF document infrastructure: @react-pdf/renderer + html-to-image installation, TTF fonts (Inter + Noto Naskh Arabic), PdfData type, extractPdfData function, pdfStyles/pdfFonts/pdfColors, all PDF section components (header, heir table, charts, property breakdown, steps, references, disclaimer), PdfDocument root, and data extraction tests
+- [ ] 07-02-PLAN.md -- usePdfExport hook (chart capture + lazy PDF generation + download/print), ResultsPage button integration (Download PDF + Print), integration tests, and visual verification checkpoint
 
 ### Phase 8: Persistence and Scenarios
 **Goal**: Users can save their calculations and compare different inheritance scenarios without creating an account
