@@ -82,7 +82,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **P10-SC1**: User can input movable assets by category: gold/silver (weight + purity), cash/bank deposits, vehicles, jewelry, furniture/household items, livestock, and custom items
 - [x] **P10-SC2**: Each asset has estimated market value via user entry or guided estimation (gold rate suggestion, livestock count x per-unit value)
 - [x] **P10-SC3**: App calculates per-heir monetary share from total estate (land properties + movable assets combined)
-- [ ] **P10-SC4**: For indivisible assets (vehicles, jewelry, livestock, custom items), app offers three Islamic options: sell and divide proceeds, one heir buys out others at fair value, or Qurah (lot drawing) assignment
+- [x] **P10-SC4**: For indivisible assets (vehicles, jewelry, livestock, custom items), app offers three Islamic options: sell and divide proceeds, one heir buys out others at fair value, or Qurah (lot drawing) assignment
 - [x] **P10-SC5**: All division strictly follows Faraid rules -- no asset type is exempt from Islamic inheritance division
 
 ## v2 Requirements
