@@ -99,12 +99,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### JSON Import and Export
 
-- [ ] **P12-01**: App exports full wizard input state as pretty-printed JSON with schemaVersion, appVersion, and exportDate metadata
-- [ ] **P12-02**: Export excludes computed results (FaraidOutput) -- import triggers fresh engine recalculation for consistency across engine versions
-- [ ] **P12-03**: Default export filename auto-generated from heir counts (e.g., "2-sons-1-wife-2026-03-13.json")
-- [ ] **P12-04**: App imports JSON files and loads valid data into the wizard for editing and recalculation
-- [ ] **P12-05**: Partial JSON accepted on import -- missing fields filled with sensible defaults (zero counts, empty arrays, null relationships)
-- [ ] **P12-06**: Import validates types and enum values, rejects invalid/corrupted JSON with descriptive toast notification
+- [x] **P12-01**: App exports full wizard input state as pretty-printed JSON with schemaVersion, appVersion, and exportDate metadata
+- [x] **P12-02**: Export excludes computed results (FaraidOutput) -- import triggers fresh engine recalculation for consistency across engine versions
+- [x] **P12-03**: Default export filename auto-generated from heir counts (e.g., "2-sons-1-wife-2026-03-13.json")
+- [x] **P12-04**: App imports JSON files and loads valid data into the wizard for editing and recalculation
+- [x] **P12-05**: Partial JSON accepted on import -- missing fields filled with sensible defaults (zero counts, empty arrays, null relationships)
+- [x] **P12-06**: Import validates types and enum values, rejects invalid/corrupted JSON with descriptive toast notification
 - [ ] **P12-07**: File selection via drag-and-drop zone with visual feedback on drag-over, or click-to-browse fallback
 - [ ] **P12-08**: Confirmation dialog appears before import replaces current wizard data
 - [ ] **P12-09**: Toast notifications for import errors (invalid JSON, wrong types, file too large) and import success
