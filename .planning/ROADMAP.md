@@ -23,6 +23,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 9: Land Lot Division and Qurah Assignment** - Named land parcels divided into heir groups per Faraid shares, Qurah-based random or user-named assignment, strictly Islamic fair division (completed 2026-03-13)
 - [x] **Phase 10: Movable Assets and Complete Estate Inventory** - Gold, silver, cash, vehicles, jewelry, furniture, investments, livestock, and all non-land assets with Islamic rules for indivisible item division (completed 2026-03-13)
 - [x] **Phase 11: Interactive Asset Distribution** - Drag-and-drop Kanban board for distributing all assets among heir groups with real-time equilibrium indicators and smart randomization (completed 2026-03-13)
+- [ ] **Phase 12: JSON Import and Export** - Export full estate data as JSON for backup/portability, import JSON files (even partial) to populate wizard for editing and recalculation
 
 ## Phase Details
 
@@ -161,7 +162,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -176,6 +177,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 9. Land Lot Division and Qurah Assignment | 2/2 | Complete    | 2026-03-13 |
 | 10. Movable Assets and Complete Estate Inventory | 3/3 | Complete    | 2026-03-13 |
 | 11. Interactive Asset Distribution | 3/3 | Complete    | 2026-03-13 |
+| 12. JSON Import and Export | 0/2 | Not started | - |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
 **Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, livestock, custom items) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
@@ -213,12 +215,20 @@ Plans:
 - [ ] 11-02-PLAN.md -- @dnd-kit installation, DnD Kanban UI (DistributionBoard, HeirColumn, AssetCard, EquilibriumBar, SummaryBanner, DistributionControls, MobileFallback), app routing, ResultsPage "Distribute Assets" button, and component tests
 - [ ] 11-03-PLAN.md -- PDF PdfDistributionSection with mixed asset types, extractPdfData extension, usePdfExport wiring, and integration tests
 
-### Phase 12: JSON import and export for assets
-
-**Goal:** [To be planned]
-**Requirements**: TBD
-**Depends on:** Phase 11
-**Plans:** 0 plans
+### Phase 12: JSON Import and Export
+**Goal**: Users can export their full estate data (heirs, properties, movable assets) as a pretty-printed JSON file for backup and portability, and import JSON files (even with partial fields) to populate the wizard for editing and recalculation
+**Depends on**: Phase 11
+**Requirements**: P12-01, P12-02, P12-03, P12-04, P12-05, P12-06, P12-07, P12-08, P12-09
+**Success Criteria** (what must be TRUE):
+  1. User can click Export JSON on the Results page and download a pretty-printed .json file containing all wizard inputs with schema metadata
+  2. Export excludes computed results (FaraidOutput) -- import triggers fresh engine recalculation
+  3. Default filename is auto-generated from heir counts (e.g., "2-sons-1-wife-2026-03-13.json")
+  4. User can import a JSON file on Step 1 via drag-and-drop zone or click-to-browse
+  5. Partial JSON accepted -- missing fields filled with sensible defaults
+  6. Invalid/corrupted JSON shows a toast notification with descriptive error
+  7. Import replaces current data after confirmation dialog
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 12 to break down)
+- [ ] 12-01-PLAN.md -- Export schema types (ExportSchema, SCHEMA_VERSION), extractExportData pure function, generateExportFilename, import validateAndParseImport with partial data support, and comprehensive unit tests
+- [ ] 12-02-PLAN.md -- UI components (Toast, ImportDropZone, ImportConfirmDialog), hooks (useJsonExport, useJsonImport), ResultsPage export button wiring, StepRelationship import zone wiring, and integration tests

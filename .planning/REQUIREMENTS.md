@@ -97,6 +97,18 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **P11-08**: Mobile long-press (500ms) activates drag; "Move to..." fallback buttons always available
 - [x] **P11-09**: PDF report includes Distribution Summary section with group assignments, mixed asset types, and cash compensations
 
+### JSON Import and Export
+
+- [ ] **P12-01**: App exports full wizard input state as pretty-printed JSON with schemaVersion, appVersion, and exportDate metadata
+- [ ] **P12-02**: Export excludes computed results (FaraidOutput) -- import triggers fresh engine recalculation for consistency across engine versions
+- [ ] **P12-03**: Default export filename auto-generated from heir counts (e.g., "2-sons-1-wife-2026-03-13.json")
+- [ ] **P12-04**: App imports JSON files and loads valid data into the wizard for editing and recalculation
+- [ ] **P12-05**: Partial JSON accepted on import -- missing fields filled with sensible defaults (zero counts, empty arrays, null relationships)
+- [ ] **P12-06**: Import validates types and enum values, rejects invalid/corrupted JSON with descriptive toast notification
+- [ ] **P12-07**: File selection via drag-and-drop zone with visual feedback on drag-over, or click-to-browse fallback
+- [ ] **P12-08**: Confirmation dialog appears before import replaces current wizard data
+- [ ] **P12-09**: Toast notifications for import errors (invalid JSON, wrong types, file too large) and import success
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -192,13 +204,22 @@ Which phases cover which requirements. Updated during roadmap creation.
 | P11-07 | Phase 11 | Planned |
 | P11-08 | Phase 11 | Planned |
 | P11-09 | Phase 11 | Planned |
+| P12-01 | Phase 12 | Planned |
+| P12-02 | Phase 12 | Planned |
+| P12-03 | Phase 12 | Planned |
+| P12-04 | Phase 12 | Planned |
+| P12-05 | Phase 12 | Planned |
+| P12-06 | Phase 12 | Planned |
+| P12-07 | Phase 12 | Planned |
+| P12-08 | Phase 12 | Planned |
+| P12-09 | Phase 12 | Planned |
 
 **Coverage:**
 - v1 requirements: 39 total
-- Post-v1 (Phase 9+): 18 total
-- Mapped to phases: 57
+- Post-v1 (Phase 9+): 27 total
+- Mapped to phases: 66
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-12*
-*Last updated: 2026-03-13 after Phase 11 planning (P11-01 through P11-09 added)*
+*Last updated: 2026-03-13 after Phase 12 planning (P12-01 through P12-09 added)*
