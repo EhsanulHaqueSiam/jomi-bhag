@@ -38,7 +38,7 @@ export function SharePieChart() {
   if (chartData.length === 0) return null
 
   return (
-    <div>
+    <div id="pdf-pie-chart">
       <h3 className="mb-2 text-sm font-medium text-gray-500">
         Share Distribution
       </h3>

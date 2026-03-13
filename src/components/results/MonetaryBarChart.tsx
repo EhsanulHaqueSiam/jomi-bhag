@@ -38,7 +38,7 @@ export function MonetaryBarChart() {
   if (chartData.length === 0) return null
 
   return (
-    <div>
+    <div id="pdf-bar-chart">
       <h3 className="mb-2 text-sm font-medium text-gray-500">
         Monetary Comparison
       </h3>

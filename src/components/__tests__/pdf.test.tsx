@@ -1,6 +1,8 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { render, screen } from '@testing-library/react'
 import Fraction from 'fraction.js'
 import type { FaraidOutput, ShareResult, IslamicReference } from '@/core/faraid/types'
+import { useWizardStore } from '@/stores/wizardStore'
 
 // ---------------------------------------------------------------------------
 // Mock @react-pdf/renderer -- PDF primitives as simple passthroughs
@@ -306,5 +308,66 @@ describe('Disclaimer content', () => {
 
   it('values notice mentions user estimates', () => {
     expect(VALUES_NOTICE).toContain('estimates entered by the user')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// Tests: ResultsPage PDF buttons
+// ---------------------------------------------------------------------------
+
+import App from '@/App'
+
+const baseStoreState = {
+  currentStep: 5,
+  completedSteps: [1, 2, 3, 4],
+  relationship: 'father' as const,
+  deceasedGender: 'male' as const,
+  userGender: 'male' as const,
+  mfloEnabled: false,
+  motherAlive: null,
+  autoIncludes: [],
+  wifeCount: 0,
+  husbandPresent: false,
+  sonCount: 0,
+  daughterCount: 0,
+  siblingTypeExpanded: false,
+  brotherFullCount: 0,
+  brotherConsanguineCount: 0,
+  brotherUterineCount: 0,
+  sisterFullCount: 0,
+  sisterConsanguineCount: 0,
+  sisterUterineCount: 0,
+  totalEstateValue: 0,
+  viewMode: 'simple' as const,
+}
+
+describe('ResultsPage PDF buttons', () => {
+  beforeEach(() => {
+    useWizardStore.setState({
+      ...baseStoreState,
+      results: makeBasicOutput(),
+      totalEstateValue: 0,
+    })
+  })
+
+  it('renders Download PDF and Print buttons when results exist', () => {
+    render(<App />)
+
+    expect(screen.getByText('Download PDF')).toBeInTheDocument()
+    expect(screen.getByText('Print')).toBeInTheDocument()
+  })
+
+  it('Download PDF button is not disabled initially', () => {
+    render(<App />)
+
+    const downloadBtn = screen.getByText('Download PDF').closest('button')
+    expect(downloadBtn).not.toBeDisabled()
+  })
+
+  it('Print button is not disabled initially', () => {
+    render(<App />)
+
+    const printBtn = screen.getByText('Print').closest('button')
+    expect(printBtn).not.toBeDisabled()
   })
 })
