@@ -5,6 +5,7 @@ import { HeirCard } from '@/components/results/HeirCard'
 import { AdjustmentBanner } from '@/components/results/AdjustmentBanner'
 import { SpecialCaseCallout } from '@/components/results/SpecialCaseCallout'
 import { BlockedHeirsSection } from '@/components/results/BlockedHeirsSection'
+import { ChartSection } from '@/components/results/ChartSection'
 import { StepAccordion } from '@/components/results/StepAccordion'
 import { IslamicBasisSection } from '@/components/results/IslamicBasisSection'
 import { getAllReferences } from '@/core/faraid/references'
@@ -40,6 +41,9 @@ export function ResultsPage() {
 
       {/* Estate value breakdown */}
       <EstateBreakdownCard />
+
+      {/* Charts: pie (share distribution) + bar (monetary comparison) */}
+      <ChartSection />
 
       {/* Adjustment banner (Awl/Radd) */}
       <AdjustmentBanner
