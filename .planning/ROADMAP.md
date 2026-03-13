@@ -179,7 +179,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 11. Interactive Asset Distribution | 3/3 | Complete    | 2026-03-13 |
 | 12. JSON Import and Export | 2/2 | Complete    | 2026-03-13 |
 | 13. Land Settlement Methods | 3/3 | Complete    | 2026-03-13 |
-| 14. Per-Heir Asset Breakdown | 4/4 | Complete   | 2026-03-13 |
+| 14. Per-Heir Asset Breakdown | 4/4 | Complete    | 2026-03-13 |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
 **Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, livestock, custom items) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
