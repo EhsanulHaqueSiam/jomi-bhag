@@ -122,7 +122,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **P13-09**: Property type extended with settlement field (null default) persisted in wizardStore and JSON export/import
 - [x] **P13-10**: JSON import handles missing settlement field gracefully (defaults to null) for backward compatibility
 - [ ] **P13-11**: Settlement method selector on each property card in the distribution board with expandable detail panel
-- [ ] **P13-12**: PDF includes Settlement Plan section with per-property settlement details (method, amounts, sub-parcels, installments, ownership shares)
+- [x] **P13-12**: PDF includes Settlement Plan section with per-property settlement details (method, amounts, sub-parcels, installments, ownership shares)
 
 ## v2 Requirements
 
