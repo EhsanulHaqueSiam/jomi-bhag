@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import Fraction from 'fraction.js'
 import App from '@/App'
@@ -130,6 +130,11 @@ const baseStoreState = {
 // RSLT-04: Pie Chart
 // ---------------------------------------------------------------------------
 
+/** Expand the "Charts & Visualizations" collapsible section. */
+function expandChartsSection() {
+  fireEvent.click(screen.getByText('Charts & Visualizations'))
+}
+
 describe('RSLT-04: Pie Chart', () => {
   beforeEach(() => {
     useWizardStore.setState({
@@ -139,33 +144,45 @@ describe('RSLT-04: Pie Chart', () => {
     })
   })
 
-  it('renders pie chart with Share Distribution heading', () => {
+  it('renders pie chart with Share Distribution heading after expanding collapsible', async () => {
     render(<App />)
-    expect(screen.getByText('Share Distribution')).toBeInTheDocument()
+    expandChartsSection()
+    await waitFor(() => {
+      expect(screen.getByText('Share Distribution')).toBeInTheDocument()
+    })
   })
 
-  it('shows center label with heir count', () => {
+  it('shows center label with heir count', async () => {
     render(<App />)
-    expect(screen.getByText('2 heirs')).toBeInTheDocument()
+    expandChartsSection()
+    await waitFor(() => {
+      expect(screen.getByText('2 heirs')).toBeInTheDocument()
+    })
   })
 
-  it('shows legend with heir names including count notation', () => {
+  it('shows legend with heir names including count notation', async () => {
     render(<App />)
-    // Daughter count > 1, so displayed as "Daughter x2" in the chart legend
-    expect(screen.getByText(/Daughter x2.*66\.7%/)).toBeInTheDocument()
-    // Husband appears in both legend and HeirCard -- use the legend-specific text with percentage
-    expect(screen.getByText(/Husband \(25\.0%\)/)).toBeInTheDocument()
+    expandChartsSection()
+    await waitFor(() => {
+      // Daughter count > 1, so displayed as "Daughter x2" in the chart legend
+      expect(screen.getByText(/Daughter x2.*66\.7%/)).toBeInTheDocument()
+      // Husband appears in both legend and HeirCard -- use the legend-specific text with percentage
+      expect(screen.getByText(/Husband \(25\.0%\)/)).toBeInTheDocument()
+    })
   })
 
-  it('excludes blocked heirs from chart', () => {
+  it('excludes blocked heirs from chart', async () => {
     useWizardStore.setState({
       ...baseStoreState,
       results: makeWithBlockedOutput(),
       totalEstateValue: 1000000,
     })
     render(<App />)
+    expandChartsSection()
 
-    expect(screen.getByText('Share Distribution')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('Share Distribution')).toBeInTheDocument()
+    })
     // Full Brother is blocked -- should NOT appear in chart legend
     // The "Full Brother" text might appear in the BlockedHeirsSection but NOT in the chart area
     const chartSection = screen.getByText('Share Distribution').closest('div')!.parentElement!
@@ -178,36 +195,45 @@ describe('RSLT-04: Pie Chart', () => {
 // ---------------------------------------------------------------------------
 
 describe('RSLT-05: Bar Chart', () => {
-  it('renders bar chart when totalEstateValue > 0', () => {
+  it('renders bar chart when totalEstateValue > 0', async () => {
     useWizardStore.setState({
       ...baseStoreState,
       results: makeTwoHeirOutput(),
       totalEstateValue: 1000000,
     })
     render(<App />)
-    expect(screen.getByText('Monetary Comparison')).toBeInTheDocument()
+    expandChartsSection()
+    await waitFor(() => {
+      expect(screen.getByText('Monetary Comparison')).toBeInTheDocument()
+    })
   })
 
-  it('hides bar chart with hint when no estate value', () => {
+  it('hides bar chart with hint when no estate value', async () => {
     useWizardStore.setState({
       ...baseStoreState,
       results: makeTwoHeirOutput(),
       totalEstateValue: 0,
     })
     render(<App />)
-    expect(
-      screen.getByText('Enter estate value to see monetary comparison'),
-    ).toBeInTheDocument()
+    expandChartsSection()
+    await waitFor(() => {
+      expect(
+        screen.getByText('Enter estate value to see monetary comparison'),
+      ).toBeInTheDocument()
+    })
   })
 
-  it('shows heir type names on Y-axis', () => {
+  it('shows heir type names on Y-axis', async () => {
     useWizardStore.setState({
       ...baseStoreState,
       results: makeTwoHeirOutput(),
       totalEstateValue: 1000000,
     })
     render(<App />)
-    // Bar chart should show heir names
-    expect(screen.getByText('Monetary Comparison')).toBeInTheDocument()
+    expandChartsSection()
+    await waitFor(() => {
+      // Bar chart should show heir names
+      expect(screen.getByText('Monetary Comparison')).toBeInTheDocument()
+    })
   })
 })
