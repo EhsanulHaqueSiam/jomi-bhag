@@ -64,6 +64,7 @@ export function useJsonImport() {
 
     useWizardStore.setState(pendingState)
     useDistributionStore.getState().resetDistribution()
+    useWizardStore.getState().calculateShares()
     setPendingState(null)
     setToast({ message: 'Data imported successfully', type: 'success' })
   }, [pendingState])
