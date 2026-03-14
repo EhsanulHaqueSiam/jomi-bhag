@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-13)
 Phase: 14 of 14 (Per-Heir Asset Breakdown)
 Plan: 4 of 4 complete
 Status: Complete
-Last activity: 2026-03-14 - Completed quick task 7: Fix PDF download and print not working
+Last activity: 2026-03-14 - Completed quick task 8: UX overhaul (wizard merge, results streamline, distribution polish)
 
 Progress: [##########] 35/35 plans (100%)
 
@@ -212,6 +212,12 @@ Recent decisions affecting current work:
 - [Phase 14]: PdfIndividualSection uses text markers [OK]/[~]/[X] for equilibrium (PDF cannot render Unicode checkmarks reliably)
 - [Phase 14]: Custom name resolution in PDF applied to both heir displayName and compensation fromName/toName
 - [Phase quick-1]: Mobile bottom padding pb-32 (128px) to clear combined 112px fixed bar stack; inline style for safe-area-inset-bottom
+- [Quick-8]: Wizard merged from 5 steps to 4: Relationship, Family Members (spouse+children+siblings), Estate Inventory, Results
+- [Quick-8]: StepFamilyAndSiblings uses collapsible toggle for siblings (auto-expands if data exists, default collapsed)
+- [Quick-8]: Results page Charts and Islamic Basis behind collapsible disclosures (replaces ModeToggle simple/detailed)
+- [Quick-8]: Results page sticky action bar with all actions consolidated at bottom
+- [Quick-8]: Distribution page Auto-distribute button calls computeDistribution() + randomize() in sequence
+- [Quick-8]: Persist version bumped to 2 with migration mapping old 5-step numbering to new 4-step
 
 ### Pending Todos
 
@@ -237,6 +243,7 @@ None yet.
 | 5 | Make distribution page wider on desktop | 2026-03-14 | 635d8bb | [5-make-distribution-page-wider-on-desktop-](./quick/5-make-distribution-page-wider-on-desktop-/) |
 | 6 | Audit and verify Faraid engine correctness (10 edge case tests) | 2026-03-14 | fa145fd | [6-audit-and-verify-faraid-engine-correctne](./quick/6-audit-and-verify-faraid-engine-correctne/) |
 | 7 | Fix PDF download and print not working | 2026-03-14 | ce1f928 | [7-fix-pdf-download-and-print-not-working-a](./quick/7-fix-pdf-download-and-print-not-working-a/) |
+| 8 | UX overhaul: merge wizard steps, streamline results, polish distribution | 2026-03-14 | fdcf029 | [8-ux-overhaul-streamline-full-wizard-to-di](./quick/8-ux-overhaul-streamline-full-wizard-to-di/) |
 
 ### Blockers/Concerns
 
@@ -245,6 +252,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T08:45:55Z
-Stopped at: Quick task 6 complete (Faraid engine audit with 10 edge case integration tests)
+Last session: 2026-03-14T09:25:36Z
+Stopped at: Quick task 8 complete (UX overhaul: 4-step wizard, streamlined results, polished distribution)
 Resume file: None
