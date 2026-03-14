@@ -38,7 +38,7 @@ const staggerItem = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: 'easeOut' },
+    transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: 'easeOut' as const },
   },
 }
 
@@ -52,7 +52,7 @@ const tableRowVariant = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.25, ease: 'easeOut' },
+    transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.25, ease: 'easeOut' as const },
   },
 }
 
