@@ -183,7 +183,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 12. JSON Import and Export | 2/2 | Complete    | 2015-03-13 |
 | 13. Land Settlement Methods | 3/3 | Complete    | 2015-03-13 |
 | 14. Per-Heir Asset Breakdown | 4/4 | Complete    | 2015-03-13 |
-| 15. Fix JSON Import & Persistence Gaps | 0/0 | Not started | - |
+| 15. Fix JSON Import & Persistence Gaps | 0/1 | Not started | - |
 | 16. Wire Results Mode Toggle | 0/0 | Not started | - |
 | 17. Dead Code Cleanup & Documentation Fix | 0/0 | Not started | - |
 
@@ -291,6 +291,10 @@ Plans:
   1. JSON import restores customHeirNames and individualDistribution to individualDistributionStore
   2. ScenariosPage "New Calculation" resets movableAssets and expandedAssetId
   3. splitOrigins Map survives page reload via persist partialize
+**Plans:** 1 plan
+
+Plans:
+- [ ] 15-01-PLAN.md -- Fix useJsonImport individual data restoration, ScenariosPage complete reset, splitOrigins Map-to-Record persistence, and test coverage
 
 ### Phase 16: Wire Results Mode Toggle
 **Goal**: Users can toggle between simple and detailed views on the Results page
