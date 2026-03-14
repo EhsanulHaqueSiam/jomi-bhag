@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', 'Noto Sans Bengali', ui-sans-serif, system-ui, sans-serif;
   --font-arabic: 'Noto Naskh Arabic', serif;
+  --font-bengali: 'Noto Sans Bengali', sans-serif;
 
   /* Gold accent palette for Quranic references */
   --color-gold-50: oklch(98% 0.02 90);

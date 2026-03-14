@@ -5,6 +5,7 @@ import InterSemiBold from '@/assets/fonts/Inter-SemiBold.ttf'
 import InterBold from '@/assets/fonts/Inter-Bold.ttf'
 import InterItalic from '@/assets/fonts/Inter-Italic.ttf'
 import NotoNaskhArabicRegular from '@/assets/fonts/NotoNaskhArabic-Regular.ttf'
+import NotoSansBengaliRegular from '@/assets/fonts/NotoSansBengali-Regular.ttf'
 
 Font.register({
   family: 'Inter',
@@ -19,4 +20,9 @@ Font.register({
 Font.register({
   family: 'Noto Naskh Arabic',
   fonts: [{ src: NotoNaskhArabicRegular, fontWeight: 400 }],
+})
+
+Font.register({
+  family: 'Noto Sans Bengali',
+  fonts: [{ src: NotoSansBengaliRegular, fontWeight: 400 }],
 })
