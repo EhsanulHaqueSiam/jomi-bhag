@@ -2,29 +2,34 @@ import { View, Text } from '@react-pdf/renderer'
 import { styles } from './pdfStyles'
 import type { PdfMovableAsset } from './pdfTypes'
 import { pdfBdtFormat } from './extractPdfData'
+import { en } from '@/i18n/translations/en'
+import { bn } from '@/i18n/translations/bn'
 
 interface PdfMovableAssetsSectionProps {
   movableAssets: PdfMovableAsset[]
   movableAssetsTotal: number
+  language?: 'en' | 'bn'
 }
 
 export function PdfMovableAssetsSection({
   movableAssets,
   movableAssetsTotal,
+  language = 'en',
 }: PdfMovableAssetsSectionProps) {
   if (movableAssets.length === 0) return null
+  const txt = language === 'bn' ? bn : en
 
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionHeading}>Movable Assets</Text>
+      <Text style={styles.sectionHeading}>{txt.pdf.movableAssets}</Text>
 
       {/* Table header */}
       <View style={styles.tableHeaderRow}>
         <Text style={[styles.tableCell, { width: '30%', fontSize: 9, fontWeight: 600 }]}>
-          Item
+          {txt.pdf.item}
         </Text>
         <Text style={[styles.tableCell, { width: '20%', fontSize: 9, fontWeight: 600 }]}>
-          Category
+          {txt.pdf.category}
         </Text>
         <Text
           style={[
@@ -32,10 +37,10 @@ export function PdfMovableAssetsSection({
             { width: '20%', fontSize: 9, fontWeight: 600, textAlign: 'right' },
           ]}
         >
-          Value
+          {txt.pdf.value}
         </Text>
         <Text style={[styles.tableCell, { width: '30%', fontSize: 9, fontWeight: 600 }]}>
-          Status
+          {txt.pdf.status}
         </Text>
       </View>
 
@@ -65,9 +70,9 @@ export function PdfMovableAssetsSection({
           <Text style={[styles.tableCell, { width: '30%', fontSize: 9 }]}>
             {asset.isIndivisible
               ? asset.resolution
-                ? `Indivisible - ${asset.resolution}`
-                : 'Indivisible'
-              : 'Divisible'}
+                ? `${txt.pdf.indivisible} - ${asset.resolution}`
+                : txt.pdf.indivisible
+              : txt.pdf.divisible}
           </Text>
         </View>
       ))}
@@ -85,7 +90,7 @@ export function PdfMovableAssetsSection({
         }}
       >
         <Text style={{ fontSize: 11, fontWeight: 700, color: '#111' }}>
-          Total Movable Assets
+          {txt.pdf.totalMovableAssets}
         </Text>
         <Text style={{ fontSize: 11, fontWeight: 700, color: '#111' }}>
           {pdfBdtFormat(movableAssetsTotal)}

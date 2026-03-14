@@ -11,7 +11,10 @@ import {
   fractionToBDT,
   HEIR_TYPE_LABELS,
   SHARE_TYPE_LABELS,
+  getHeirTypeLabel,
+  getShareTypeLabel,
 } from '@/core/utils/display'
+import type { Language } from '@/i18n/LanguageContext'
 import { getAllReferences } from '@/core/faraid/references'
 import type { DistributionResult } from '@/core/distribution/types'
 import {
@@ -42,7 +45,19 @@ function capitalize(s: string): string {
  * This prevents @react-pdf/renderer from crashing with "Cannot read properties of null
  * (reading 'xCoordinate')" when Inter font's OpenType GPOS engine encounters unsupported glyphs.
  */
-export function sanitizeForPdf(str: string): string {
+/**
+ * Sanitize text for PDF rendering. When language is 'bn', Bengali characters
+ * are preserved (Noto Sans Bengali font is registered). When 'en', Bengali
+ * is stripped to prevent Inter font GPOS crashes.
+ */
+export function sanitizeForPdf(str: string, language?: Language): string {
+  if (language === 'bn') {
+    // Keep Bengali (U+0980-U+09FF) + ASCII + Latin Extended + Arabic
+    return str
+      .replace(/[^\u0000-\u024F\u0600-\u06FF\u0980-\u09FF]/g, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim()
+  }
   return str
     .replace(/[^\u0000-\u024F\u0600-\u06FF]/g, '')
     .replace(/\s{2,}/g, ' ')
@@ -83,22 +98,22 @@ function sanitizeArabicForPdf(str: string): string {
  * - Other strings: strips unsupported Unicode scripts
  * - base64 data URLs: left untouched
  */
-function deepSanitizeStrings<T>(obj: T, parentKey?: string): T {
+function deepSanitizeStrings<T>(obj: T, parentKey?: string, lang?: Language): T {
   if (typeof obj === 'string') {
     // Don't sanitize base64 data URLs (chart images)
     if (obj.startsWith('data:')) return obj
     // Arabic text: strip diacriticals but keep base letters
     if (parentKey === 'arabicText') return sanitizeArabicForPdf(obj) as T
-    // All other text: strip unsupported Unicode scripts
-    return sanitizeForPdf(obj) as T
+    // All other text: strip unsupported Unicode scripts (language-aware)
+    return sanitizeForPdf(obj, lang) as T
   }
   if (Array.isArray(obj)) {
-    return obj.map((item) => deepSanitizeStrings(item)) as T
+    return obj.map((item) => deepSanitizeStrings(item, undefined, lang)) as T
   }
   if (obj !== null && typeof obj === 'object' && !(obj instanceof Date)) {
     const result: Record<string, unknown> = {}
     for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
-      result[key] = deepSanitizeStrings(value, key)
+      result[key] = deepSanitizeStrings(value, key, lang)
     }
     return result as T
   }
@@ -141,17 +156,17 @@ function getAssetItemName(asset: MovableAsset): string {
 }
 
 /** Map resolution to a display string */
-function getResolutionLabel(asset: MovableAsset): string | null {
+function getResolutionLabel(asset: MovableAsset, language: Language = 'en'): string | null {
   const res = asset.indivisibleResolution
   if (!res) return null
   switch (res.method) {
     case 'sell_divide':
       return 'Sell & Divide'
     case 'buyout':
-      return `Buyout by ${HEIR_TYPE_LABELS[res.buyerHeirType]}`
+      return `Buyout by ${getHeirTypeLabel(res.buyerHeirType, language)}`
     case 'qurah':
       return res.assignedHeirType
-        ? `Qurah - ${HEIR_TYPE_LABELS[res.assignedHeirType]}`
+        ? `Qurah - ${getHeirTypeLabel(res.assignedHeirType, language)}`
         : 'Qurah'
   }
 }
@@ -164,16 +179,17 @@ export function extractPdfData(
   barChartImage: string | null,
   movableAssets?: MovableAsset[],
   distributionResult?: DistributionResult | null,
+  language: Language = 'en',
 ): PdfData {
   // Map all shares to PdfShareRow
   const shares: PdfShareRow[] = results.shares.map((share) => ({
-    heirType: HEIR_TYPE_LABELS[share.heirType],
+    heirType: getHeirTypeLabel(share.heirType, language),
     count: share.count,
     fraction: fractionToString(share.totalShare),
     percentage: fractionToPercent(share.totalShare),
     perHeirBdt: fractionToBDT(share.sharePerHeir, totalEstateValue).replace(/৳/g, 'Tk'),
     totalBdt: fractionToBDT(share.totalShare, totalEstateValue).replace(/৳/g, 'Tk'),
-    shareType: SHARE_TYPE_LABELS[share.shareType] ?? share.shareType,
+    shareType: getShareTypeLabel(share.shareType, language),
     explanation: share.explanation,
     quranRef: share.quranRef,
     hadithRef: share.hadithRef,
@@ -186,8 +202,8 @@ export function extractPdfData(
 
   // Map blocked heirs to display labels
   const blockedHeirs = results.blockedHeirs.map((bh) => ({
-    heirType: HEIR_TYPE_LABELS[bh.heirType],
-    blockedBy: HEIR_TYPE_LABELS[bh.blockedBy],
+    heirType: getHeirTypeLabel(bh.heirType, language),
+    blockedBy: getHeirTypeLabel(bh.blockedBy, language),
     rule: bh.rule,
   }))
 
@@ -198,7 +214,7 @@ export function extractPdfData(
     reference: ref.reference,
     arabicText: ref.arabicText,
     englishText: ref.englishText,
-    appliesTo: ref.appliesTo.map((ht) => HEIR_TYPE_LABELS[ht]),
+    appliesTo: ref.appliesTo.map((ht) => getHeirTypeLabel(ht, language)),
   }))
 
   // Map properties to PdfProperty
@@ -236,7 +252,7 @@ export function extractPdfData(
           effectivePrice,
           isOverridden: settlement.actualSalePrice !== null,
           payouts: payouts.map((p) => ({
-            heirType: HEIR_TYPE_LABELS[p.heirType],
+            heirType: getHeirTypeLabel(p.heirType, language),
             amount: p.amount,
           })),
         }
@@ -273,10 +289,10 @@ export function extractPdfData(
         )
         detail = {
           method: 'buyout',
-          buyer: HEIR_TYPE_LABELS[settlement.buyerHeirType],
+          buyer: getHeirTypeLabel(settlement.buyerHeirType, language),
           compensationOwed: buyoutResult.compensationOwed,
           perGroupPayments: buyoutResult.perGroupPayments.map((p) => ({
-            heirType: HEIR_TYPE_LABELS[p.heirType],
+            heirType: getHeirTypeLabel(p.heirType, language),
             amount: p.amount,
           })),
           installmentPlan: buyoutResult.installmentPlan
@@ -315,7 +331,7 @@ export function extractPdfData(
             period: incomePeriodLabel,
             amount: settlement.incomeAmount,
             distribution: dist.map((d) => ({
-              heirType: HEIR_TYPE_LABELS[d.heirType],
+              heirType: getHeirTypeLabel(d.heirType, language),
               amount: d.amount,
             })),
           }
@@ -323,7 +339,7 @@ export function extractPdfData(
         detail = {
           method: 'joint_ownership',
           ownershipShares: ownershipShares.map((s) => ({
-            heirType: HEIR_TYPE_LABELS[s.heirType],
+            heirType: getHeirTypeLabel(s.heirType, language),
             percentage: s.percentage,
           })),
           income,
@@ -360,7 +376,7 @@ export function extractPdfData(
           .sort((a, b) => b.value - a.value) // sort by value descending
 
         return {
-          heirType: HEIR_TYPE_LABELS[group.heirType],
+          heirType: getHeirTypeLabel(group.heirType, language),
           count: group.count,
           targetValue: Math.round(group.targetValue),
           assignedItems,
@@ -369,8 +385,8 @@ export function extractPdfData(
         }
       }),
       compensations: distributionResult.compensations.map((comp) => ({
-        from: HEIR_TYPE_LABELS[comp.fromGroup],
-        to: HEIR_TYPE_LABELS[comp.toGroup],
+        from: getHeirTypeLabel(comp.fromGroup, language),
+        to: getHeirTypeLabel(comp.toGroup, language),
         amount: Math.round(comp.amount),
       })),
       totalEstateValue: distributionResult.totalEstateValue,
@@ -385,7 +401,7 @@ export function extractPdfData(
       itemName: getAssetItemName(asset),
       value: computeAssetValue(asset),
       isIndivisible: asset.isIndivisible,
-      resolution: asset.isIndivisible ? getResolutionLabel(asset) : null,
+      resolution: asset.isIndivisible ? getResolutionLabel(asset, language) : null,
     }
   })
   const movableAssetsTotalValue = computeMovableAssetsTotal(movableAssets ?? [])
@@ -401,7 +417,7 @@ export function extractPdfData(
     let totalBalanced = 0
 
     for (const individual of indivState.individuals) {
-      const heirTypeLabel = HEIR_TYPE_LABELS[individual.heirType]
+      const heirTypeLabel = getHeirTypeLabel(individual.heirType, language)
       const customName = indivState.customNames[individual.id]
       const displayName = customName || individual.displayName
       const subtitle = customName ? individual.displayName : null
@@ -486,10 +502,11 @@ export function extractPdfData(
     distribution,
     ...(settlements.length > 0 ? { settlements } : {}),
     individualDistribution,
+    language,
     generatedAt: new Date(),
   }
 
   // Deep-sanitize all strings to catch any Unicode that could crash @react-pdf/renderer.
   // This is a safety net beyond the targeted sanitization above.
-  return deepSanitizeStrings(rawData)
+  return deepSanitizeStrings(rawData, undefined, language)
 }

@@ -34,6 +34,9 @@ export interface PdfData {
   // Individual distribution (Phase 14, optional)
   individualDistribution?: PdfIndividualDistribution
 
+  // Language
+  language: 'en' | 'bn'
+
   // Metadata
   generatedAt: Date
 }

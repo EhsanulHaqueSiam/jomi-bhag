@@ -1,14 +1,13 @@
 import { View, Text } from '@react-pdf/renderer'
 import { styles } from './pdfStyles'
+import { en } from '@/i18n/translations/en'
+import { bn } from '@/i18n/translations/bn'
 
-const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-]
-
-function formatDateTime(date: Date): { dateStr: string; timeStr: string } {
+function formatDateTime(date: Date, language: 'en' | 'bn'): { dateStr: string; timeStr: string } {
+  const txt = language === 'bn' ? bn : en
+  const months = txt.pdf.months
   const day = date.getDate()
-  const month = MONTHS[date.getMonth()]
+  const month = months[date.getMonth()]
   const year = date.getFullYear()
   const hours = date.getHours().toString().padStart(2, '0')
   const minutes = date.getMinutes().toString().padStart(2, '0')
@@ -17,18 +16,6 @@ function formatDateTime(date: Date): { dateStr: string; timeStr: string } {
     timeStr: `${hours}:${minutes}`,
   }
 }
-
-export const LEGAL_NOTICE =
-  'This report is for informational purposes only. Consult a qualified lawyer before using for legal registration or property transfer.'
-
-export const ISLAMIC_NOTICE =
-  "Calculations strictly follow the Hanafi school of Islamic jurisprudence. Other schools of thought (Shafi'i, Maliki, Hanbali) may yield different results. For disputes or edge cases, consult a qualified Islamic scholar (Mufti)."
-
-export const SCOPE_NOTICE =
-  'This calculation assumes parents of the deceased have predeceased them. If parents are alive, inheritance rules differ.'
-
-export const VALUES_NOTICE =
-  'Property values used in this report are estimates entered by the user and may not reflect actual market values. Verify with local authorities or certified surveyors.'
 
 function NoticeParagraph({ label, text }: { label: string; text: string }) {
   return (
@@ -41,17 +28,18 @@ function NoticeParagraph({ label, text }: { label: string; text: string }) {
   )
 }
 
-export function PdfDisclaimer({ generatedAt }: { generatedAt: Date }) {
-  const { dateStr, timeStr } = formatDateTime(generatedAt)
+export function PdfDisclaimer({ generatedAt, language = 'en' }: { generatedAt: Date; language?: 'en' | 'bn' }) {
+  const txt = language === 'bn' ? bn : en
+  const { dateStr, timeStr } = formatDateTime(generatedAt, language)
 
   return (
     <View style={styles.section} break>
-      <Text style={styles.sectionHeading}>Important Notices</Text>
+      <Text style={styles.sectionHeading}>{txt.pdf.importantNotices}</Text>
       <View style={styles.disclaimerBox}>
-        <NoticeParagraph label="Legal Notice" text={LEGAL_NOTICE} />
-        <NoticeParagraph label="Islamic Jurisprudence" text={ISLAMIC_NOTICE} />
-        <NoticeParagraph label="Scope" text={SCOPE_NOTICE} />
-        <NoticeParagraph label="Property Values" text={VALUES_NOTICE} />
+        <NoticeParagraph label={txt.pdf.legalNotice} text={txt.pdf.legalNoticeText} />
+        <NoticeParagraph label={txt.pdf.islamicJurisprudence} text={txt.pdf.islamicJurisprudenceText} />
+        <NoticeParagraph label={txt.pdf.scope} text={txt.pdf.scopeText} />
+        <NoticeParagraph label={txt.pdf.propertyValues} text={txt.pdf.propertyValuesText} />
       </View>
 
       <Text
@@ -62,7 +50,7 @@ export function PdfDisclaimer({ generatedAt }: { generatedAt: Date }) {
           marginTop: 12,
         }}
       >
-        Generated on {dateStr} at {timeStr} by Jomi-Bhag (jomi-bhag.netlify.app)
+        {txt.pdf.generatedOnAt.replace('{date}', dateStr).replace('{time}', timeStr)}
       </Text>
     </View>
   )

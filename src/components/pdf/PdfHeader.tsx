@@ -1,28 +1,29 @@
 import { View, Text } from '@react-pdf/renderer'
+import { en } from '@/i18n/translations/en'
+import { bn } from '@/i18n/translations/bn'
 
-const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-]
-
-function formatDate(date: Date): string {
+function formatDate(date: Date, language: 'en' | 'bn'): string {
+  const txt = language === 'bn' ? bn : en
+  const months = txt.pdf.months
   const day = date.getDate()
-  const month = MONTHS[date.getMonth()]
+  const month = months[date.getMonth()]
   const year = date.getFullYear()
   return `${day} ${month} ${year}`
 }
 
-export function PdfHeader({ generatedAt }: { generatedAt: Date }) {
+export function PdfHeader({ generatedAt, language = 'en' }: { generatedAt: Date; language?: 'en' | 'bn' }) {
+  const txt = language === 'bn' ? bn : en
+
   return (
     <View>
       <Text style={{ fontSize: 20, fontWeight: 700, color: '#065f46' }}>
-        Jomi-Bhag
+        {txt.app.title}
       </Text>
       <Text style={{ fontSize: 16, fontWeight: 600, marginTop: 4 }}>
-        Islamic Inheritance Division Report
+        {txt.pdf.title}
       </Text>
       <Text style={{ fontSize: 10, color: '#666', marginTop: 4 }}>
-        Generated on {formatDate(generatedAt)}
+        {txt.pdf.generatedOn.replace('{date}', formatDate(generatedAt, language))}
       </Text>
       <View
         style={{

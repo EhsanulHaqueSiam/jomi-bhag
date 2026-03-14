@@ -2,6 +2,8 @@ import { View, Text } from '@react-pdf/renderer'
 import { styles } from './pdfStyles'
 import type { PdfProperty } from './pdfTypes'
 import { pdfBdtFormat } from './extractPdfData'
+import { en } from '@/i18n/translations/en'
+import { bn } from '@/i18n/translations/bn'
 
 function ValueRow({
   label,
@@ -46,21 +48,24 @@ function ValueRow({
 interface PdfPropertySectionProps {
   properties: PdfProperty[]
   totalEstateValue: number
+  language?: 'en' | 'bn'
 }
 
 export function PdfPropertySection({
   properties,
   totalEstateValue,
+  language = 'en',
 }: PdfPropertySectionProps) {
   if (properties.length === 0) return null
+  const txt = language === 'bn' ? bn : en
 
   return (
     <View style={styles.section} break>
-      <Text style={styles.sectionHeading}>Property Breakdown</Text>
+      <Text style={styles.sectionHeading}>{txt.pdf.propertyBreakdown}</Text>
 
       {properties.map((prop, i) => {
         const location = [prop.division, prop.upazila].filter(Boolean).join(', ')
-        const rateLabel = prop.rateSource === 'govt' ? '(Govt. Rate)' : '(Manual Rate)'
+        const rateLabel = prop.rateSource === 'govt' ? txt.estate.govtRateFull : txt.estate.manualRateFull
 
         return (
           <View
@@ -82,15 +87,15 @@ export function PdfPropertySection({
             )}
 
             <View style={{ marginTop: 6 }}>
-              <ValueRow label="Land Value" value={prop.landValue} />
+              <ValueRow label={txt.pdf.landValue} value={prop.landValue} />
               {prop.houseValue !== null && (
-                <ValueRow label="House Value" value={prop.houseValue} />
+                <ValueRow label={txt.pdf.houseValue} value={prop.houseValue} />
               )}
               {prop.treesValue !== null && (
-                <ValueRow label="Trees/Crops Value" value={prop.treesValue} />
+                <ValueRow label={txt.pdf.treesCropsValue} value={prop.treesValue} />
               )}
               {prop.pondValue !== null && (
-                <ValueRow label="Pond Value" value={prop.pondValue} />
+                <ValueRow label={txt.pdf.pondValue} value={prop.pondValue} />
               )}
               <View
                 style={{
@@ -99,7 +104,7 @@ export function PdfPropertySection({
                   marginVertical: 2,
                 }}
               />
-              <ValueRow label="Property Total" value={prop.totalValue} bold />
+              <ValueRow label={txt.pdf.propertyTotal} value={prop.totalValue} bold />
             </View>
           </View>
         )
@@ -117,7 +122,7 @@ export function PdfPropertySection({
         }}
       >
         <Text style={{ fontSize: 11, fontWeight: 700, color: '#111' }}>
-          Total Estate Value
+          {txt.pdf.totalEstateValue}
         </Text>
         <Text style={{ fontSize: 11, fontWeight: 700, color: '#111' }}>
           {pdfBdtFormat(totalEstateValue)}

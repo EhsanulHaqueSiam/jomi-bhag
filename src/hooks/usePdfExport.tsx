@@ -1,9 +1,11 @@
 import { useState, useCallback } from 'react'
 import { useWizardStore } from '@/stores/wizardStore'
+import { useTranslation } from '@/i18n/useTranslation'
 
 export function usePdfExport() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { language } = useTranslation()
 
   // Read store state (non-reactive -- only read when generating)
   const getStoreState = () => useWizardStore.getState()
@@ -101,6 +103,7 @@ export function usePdfExport() {
         barChartImage,
         state.movableAssets,
         distributionResult,
+        language,
       )
     } catch (extractErr) {
       throw new Error(`Data extraction failed: ${extractErr instanceof Error ? extractErr.message : String(extractErr)}`)
@@ -135,7 +138,7 @@ export function usePdfExport() {
     } finally {
       setIsGenerating(false)
     }
-  }, [])
+  }, [language])
 
   const printPdf = useCallback(async (): Promise<void> => {
     setIsGenerating(true)
@@ -172,7 +175,7 @@ export function usePdfExport() {
     } finally {
       setIsGenerating(false)
     }
-  }, [])
+  }, [language])
 
   const dismissError = useCallback(() => setError(null), [])
 

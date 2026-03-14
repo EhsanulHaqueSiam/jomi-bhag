@@ -1,14 +1,16 @@
 import { View, Text } from '@react-pdf/renderer'
 import { styles } from './pdfStyles'
 import type { PdfData } from './pdfTypes'
+import { en } from '@/i18n/translations/en'
+import { bn } from '@/i18n/translations/bn'
 
 function AdjustmentBanner({ data }: { data: PdfData }) {
   if (data.adjustment === 'none') return null
+  const txt = data.language === 'bn' ? bn : en
 
   const isAwl = data.adjustment === 'awl'
-  const message = isAwl
-    ? `Total prescribed shares (${data.totalBeforeAdjustment}) exceed the estate. Shares reduced proportionally (Awl).`
-    : `Total prescribed shares (${data.totalBeforeAdjustment}) are less than 1. Surplus redistributed to eligible heirs (Radd).`
+  const template = isAwl ? txt.pdf.awlMessage : txt.pdf.raddMessage
+  const message = template.replace('{fraction}', data.totalBeforeAdjustment)
 
   return (
     <View
@@ -28,38 +30,39 @@ function AdjustmentBanner({ data }: { data: PdfData }) {
 
 export function PdfHeirTable({ data }: { data: PdfData }) {
   const showBdt = data.totalEstateValue > 0
+  const txt = data.language === 'bn' ? bn : en
 
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionHeading}>Heir Share Allocation</Text>
+      <Text style={styles.sectionHeading}>{txt.pdf.heirShareAllocation}</Text>
       <AdjustmentBanner data={data} />
 
       {/* Header row */}
       <View style={styles.tableHeaderRow}>
         <Text style={{ ...styles.tableCell, flex: 2.5, fontSize: 9, fontWeight: 600 }}>
-          Heir Type
+          {txt.pdf.heirType}
         </Text>
         <Text style={{ ...styles.tableCell, flex: 0.8, fontSize: 9, fontWeight: 600 }}>
-          Count
+          {txt.pdf.count}
         </Text>
         <Text style={{ ...styles.tableCell, flex: 1.2, fontSize: 9, fontWeight: 600 }}>
-          Fraction
+          {txt.pdf.fraction}
         </Text>
         <Text style={{ ...styles.tableCell, flex: 1.2, fontSize: 9, fontWeight: 600 }}>
-          Percentage
+          {txt.pdf.percentage}
         </Text>
         {showBdt && (
           <Text style={{ ...styles.tableCell, flex: 1.5, fontSize: 9, fontWeight: 600 }}>
-            Per-Heir BDT
+            {txt.pdf.perHeirBdt}
           </Text>
         )}
         {showBdt && (
           <Text style={{ ...styles.tableCell, flex: 1.5, fontSize: 9, fontWeight: 600 }}>
-            Total BDT
+            {txt.pdf.totalBdt}
           </Text>
         )}
         <Text style={{ ...styles.tableCell, flex: 1.5, fontSize: 9, fontWeight: 600 }}>
-          Share Type
+          {txt.pdf.shareType}
         </Text>
       </View>
 
@@ -104,11 +107,11 @@ export function PdfHeirTable({ data }: { data: PdfData }) {
       {data.blockedHeirs.length > 0 && (
         <View style={{ marginTop: 8 }}>
           <Text style={{ fontSize: 9, fontWeight: 600, color: '#555' }}>
-            Blocked Heirs:
+            {txt.pdf.blockedHeirs}
           </Text>
           {data.blockedHeirs.map((bh, i) => (
             <Text key={i} style={{ fontSize: 8, color: '#666', marginLeft: 8, marginTop: 2 }}>
-              {bh.heirType} blocked by {bh.blockedBy} ({bh.rule})
+              {bh.heirType} {txt.results.blockedBy} {bh.blockedBy} ({bh.rule})
             </Text>
           ))}
         </View>
@@ -118,7 +121,7 @@ export function PdfHeirTable({ data }: { data: PdfData }) {
       {data.specialCases.length > 0 && (
         <View style={{ marginTop: 8 }}>
           <Text style={{ fontSize: 9, fontWeight: 600, color: '#555' }}>
-            Special Cases:
+            {txt.pdf.specialCases}
           </Text>
           {data.specialCases.map((sc, i) => (
             <Text key={i} style={{ fontSize: 8, color: '#666', fontStyle: 'italic', marginLeft: 8, marginTop: 2 }}>

@@ -1,9 +1,12 @@
 import { View, Text } from '@react-pdf/renderer'
 import { styles } from './pdfStyles'
 import type { PdfReference } from './pdfTypes'
+import { en } from '@/i18n/translations/en'
+import { bn } from '@/i18n/translations/bn'
 
-export function PdfReferencesSection({ references }: { references: PdfReference[] }) {
+export function PdfReferencesSection({ references, language = 'en' }: { references: PdfReference[]; language?: 'en' | 'bn' }) {
   if (references.length === 0) return null
+  const txt = language === 'bn' ? bn : en
 
   // Group by type: Quran first, then Hadith
   const quranRefs = references.filter((r) => r.type === 'quran')
@@ -12,7 +15,7 @@ export function PdfReferencesSection({ references }: { references: PdfReference[
 
   return (
     <View style={styles.section} break>
-      <Text style={styles.sectionHeading}>Islamic Basis</Text>
+      <Text style={styles.sectionHeading}>{txt.pdf.islamicBasis}</Text>
 
       {ordered.map((ref, i) => (
         <View key={i} style={{ marginBottom: 12 }}>
@@ -21,7 +24,7 @@ export function PdfReferencesSection({ references }: { references: PdfReference[
           </Text>
           {ref.appliesTo.length > 0 && (
             <Text style={{ fontSize: 8, color: '#888', marginTop: 1 }}>
-              Applies to: {ref.appliesTo.join(', ')}
+              {txt.pdf.appliesTo}: {ref.appliesTo.join(', ')}
             </Text>
           )}
 

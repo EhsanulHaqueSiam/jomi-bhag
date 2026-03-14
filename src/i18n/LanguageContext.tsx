@@ -70,10 +70,14 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// Default context for use outside LanguageProvider (tests, SSR)
+const defaultContext: LanguageContextValue = {
+  language: 'en',
+  setLanguage: () => {},
+  t: (key: string) => getNestedValue(translations.en, key),
+}
+
 export function useLanguage(): LanguageContextValue {
   const ctx = useContext(LanguageContext)
-  if (!ctx) {
-    throw new Error('useLanguage must be used within LanguageProvider')
-  }
-  return ctx
+  return ctx ?? defaultContext
 }
