@@ -1,4 +1,3 @@
-// Stub - types to be implemented
 import type { HeirType } from '@/core/faraid/types'
 import type { CashCompensation } from '@/core/land/division'
 

@@ -1,13 +1,14 @@
 import {
   BarChart,
   Bar,
+  Cell,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
 } from 'recharts'
 import { useWizardStore } from '@/stores/wizardStore'
-import { buildChartData } from '@/components/results/chartData'
+import { buildChartData, EMERALD_COLORS } from '@/components/results/chartData'
 import type { ChartDatum } from '@/components/results/chartData'
 
 function ChartTooltip({ active, payload }: { active?: boolean; payload?: Array<{ payload: ChartDatum }> }) {
@@ -56,7 +57,11 @@ export function MonetaryBarChart() {
             tick={{ fontSize: 13 }}
           />
           <Tooltip content={<ChartTooltip />} />
-          <Bar dataKey="bdtValue" radius={[0, 4, 4, 0]} barSize={28} />
+          <Bar dataKey="bdtValue" radius={[0, 4, 4, 0]} barSize={28}>
+            {chartData.map((entry, index) => (
+              <Cell key={entry.name} fill={EMERALD_COLORS[index % EMERALD_COLORS.length]} />
+            ))}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>
