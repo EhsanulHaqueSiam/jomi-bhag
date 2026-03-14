@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'motion/react'
 import type { AppPage } from '@/types/scenario'
 import { useWizardStore } from '@/stores/wizardStore'
 import { usePdfExport } from '@/hooks/usePdfExport'
@@ -21,6 +22,39 @@ const bdtFormatter = new Intl.NumberFormat('en-IN', {
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 })
+
+const prefersReducedMotion =
+  typeof window !== 'undefined' &&
+  typeof window.matchMedia === 'function' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
+}
+
+const staggerItem = {
+  hidden: prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: 'easeOut' },
+  },
+}
+
+const tableStaggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+}
+
+const tableRowVariant = {
+  hidden: prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.25, ease: 'easeOut' },
+  },
+}
 
 interface ResultsPageProps {
   onNavigate?: (page: AppPage) => void
@@ -71,7 +105,11 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
                 {totalEstateValue > 0 && <th className="pb-2 text-right">Amount</th>}
               </tr>
             </thead>
-            <tbody>
+            <motion.tbody
+              initial={prefersReducedMotion ? 'visible' : 'hidden'}
+              animate="visible"
+              variants={tableStaggerContainer}
+            >
               {activeShares.map((share, i) => {
                 const label = HEIR_TYPE_LABELS[share.heirType] ?? share.heirType
                 const displayLabel = share.count > 1 ? `${label} (x${share.count})` : label
@@ -81,8 +119,9 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
                   : 0
 
                 return (
-                  <tr
+                  <motion.tr
                     key={share.heirType}
+                    variants={tableRowVariant}
                     className={i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}
                   >
                     <td className="py-1.5 pr-4 font-medium text-gray-800">
@@ -94,10 +133,10 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
                         {bdtFormatter.format(amount)}
                       </td>
                     )}
-                  </tr>
+                  </motion.tr>
                 )
               })}
-            </tbody>
+            </motion.tbody>
           </table>
         </div>
       </div>
@@ -115,15 +154,21 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
       <SpecialCaseCallout specialCases={results.specialCases} />
 
       {/* Heir cards grid -- always visible */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <motion.div
+        initial={prefersReducedMotion ? 'visible' : 'hidden'}
+        animate="visible"
+        variants={staggerContainer}
+        className="grid grid-cols-1 gap-4 lg:grid-cols-2"
+      >
         {activeShares.map((share) => (
-          <HeirCard
-            key={share.heirType}
-            share={share}
-            totalEstateValue={totalEstateValue}
-          />
+          <motion.div key={share.heirType} variants={staggerItem}>
+            <HeirCard
+              share={share}
+              totalEstateValue={totalEstateValue}
+            />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Blocked heirs section -- always visible */}
       <BlockedHeirsSection blockedHeirs={results.blockedHeirs} />

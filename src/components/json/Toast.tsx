@@ -21,10 +21,11 @@ export function Toast({ message, type, onDismiss, duration }: ToastProps) {
     <AnimatePresence>
       {message && (
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: -60 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 50 }}
-          className={`fixed bottom-20 left-1/2 z-50 -translate-x-1/2 cursor-pointer rounded-lg px-4 py-2.5 text-sm font-medium shadow-lg ${
+          exit={{ opacity: 0, y: -60 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+          className={`fixed top-4 left-4 right-4 z-50 mx-auto max-w-sm cursor-pointer rounded-lg px-4 py-2.5 text-center text-sm font-medium shadow-lg ${
             type === 'error'
               ? 'bg-red-600 text-white'
               : 'bg-emerald-600 text-white'

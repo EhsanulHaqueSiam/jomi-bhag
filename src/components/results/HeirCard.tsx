@@ -4,13 +4,13 @@ import type { ShareResult } from '@/core/faraid/types'
 import {
   fractionToString,
   fractionToPercent,
-  fractionToBDT,
   HEIR_TYPE_LABELS,
   SHARE_TYPE_LABELS,
 } from '@/core/utils/display'
 import { QuranReference } from '@/components/results/QuranReference'
 import { HeirIcon, feminineHeirs } from '@/components/ui/HeirIcon'
 import { useWizardStore } from '@/stores/wizardStore'
+import { useCountUp } from '@/hooks/useCountUp'
 import { computePropertyTotal } from '@/core/land/types'
 import type { PropertyType } from '@/core/land/types'
 import { PROPERTY_TYPES } from '@/data/bd-land-data'
@@ -56,8 +56,14 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
   const badgeStyle = shareTypeBadgeStyles[share.shareType] ?? 'bg-gray-100 text-gray-500'
 
   const hasMultiple = share.count > 1
-  const bdtTotal = fractionToBDT(share.totalShare, totalEstateValue)
-  const bdtEach = hasMultiple ? fractionToBDT(share.sharePerHeir, totalEstateValue) : ''
+  const rawBdtTotal = totalEstateValue > 0
+    ? Math.round(share.totalShare.valueOf() * totalEstateValue)
+    : 0
+  const rawBdtEach = hasMultiple && totalEstateValue > 0
+    ? Math.round(share.sharePerHeir.valueOf() * totalEstateValue)
+    : 0
+  const animatedTotal = useCountUp(rawBdtTotal)
+  const animatedEach = useCountUp(rawBdtEach)
 
   // Check for adjustment notes
   const adjustmentNote = share.notes?.find(
@@ -133,9 +139,9 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
                 <span className="text-xs text-gray-500">
                   ({fractionToPercent(share.sharePerHeir)})
                 </span>
-                {totalEstateValue > 0 && bdtEach && (
+                {totalEstateValue > 0 && rawBdtEach > 0 && (
                   <span className="truncate text-sm font-medium text-emerald-700">
-                    {bdtEach}
+                    {bdtFormatter.format(animatedEach)}
                   </span>
                 )}
               </div>
@@ -149,9 +155,9 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
                 <span className="text-xs text-gray-500">
                   ({fractionToPercent(share.totalShare)})
                 </span>
-                {totalEstateValue > 0 && bdtTotal && (
+                {totalEstateValue > 0 && rawBdtTotal > 0 && (
                   <span className="truncate text-base font-semibold text-emerald-700">
-                    {bdtTotal}
+                    {bdtFormatter.format(animatedTotal)}
                   </span>
                 )}
               </div>
@@ -166,9 +172,9 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
               <span className="text-xs text-gray-500">
                 {fractionToPercent(share.totalShare)}
               </span>
-              {totalEstateValue > 0 && bdtTotal && (
+              {totalEstateValue > 0 && rawBdtTotal > 0 && (
                 <span className="truncate text-base font-semibold text-emerald-700">
-                  {bdtTotal}
+                  {bdtFormatter.format(animatedTotal)}
                 </span>
               )}
             </div>
