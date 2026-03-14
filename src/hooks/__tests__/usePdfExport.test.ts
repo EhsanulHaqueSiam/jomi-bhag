@@ -174,7 +174,7 @@ describe('usePdfExport', () => {
     expect(result.current.isGenerating).toBe(false)
   })
 
-  it('toPng is called with filter that excludes recharts-tooltip-wrapper', async () => {
+  it('removes recharts-tooltip-wrapper nodes from DOM before toPng and restores after', async () => {
     useWizardStore.setState({
       results: makeFaraidOutput(),
       properties: [],
@@ -186,19 +186,31 @@ describe('usePdfExport', () => {
     Object.defineProperty(URL, 'revokeObjectURL', { value: vi.fn(), writable: true })
     vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {})
 
-    // Create chart elements so captureCharts finds them
+    // Create chart container with a tooltip wrapper child
     const pieEl = document.createElement('div')
     pieEl.id = 'pdf-pie-chart'
     Object.defineProperty(pieEl, 'offsetHeight', { value: 100 })
-    document.body.appendChild(pieEl)
 
-    const barEl = document.createElement('div')
-    barEl.id = 'pdf-bar-chart'
-    Object.defineProperty(barEl, 'offsetHeight', { value: 100 })
-    document.body.appendChild(barEl)
+    const tooltipWrapper = document.createElement('div')
+    tooltipWrapper.classList.add('recharts-tooltip-wrapper')
+    pieEl.appendChild(tooltipWrapper)
+
+    const normalChild = document.createElement('div')
+    normalChild.classList.add('recharts-pie')
+    pieEl.appendChild(normalChild)
+
+    document.body.appendChild(pieEl)
 
     const { toPng } = await import('html-to-image')
     const mockedToPng = vi.mocked(toPng)
+
+    // Track whether tooltip is present during toPng call
+    let tooltipPresentDuringCapture = true
+    mockedToPng.mockImplementation(async (el) => {
+      const container = el as HTMLElement
+      tooltipPresentDuringCapture = container.querySelector('.recharts-tooltip-wrapper') !== null
+      return 'data:image/png;base64,mockbase64'
+    })
 
     const { usePdfExport } = await import('@/hooks/usePdfExport')
     const { result } = renderHook(() => usePdfExport())
@@ -207,27 +219,18 @@ describe('usePdfExport', () => {
       await result.current.downloadPdf()
     })
 
-    // Verify toPng was called with filter option
-    expect(mockedToPng).toHaveBeenCalled()
-    const firstCallOptions = mockedToPng.mock.calls[0]?.[1] as { filter?: (node: HTMLElement) => boolean }
-    expect(firstCallOptions).toBeDefined()
-    expect(typeof firstCallOptions.filter).toBe('function')
+    // Tooltip wrapper should NOT be in DOM during toPng execution
+    expect(tooltipPresentDuringCapture).toBe(false)
 
-    const filterFn = firstCallOptions.filter!
+    // Tooltip wrapper should be RESTORED after capture completes
+    expect(pieEl.querySelector('.recharts-tooltip-wrapper')).not.toBeNull()
 
-    // Mock element WITH recharts-tooltip-wrapper class should be excluded
-    const tooltipNode = document.createElement('div')
-    tooltipNode.classList.add('recharts-tooltip-wrapper')
-    expect(filterFn(tooltipNode)).toBe(false)
-
-    // Mock element WITHOUT recharts-tooltip-wrapper class should be included
-    const normalNode = document.createElement('div')
-    normalNode.classList.add('recharts-bar')
-    expect(filterFn(normalNode)).toBe(true)
+    // toPng should NOT have a filter option (old approach removed)
+    const firstCallOptions = mockedToPng.mock.calls[0]?.[1] as Record<string, unknown> | undefined
+    expect(firstCallOptions?.filter).toBeUndefined()
 
     // Clean up DOM
     document.body.removeChild(pieEl)
-    document.body.removeChild(barEl)
   })
 
   it('isGenerating returns to false after error', async () => {
