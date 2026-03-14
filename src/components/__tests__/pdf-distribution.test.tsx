@@ -118,24 +118,6 @@ function makeDistributionResult(): DistributionResult {
   }
 }
 
-function makeDivisionResult() {
-  return {
-    groups: [
-      {
-        heirType: 'son' as const,
-        label: 'Son',
-        count: 1,
-        targetValue: 750000,
-        assignedProperties: ['prop-1'],
-        assignedValue: 750000,
-        cashAdjustment: 0,
-      },
-    ],
-    totalEstateValue: 1000000,
-    compensations: [],
-  }
-}
-
 // ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
@@ -146,7 +128,7 @@ describe('extractPdfData with distributionResult', () => {
   it('produces PdfData.distribution with correct group count', () => {
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       makeDistributionResult(),
     )
 
@@ -157,7 +139,7 @@ describe('extractPdfData with distributionResult', () => {
   it('maps items correctly with label, category, type, and value', () => {
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       makeDistributionResult(),
     )
 
@@ -183,7 +165,7 @@ describe('extractPdfData with distributionResult', () => {
   it('maps compensations with display labels', () => {
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       makeDistributionResult(),
     )
 
@@ -195,50 +177,20 @@ describe('extractPdfData with distributionResult', () => {
     })
   })
 
-  it('does NOT set lotDivision when distributionResult is present', () => {
+  it('does NOT set distribution when distributionResult is absent', () => {
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      makeDivisionResult(), // divisionResult provided too
-      [],
-      makeDistributionResult(), // but distributionResult supersedes
-    )
-
-    expect(result.distribution).toBeDefined()
-    expect(result.lotDivision).toBeUndefined()
-  })
-
-  it('still sets lotDivision when distributionResult is absent (backward compat)', () => {
-    const result = extractPdfData(
-      output,
-      [{
-        id: 'prop-1',
-        nickname: 'Main House',
-        type: 'residential',
-        division: 'dhaka',
-        upazila: 'Mirpur',
-        rateSource: 'govt' as const,
-        landAreaSqft: 2000,
-        landInputUnit: 'sqft' as const,
-        landValue: 750000,
-        house: null,
-        trees: null,
-        pond: null,
-      }],
-      1000000, null, null,
-      makeDivisionResult(),
       [],
       // no distributionResult
     )
 
-    expect(result.lotDivision).toBeDefined()
-    expect(result.lotDivision!.groups).toHaveLength(1)
     expect(result.distribution).toBeUndefined()
   })
 
   it('sorts group items by value descending', () => {
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       makeDistributionResult(),
     )
 
@@ -251,7 +203,7 @@ describe('extractPdfData with distributionResult', () => {
   it('cash adjustment reflects over/under-allocation per group', () => {
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       makeDistributionResult(),
     )
 

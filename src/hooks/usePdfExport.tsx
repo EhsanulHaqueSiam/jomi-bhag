@@ -52,9 +52,6 @@ export function usePdfExport() {
       import('@/components/pdf/extractPdfData'),
     ])
 
-    const divisionState = (await import('@/stores/divisionStore')).useDivisionStore.getState()
-    const divisionResult = divisionState.divisionResult
-
     const distributionState = (await import('@/stores/distributionStore')).useDistributionStore.getState()
     const distributionResult = distributionState.distributionResult
 
@@ -66,7 +63,6 @@ export function usePdfExport() {
         state.totalEstateValue,
         pieChartImage,
         barChartImage,
-        divisionResult,
         state.movableAssets,
         distributionResult,
       )

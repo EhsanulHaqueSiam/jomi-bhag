@@ -26,10 +26,6 @@ vi.mock('@/components/pdf/extractPdfData', () => ({
   extractPdfData: vi.fn(() => ({ title: 'test' })),
 }))
 
-vi.mock('@/stores/divisionStore', () => ({
-  useDivisionStore: { getState: () => ({ divisionResult: null }) },
-}))
-
 vi.mock('@/stores/distributionStore', () => ({
   useDistributionStore: { getState: () => ({ distributionResult: null }) },
 }))

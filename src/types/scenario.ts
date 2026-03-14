@@ -24,4 +24,4 @@ export interface Scenario {
   } | null
 }
 
-export type AppPage = 'wizard' | 'scenarios' | 'division' | 'distribution'
+export type AppPage = 'wizard' | 'scenarios' | 'distribution'

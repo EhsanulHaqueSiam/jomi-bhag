@@ -268,7 +268,7 @@ describe('extractPdfData with individual distribution', () => {
 
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       null,
     )
 
@@ -287,7 +287,7 @@ describe('extractPdfData with individual distribution', () => {
 
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       null,
     )
 
@@ -319,7 +319,7 @@ describe('extractPdfData with individual distribution', () => {
 
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       null,
     )
 
@@ -341,7 +341,7 @@ describe('extractPdfData with individual distribution', () => {
 
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       null,
     )
 
@@ -361,7 +361,7 @@ describe('extractPdfData with individual distribution', () => {
 
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       null,
     )
 
@@ -380,7 +380,7 @@ describe('extractPdfData with individual distribution', () => {
 
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       null,
     )
 
@@ -408,7 +408,7 @@ describe('extractPdfData with individual distribution', () => {
 
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       null,
     )
 
@@ -459,7 +459,7 @@ describe('extractPdfData with individual distribution', () => {
 
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       null,
     )
 
@@ -478,7 +478,7 @@ describe('extractPdfData with individual distribution', () => {
 
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       null,
     )
 
@@ -495,7 +495,7 @@ describe('extractPdfData with individual distribution', () => {
 
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       null,
     )
 
@@ -565,7 +565,7 @@ describe('Round-trip integration: store state -> PDF data', () => {
     const output = makeBasicOutput()
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       null,
     )
 
@@ -601,7 +601,7 @@ describe('Round-trip integration: store state -> PDF data', () => {
     const output = makeBasicOutput()
     const result = extractPdfData(
       output, [], 1000000, null, null,
-      null, [],
+      [],
       null,
     )
 

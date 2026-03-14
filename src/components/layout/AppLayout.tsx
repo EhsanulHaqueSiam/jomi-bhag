@@ -8,7 +8,7 @@ interface AppLayoutProps {
 }
 
 export function AppLayout({ children, page, onNavigate }: AppLayoutProps) {
-  const isWide = page === 'distribution' || page === 'division'
+  const isWide = page === 'distribution'
 
   return (
     <div className="relative min-h-screen bg-gray-50">

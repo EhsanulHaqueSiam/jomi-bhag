@@ -399,6 +399,7 @@ export function validateAndParseImport(raw: unknown): ImportResult {
     results: null,
     totalEstateValue,
     viewMode: 'simple',
+    hasToggledMode: false,
   }
 
   // ── Parse individual distribution fields (Phase 14, optional) ──

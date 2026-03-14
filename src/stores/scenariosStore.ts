@@ -129,6 +129,7 @@ function pickWizardState(s: WizardState): WizardState {
     results: s.results,
     totalEstateValue: s.totalEstateValue,
     viewMode: s.viewMode,
+    hasToggledMode: s.hasToggledMode,
   }
 }
 

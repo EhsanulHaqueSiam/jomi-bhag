@@ -1,7 +1,6 @@
 import type { FaraidOutput } from '@/core/faraid/types'
 import type { Property } from '@/core/land/types'
 import { computePropertyTotal } from '@/core/land/types'
-import type { DivisionResult } from '@/core/land/division'
 import type { MovableAsset } from '@/core/assets/types'
 import { computeAssetValue, computeMovableAssetsTotal } from '@/core/assets/valuation'
 import { ASSET_CATEGORIES } from '@/data/movable-asset-data'
@@ -24,7 +23,7 @@ import {
   calculateIncomeDistribution,
 } from '@/core/land/settlement'
 import { fromSqft } from '@/core/land/units'
-import type { PdfData, PdfShareRow, PdfProperty, PdfReference, PdfLotDivision, PdfMovableAsset, PdfDistribution, PdfDistributionItem, PdfSettlement, PdfSettlementDetail, PdfIndividualDistribution, PdfIndividualHeir } from './pdfTypes'
+import type { PdfData, PdfShareRow, PdfProperty, PdfReference, PdfMovableAsset, PdfDistribution, PdfDistributionItem, PdfSettlement, PdfSettlementDetail, PdfIndividualDistribution, PdfIndividualHeir } from './pdfTypes'
 import { useIndividualDistributionStore } from '@/stores/individualDistributionStore'
 import { getEquilibriumStatus } from '@/core/distribution/algorithm'
 
@@ -90,7 +89,6 @@ export function extractPdfData(
   totalEstateValue: number,
   pieChartImage: string | null,
   barChartImage: string | null,
-  divisionResult?: DivisionResult | null,
   movableAssets?: MovableAsset[],
   distributionResult?: DistributionResult | null,
 ): PdfData {
@@ -268,35 +266,7 @@ export function extractPdfData(
     }
   })
 
-  // Map division result to PdfLotDivision (optional)
-  let lotDivision: PdfLotDivision | undefined
-  if (divisionResult) {
-    const propMap = new Map(properties.map((p) => [p.id, p]))
-    lotDivision = {
-      groups: divisionResult.groups.map((group) => ({
-        heirType: HEIR_TYPE_LABELS[group.heirType],
-        count: group.count,
-        targetValue: Math.round(group.targetValue),
-        assignedProperties: group.assignedProperties.map((id) => {
-          const prop = propMap.get(id)
-          return {
-            nickname: prop?.nickname || id,
-            value: prop ? computePropertyTotal(prop) : 0,
-          }
-        }),
-        assignedValue: Math.round(group.assignedValue),
-        cashAdjustment: Math.round(group.cashAdjustment),
-      })),
-      compensations: divisionResult.compensations.map((comp) => ({
-        from: HEIR_TYPE_LABELS[comp.fromGroup],
-        to: HEIR_TYPE_LABELS[comp.toGroup],
-        amount: Math.round(comp.amount),
-      })),
-      totalEstateValue: divisionResult.totalEstateValue,
-    }
-  }
-
-  // Map distribution result to PdfDistribution (optional, supersedes lotDivision)
+  // Map distribution result to PdfDistribution (optional)
   let distribution: PdfDistribution | undefined
   if (distributionResult) {
     const itemMap = new Map(distributionResult.items.map((item) => [item.id, item]))
@@ -332,8 +302,6 @@ export function extractPdfData(
       })),
       totalEstateValue: distributionResult.totalEstateValue,
     }
-    // Distribution supersedes lotDivision
-    lotDivision = undefined
   }
 
   // Map movable assets to PdfMovableAsset
@@ -442,7 +410,6 @@ export function extractPdfData(
     movableAssetsTotal: movableAssetsTotalValue,
     pieChartImage,
     barChartImage,
-    lotDivision,
     distribution,
     ...(settlements.length > 0 ? { settlements } : {}),
     individualDistribution,

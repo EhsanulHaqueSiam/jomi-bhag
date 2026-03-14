@@ -8,7 +8,6 @@ import { PdfHeirTable } from './PdfHeirTable'
 import { PdfChartSection } from './PdfChartSection'
 import { PdfPropertySection } from './PdfPropertySection'
 import { PdfMovableAssetsSection } from './PdfMovableAssetsSection'
-import { PdfLotDivisionSection } from './PdfLotDivisionSection'
 import { PdfDistributionSection } from './PdfDistributionSection'
 import { PdfIndividualSection } from './PdfIndividualSection'
 import { PdfSettlementSection } from './PdfSettlementSection'
@@ -59,12 +58,10 @@ export function PdfDocument({ data }: { data: PdfData }) {
           />
         )}
 
-        {/* 4c. Distribution (supersedes Land Division) */}
-        {data.distribution ? (
+        {/* 4c. Distribution */}
+        {data.distribution && (
           <PdfDistributionSection distribution={data.distribution} />
-        ) : data.lotDivision ? (
-          <PdfLotDivisionSection lotDivision={data.lotDivision} />
-        ) : null}
+        )}
 
         {/* 4e. Individual Asset Breakdown */}
         {data.individualDistribution && (

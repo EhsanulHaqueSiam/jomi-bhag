@@ -25,10 +25,7 @@ export interface PdfData {
   movableAssets: PdfMovableAsset[]
   movableAssetsTotal: number
 
-  // Lot Division (optional, superseded by distribution when present)
-  lotDivision?: PdfLotDivision
-
-  // Distribution (optional, supersedes lotDivision when present)
+  // Distribution (optional)
   distribution?: PdfDistribution
 
   // Settlement plan (optional, per-property settlement details)
@@ -47,21 +44,6 @@ export interface PdfMovableAsset {
   value: number          // computed value
   isIndivisible: boolean
   resolution: string | null  // "Sell & Divide", "Buyout by Son", "Qurah", or null
-}
-
-export interface PdfLotDivisionGroup {
-  heirType: string // display label
-  count: number
-  targetValue: number
-  assignedProperties: { nickname: string; value: number }[]
-  assignedValue: number
-  cashAdjustment: number
-}
-
-export interface PdfLotDivision {
-  groups: PdfLotDivisionGroup[]
-  compensations: { from: string; to: string; amount: number }[]
-  totalEstateValue: number
 }
 
 export interface PdfShareRow {
