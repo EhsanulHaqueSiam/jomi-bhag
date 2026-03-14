@@ -15,30 +15,50 @@ export function usePdfExport() {
     let pieChartImage: string | null = null
     let barChartImage: string | null = null
 
-    // Exclude Recharts tooltip wrapper nodes -- their internal code accesses
-    // coordinate state that is null during non-interactive capture, causing crashes
-    const filterRechartsTooltips = (node: HTMLElement): boolean => {
-      return !node.classList?.contains('recharts-tooltip-wrapper')
-    }
-
     try {
       const { toPng } = await import('html-to-image')
 
-      const pieEl = document.getElementById('pdf-pie-chart')
-      if (pieEl && pieEl.offsetHeight > 0) {
-        try {
-          pieChartImage = await toPng(pieEl, { pixelRatio: 2, backgroundColor: '#ffffff', filter: filterRechartsTooltips })
-        } catch {
-          // Individual chart capture failure is non-critical
-        }
+      // Remove tooltip DOM nodes before capture to prevent Recharts Redux
+      // selectors from accessing null tooltipInteractionState during cloning
+      const removedNodes: Array<{ node: Element; parent: Node; next: Node | null }> = []
+      const chartContainers = ['pdf-pie-chart', 'pdf-bar-chart']
+      for (const id of chartContainers) {
+        const container = document.getElementById(id)
+        if (!container) continue
+        container.querySelectorAll('.recharts-tooltip-wrapper, .recharts-tooltip-cursor').forEach((node) => {
+          if (node.parentNode) {
+            removedNodes.push({ node, parent: node.parentNode, next: node.nextSibling })
+            node.parentNode.removeChild(node)
+          }
+        })
       }
 
-      const barEl = document.getElementById('pdf-bar-chart')
-      if (barEl && barEl.offsetHeight > 0) {
-        try {
-          barChartImage = await toPng(barEl, { pixelRatio: 2, backgroundColor: '#ffffff', filter: filterRechartsTooltips })
-        } catch {
-          // Individual chart capture failure is non-critical
+      try {
+        const pieEl = document.getElementById('pdf-pie-chart')
+        if (pieEl && pieEl.offsetHeight > 0) {
+          try {
+            pieChartImage = await toPng(pieEl, { pixelRatio: 2, backgroundColor: '#ffffff' })
+          } catch {
+            // Individual chart capture failure is non-critical
+          }
+        }
+
+        const barEl = document.getElementById('pdf-bar-chart')
+        if (barEl && barEl.offsetHeight > 0) {
+          try {
+            barChartImage = await toPng(barEl, { pixelRatio: 2, backgroundColor: '#ffffff' })
+          } catch {
+            // Individual chart capture failure is non-critical
+          }
+        }
+      } finally {
+        // Restore tooltip DOM nodes so interactive tooltips continue working
+        for (const { node, parent, next } of removedNodes) {
+          try {
+            parent.insertBefore(node, next)
+          } catch {
+            // If parent was also removed or DOM changed, skip silently
+          }
         }
       }
     } catch {
