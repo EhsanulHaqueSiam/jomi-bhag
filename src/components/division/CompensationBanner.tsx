@@ -1,5 +1,6 @@
 import type { CashCompensation } from '@/core/land/division'
-import { HEIR_TYPE_LABELS } from '@/core/utils/display'
+import { getHeirTypeLabel } from '@/core/utils/display'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const bdtFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -14,20 +15,20 @@ interface CompensationBannerProps {
 }
 
 export function CompensationBanner({ compensations }: CompensationBannerProps) {
+  const { t, language } = useTranslation()
+
   if (compensations.length === 0) return null
 
   return (
     <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
       <h3 className="text-sm font-semibold text-amber-800">
-        Cash Compensation Required
+        {t('distribution.cashCompensation')}
       </h3>
       <ul className="mt-2 space-y-1">
         {compensations.map((comp, idx) => (
           <li key={idx} className="text-sm text-amber-800">
-            {HEIR_TYPE_LABELS[comp.fromGroup]} received{' '}
-            {bdtFormatter.format(comp.amount)} more in land -- owes{' '}
-            {HEIR_TYPE_LABELS[comp.toGroup]} {bdtFormatter.format(comp.amount)}{' '}
-            cash
+            {getHeirTypeLabel(comp.fromGroup, language)} {' > '}{' '}
+            {getHeirTypeLabel(comp.toGroup, language)} {bdtFormatter.format(comp.amount)}
           </li>
         ))}
       </ul>

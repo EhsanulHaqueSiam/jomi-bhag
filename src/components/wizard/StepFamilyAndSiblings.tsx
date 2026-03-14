@@ -3,6 +3,7 @@ import { useWizardStore } from '@/stores/wizardStore'
 import { StepperButton } from '@/components/ui/StepperButton'
 import { Tooltip } from '@/components/ui/Tooltip'
 import type { HeirType } from '@/core/faraid/types'
+import { useTranslation } from '@/i18n/useTranslation'
 
 export function StepFamilyAndSiblings() {
   // Family selectors
@@ -58,6 +59,8 @@ export function StepFamilyAndSiblings() {
     sisterFullCount + sisterConsanguineCount + sisterUterineCount
   const hasSiblings = totalBrothers > 0 || totalSisters > 0
 
+  const { t } = useTranslation()
+
   // Collapsible siblings section state
   const [siblingsExpanded, setSiblingsExpanded] = useState(false)
 
@@ -83,23 +86,22 @@ export function StepFamilyAndSiblings() {
       {/* Section heading */}
       <div>
         <h2 className="mb-1 text-lg font-semibold text-gray-800">
-          Family Members
+          {t('family.title')}
         </h2>
         <p className="mb-6 text-sm text-gray-500">
-          Enter the deceased's spouse, children, and siblings. These are the
-          primary heirs with shares defined by Quranic text.
+          {t('family.subtitle')}
         </p>
       </div>
 
       {/* Spouse section */}
       <div>
         <h3 className="mb-2 text-sm font-medium text-gray-600">
-          Immediate Family
+          {t('family.immediateFamily')}
         </h3>
         {deceasedGender === 'male' && (
           <div className="relative">
             <StepperButton
-              label="Wives"
+              label={t('family.wives')}
               value={wifeCount}
               min={0}
               max={4}
@@ -107,7 +109,7 @@ export function StepFamilyAndSiblings() {
             />
             {isAutoIncluded('wife') && (
               <span className="absolute right-0 top-0 text-xs text-emerald-600">
-                (includes mother)
+                {t('family.includesMother')}
               </span>
             )}
           </div>
@@ -116,7 +118,7 @@ export function StepFamilyAndSiblings() {
         {deceasedGender === 'female' && (
           <div className="flex items-center justify-between py-3">
             <span className="font-medium text-gray-700">
-              Was she married?
+              {t('family.wasSheMarried')}
             </span>
             <button
               type="button"
@@ -138,7 +140,7 @@ export function StepFamilyAndSiblings() {
 
         {deceasedGender === null && (
           <p className="py-3 text-sm text-amber-600">
-            Please select relationship first
+            {t('family.pleaseSelectRelationship')}
           </p>
         )}
       </div>
@@ -147,25 +149,25 @@ export function StepFamilyAndSiblings() {
       <div className="space-y-1">
         <div className="relative">
           <StepperButton
-            label="Sons"
+            label={t('family.sons')}
             value={sonCount}
             onChange={setSonCount}
           />
           {isAutoIncluded('son') && (
             <span className="absolute right-0 top-0 text-xs text-emerald-600">
-              (includes you)
+              {t('family.includesYou')}
             </span>
           )}
         </div>
         <div className="relative">
           <StepperButton
-            label="Daughters"
+            label={t('family.daughters')}
             value={daughterCount}
             onChange={setDaughterCount}
           />
           {isAutoIncluded('daughter') && (
             <span className="absolute right-0 top-0 text-xs text-emerald-600">
-              (includes you)
+              {t('family.includesYou')}
             </span>
           )}
         </div>
@@ -197,31 +199,29 @@ export function StepFamilyAndSiblings() {
           </svg>
           <span className="text-sm font-medium text-emerald-600">
             {siblingsExpanded
-              ? 'Siblings'
+              ? t('family.siblings')
               : hasSiblings
-                ? `Siblings (${totalBrothers + totalSisters} added)`
-                : 'Add siblings (optional)'}
+                ? `${t('family.siblings')} (${totalBrothers + totalSisters})`
+                : t('family.addSiblings')}
           </span>
         </button>
 
         {siblingsExpanded && (
           <div className="mt-3 space-y-4 pl-6">
             <p className="text-sm text-gray-500">
-              Siblings inherit when there are no sons or paternal grandsons.
-              Their share depends on whether they are full, consanguine, or
-              uterine.
+              {t('family.siblingsInfo')}
             </p>
 
             {!siblingTypeExpanded ? (
               /* Collapsed view: simple Brothers / Sisters steppers */
               <div className="space-y-1">
                 <StepperButton
-                  label="Brothers"
+                  label={t('family.brothers')}
                   value={totalBrothers}
                   onChange={handleCollapsedBrotherChange}
                 />
                 <StepperButton
-                  label="Sisters"
+                  label={t('family.sisters')}
                   value={totalSisters}
                   onChange={handleCollapsedSisterChange}
                 />
@@ -231,48 +231,48 @@ export function StepFamilyAndSiblings() {
               <div className="space-y-2">
                 {/* Brothers sub-heading */}
                 <p className="mt-4 mb-2 text-sm font-medium text-gray-600">
-                  Brothers
+                  {t('family.brothers')}
                 </p>
                 <StepperButton
-                  label="Full brothers"
+                  label={t('family.fullBrothers')}
                   value={brotherFullCount}
                   onChange={setBrotherFullCount}
-                  tooltip="Share both parents with the deceased"
+                  tooltip={t('family.fullBrotherTooltip')}
                 />
                 <StepperButton
-                  label="Consanguine brothers"
+                  label={t('family.consanguineBrothers')}
                   value={brotherConsanguineCount}
                   onChange={setBrotherConsanguineCount}
-                  tooltip="Share only the father (paternal half-brothers)"
+                  tooltip={t('family.consanguineTooltip')}
                 />
                 <StepperButton
-                  label="Uterine brothers"
+                  label={t('family.uterineBrothers')}
                   value={brotherUterineCount}
                   onChange={setBrotherUterineCount}
-                  tooltip="Share only the mother (maternal half-brothers)"
+                  tooltip={t('family.uterineTooltip')}
                 />
 
                 {/* Sisters sub-heading */}
                 <p className="mt-4 mb-2 text-sm font-medium text-gray-600">
-                  Sisters
+                  {t('family.sisters')}
                 </p>
                 <StepperButton
-                  label="Full sisters"
+                  label={t('family.fullSisters')}
                   value={sisterFullCount}
                   onChange={setSisterFullCount}
-                  tooltip="Share both parents with the deceased"
+                  tooltip={t('family.fullBrotherTooltip')}
                 />
                 <StepperButton
-                  label="Consanguine sisters"
+                  label={t('family.consanguineSisters')}
                   value={sisterConsanguineCount}
                   onChange={setSisterConsanguineCount}
-                  tooltip="Share only the father (paternal half-sisters)"
+                  tooltip={t('family.consanguineTooltip')}
                 />
                 <StepperButton
-                  label="Uterine sisters"
+                  label={t('family.uterineSisters')}
                   value={sisterUterineCount}
                   onChange={setSisterUterineCount}
-                  tooltip="Share only the mother (maternal half-sisters)"
+                  tooltip={t('family.uterineTooltip')}
                 />
               </div>
             )}
@@ -285,10 +285,10 @@ export function StepFamilyAndSiblings() {
                 className="cursor-pointer text-sm text-emerald-600 transition-colors hover:text-emerald-700"
               >
                 {siblingTypeExpanded
-                  ? 'Show simple view'
-                  : 'Different types of siblings?'}
+                  ? t('family.simpleView')
+                  : t('family.differentTypes')}
               </button>
-              <Tooltip content="In Islamic inheritance, siblings have different shares based on whether they share both parents (full), only the father (consanguine/paternal), or only the mother (uterine/maternal)." />
+              <Tooltip content={t('family.siblingTypeTooltip')} />
             </div>
           </div>
         )}

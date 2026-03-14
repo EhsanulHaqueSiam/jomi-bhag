@@ -2,16 +2,20 @@ import { Fragment } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { useWizardStore } from '@/stores/wizardStore'
 import { WIZARD_STEPS } from '@/types/wizard'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const prefersReducedMotion =
   typeof window !== 'undefined' &&
   typeof window.matchMedia === 'function' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+const STEP_KEYS = ['steps.relationship', 'steps.familyMembers', 'steps.estateInventory', 'steps.results']
+
 export function StepIndicator() {
   const currentStep = useWizardStore((s) => s.currentStep)
   const completedSteps = useWizardStore((s) => s.completedSteps)
   const setStep = useWizardStore((s) => s.setStep)
+  const { t } = useTranslation()
 
   const isCompleted = (step: number) => completedSteps.includes(step)
   const isActive = (step: number) => step === currentStep
@@ -40,7 +44,7 @@ export function StepIndicator() {
                 ${!isCompleted(step.number) && !isActive(step.number) ? 'h-8 w-8 bg-gray-100 text-gray-400 md:h-10 md:w-10' : ''}
               `}
               aria-current={isActive(step.number) ? 'step' : undefined}
-              aria-label={`${step.label}${isCompleted(step.number) && !isActive(step.number) ? ' (completed)' : ''}`}
+              aria-label={`${t(STEP_KEYS[step.number - 1])}${isCompleted(step.number) && !isActive(step.number) ? ' (completed)' : ''}`}
             >
               <AnimatePresence mode="wait">
                 {isCompleted(step.number) && !isActive(step.number) ? (
@@ -78,7 +82,7 @@ export function StepIndicator() {
                     : 'text-gray-400'
               }`}
             >
-              {step.label}
+              {t(STEP_KEYS[step.number - 1])}
             </span>
           </div>
 

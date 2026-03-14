@@ -4,9 +4,10 @@ import type { ShareResult } from '@/core/faraid/types'
 import {
   fractionToString,
   fractionToPercent,
-  HEIR_TYPE_LABELS,
-  SHARE_TYPE_LABELS,
+  getHeirTypeLabel,
+  getShareTypeLabel,
 } from '@/core/utils/display'
+import { useTranslation } from '@/i18n/useTranslation'
 import { getShareReference } from '@/core/faraid/references'
 import { HeirIcon, feminineHeirs } from '@/components/ui/HeirIcon'
 import { useWizardStore } from '@/stores/wizardStore'
@@ -25,10 +26,10 @@ const bdtFormatter = new Intl.NumberFormat('en-IN', {
   maximumFractionDigits: 0,
 })
 
-function getAutoLabel(type: PropertyType | null, index: number): string {
-  if (!type) return 'New Property'
+function getAutoLabel(type: PropertyType | null, index: number, language: 'en' | 'bn' = 'en'): string {
+  if (!type) return language === 'bn' ? '\u09A8\u09A4\u09C1\u09A8 \u09B8\u09AE\u09CD\u09AA\u09A4\u09CD\u09A4\u09BF' : 'New Property'
   const typeInfo = PROPERTY_TYPES.find((pt) => pt.value === type)
-  const label = typeInfo?.label ?? 'Property'
+  const label = language === 'bn' ? (typeInfo?.labelBn ?? '\u09B8\u09AE\u09CD\u09AA\u09A4\u09CD\u09A4\u09BF') : (typeInfo?.label ?? 'Property')
   return `${label} #${index}`
 }
 
@@ -51,11 +52,12 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
   const viewMode = useWizardStore((s) => s.viewMode)
   const [showProperties, setShowProperties] = useState(false)
 
+  const { t, language } = useTranslation()
   const isDetailed = viewMode === 'detailed'
 
-  const label = HEIR_TYPE_LABELS[share.heirType] ?? share.heirType
+  const label = getHeirTypeLabel(share.heirType, language)
   const isFeminine = feminineHeirs.has(share.heirType)
-  const shareTypeLabel = SHARE_TYPE_LABELS[share.shareType] ?? share.shareType
+  const shareTypeLabel = getShareTypeLabel(share.shareType, language)
   const badgeStyle = shareTypeBadgeStyles[share.shareType] ?? 'bg-gray-100 text-gray-500'
 
   const hasMultiple = share.count > 1
@@ -79,7 +81,7 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
     const propTotal = computePropertyTotal(p)
     const sameType = properties.filter((pp) => pp.type === p.type)
     const typeIndex = sameType.findIndex((pp) => pp.id === p.id) + 1
-    const name = p.nickname || getAutoLabel(p.type, typeIndex)
+    const name = p.nickname || getAutoLabel(p.type, typeIndex, language)
     return {
       id: p.id,
       name,
@@ -94,7 +96,7 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
       const catAssets = movableAssets.filter((a) => a.category === cat.value)
       const catTotal = catAssets.reduce((sum, a) => sum + computeAssetValue(a), 0)
       return {
-        label: cat.label,
+        label: language === 'bn' ? cat.labelBn : cat.label,
         catTotal,
         eachAmount: Math.round(share.sharePerHeir.valueOf() * catTotal),
         totalAmount: Math.round(share.totalShare.valueOf() * catTotal),
@@ -134,7 +136,7 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
         {hasMultiple ? (
           <>
             <div className="flex items-baseline justify-between">
-              <span className="text-sm text-gray-500">Each</span>
+              <span className="text-sm text-gray-500">{t('results.each')}</span>
               <div className="flex items-baseline gap-1.5 text-right">
                 <span className="text-sm font-medium text-gray-700">
                   {fractionToString(share.sharePerHeir)}
@@ -150,7 +152,7 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-sm font-medium text-gray-700">Total</span>
+              <span className="text-sm font-medium text-gray-700">{t('results.total')}</span>
               <div className="flex items-baseline gap-1.5 text-right">
                 <span className="text-base font-semibold text-gray-900">
                   {fractionToString(share.totalShare)}
@@ -188,7 +190,7 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
       {/* Hint when no properties and no estate value */}
       {properties.length === 0 && totalEstateValue === 0 && (
         <p className="mt-2 text-xs italic text-gray-400">
-          Add properties or enter estate value to see BDT amounts
+          {t('results.addPropertiesHint')}
         </p>
       )}
 
@@ -200,7 +202,7 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
             onClick={() => setShowProperties(!showProperties)}
             className="text-xs font-medium text-emerald-700 underline hover:text-emerald-800"
           >
-            {showProperties ? 'Hide asset shares' : 'View asset shares'}
+            {showProperties ? t('results.hideAssetShares') : t('results.viewAssetShares')}
           </button>
 
           <AnimatePresence initial={false}>

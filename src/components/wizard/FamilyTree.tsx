@@ -1,5 +1,7 @@
 import { useWizardStore } from '@/stores/wizardStore'
 import type { HeirType } from '@/core/faraid/types'
+import { useTranslation } from '@/i18n/useTranslation'
+import { getHeirTypeLabel } from '@/core/utils/display'
 
 interface FamilyTreeProps {
   currentStep: number
@@ -21,33 +23,34 @@ export function FamilyTree({ currentStep }: FamilyTreeProps) {
 function TreeSelector() {
   const relationship = useWizardStore((s) => s.relationship)
   const setRelationship = useWizardStore((s) => s.setRelationship)
+  const { t } = useTranslation()
 
   return (
     <div className="rounded-xl border border-emerald-100 bg-gradient-to-b from-emerald-50/40 to-white p-4">
       <p className="mb-4 text-center text-sm text-gray-600">
-        Click on who passed away in your family
+        {t('relationship.clickWhoPassedAway')}
       </p>
 
       {/* Row 1: Parents (above YOU) */}
       <div className="mb-1 text-center">
         <span className="text-[10px] font-medium tracking-wider text-gray-400 uppercase">
-          My Parents
+          {t('relationship.myParents')}
         </span>
       </div>
       <div className="flex justify-center gap-2">
         <TreeButton
-          label="Father"
+          label={t('relationship.father')}
           selected={relationship === 'father'}
           onClick={() => setRelationship('father')}
         />
         <TreeButton
-          label="Mother"
+          label={t('relationship.mother')}
           selected={relationship === 'mother'}
           onClick={() => setRelationship('mother')}
         />
       </div>
 
-      {/* Connector: parents → YOU */}
+      {/* Connector: parents -> YOU */}
       <div className="flex justify-center">
         <div className="h-3 w-px bg-emerald-200" />
       </div>
@@ -55,11 +58,11 @@ function TreeSelector() {
       {/* Row 2: YOU (center) */}
       <div className="flex justify-center">
         <span className="rounded-full bg-emerald-600 px-5 py-1.5 text-xs font-bold tracking-wide text-white shadow-md">
-          YOU
+          {t('relationship.you')}
         </span>
       </div>
 
-      {/* Connector: YOU → siblings/spouse */}
+      {/* Connector: YOU -> siblings/spouse */}
       <div className="flex justify-center">
         <div className="h-3 w-px bg-emerald-200" />
       </div>
@@ -67,17 +70,17 @@ function TreeSelector() {
       {/* Row 3: Siblings (same generation) */}
       <div className="mb-1 text-center">
         <span className="text-[10px] font-medium tracking-wider text-gray-400 uppercase">
-          My Siblings
+          {t('relationship.mySiblings')}
         </span>
       </div>
       <div className="flex justify-center gap-2">
         <TreeButton
-          label="Brother"
+          label={t('relationship.brother')}
           selected={relationship === 'brother'}
           onClick={() => setRelationship('brother')}
         />
         <TreeButton
-          label="Sister"
+          label={t('relationship.sister')}
           selected={relationship === 'sister'}
           onClick={() => setRelationship('sister')}
         />
@@ -89,17 +92,17 @@ function TreeSelector() {
       {/* Row 4: Spouse (same generation) */}
       <div className="mb-1 text-center">
         <span className="text-[10px] font-medium tracking-wider text-gray-400 uppercase">
-          My Spouse
+          {t('relationship.mySpouse')}
         </span>
       </div>
       <div className="flex justify-center gap-2">
         <TreeButton
-          label="Husband"
+          label={t('relationship.husband')}
           selected={relationship === 'husband'}
           onClick={() => setRelationship('husband')}
         />
         <TreeButton
-          label="Wife"
+          label={t('relationship.wife')}
           selected={relationship === 'wife'}
           onClick={() => setRelationship('wife')}
         />
@@ -108,7 +111,7 @@ function TreeSelector() {
       {/* Other */}
       <div className="mt-3 flex justify-center">
         <TreeButton
-          label="Other"
+          label={t('relationship.other')}
           selected={relationship === 'other'}
           onClick={() => setRelationship('other')}
           ghost
@@ -147,6 +150,7 @@ function TreeButton({
 // ─── Steps 2-3: Heir display tree ──────────────────────────────────────
 
 function TreeDisplay() {
+  const { t, language } = useTranslation()
   const relationship = useWizardStore((s) => s.relationship)
   const deceasedGender = useWizardStore((s) => s.deceasedGender)
   const wifeCount = useWizardStore((s) => s.wifeCount)
@@ -177,7 +181,7 @@ function TreeDisplay() {
     relationship === 'brother' || relationship === 'sister'
 
   const deceasedLabel =
-    deceasedGender === 'male' ? 'Deceased \u2642' : deceasedGender === 'female' ? 'Deceased \u2640' : 'Deceased'
+    deceasedGender === 'male' ? t('familyTree.deceasedMale') : deceasedGender === 'female' ? t('familyTree.deceasedFemale') : t('familyTree.deceased')
 
   // Spouse
   const totalWives = wifeCount + autoCount('wife')
@@ -188,9 +192,9 @@ function TreeDisplay() {
   const spouseLabel =
     deceasedGender === 'male'
       ? totalWives === 1
-        ? 'Wife'
-        : `${totalWives} Wives`
-      : 'Husband'
+        ? getHeirTypeLabel('wife', language)
+        : `${totalWives} ${getHeirTypeLabel('wife', language)}`
+      : getHeirTypeLabel('husband', language)
 
   // Children
   const totalSons = sonCount + autoCount('son')
@@ -215,7 +219,7 @@ function TreeDisplay() {
   return (
     <div className="rounded-xl border border-emerald-100 bg-emerald-50/30 px-3 py-4">
       <p className="mb-3 text-center text-[10px] font-semibold tracking-widest text-emerald-600 uppercase">
-        Family Overview
+        {t('familyTree.familyOverview')}
       </p>
 
       {/* ── Top row: Siblings (same generation as deceased) ── */}
@@ -223,20 +227,20 @@ function TreeDisplay() {
         <>
           <div className="mb-1 text-center">
             <span className="text-[9px] font-medium tracking-wider text-gray-400 uppercase">
-              Siblings of deceased
+              {t('familyTree.siblingsOfDeceased')}
             </span>
           </div>
           <div className="flex flex-wrap justify-center gap-1.5">
             {totalBrothers > 0 && (
               <HeirBadge
-                label={totalBrothers === 1 ? 'Brother' : `${totalBrothers} Brothers`}
+                label={totalBrothers === 1 ? t('relationship.brother') : `${totalBrothers} ${t('relationship.brother')}`}
                 isYou={userIsSibling && relationship === 'brother'}
                 autoIncluded={autoCount('brother_full') > 0}
               />
             )}
             {totalSisters > 0 && (
               <HeirBadge
-                label={totalSisters === 1 ? 'Sister' : `${totalSisters} Sisters`}
+                label={totalSisters === 1 ? t('relationship.sister') : `${totalSisters} ${t('relationship.sister')}`}
                 isYou={userIsSibling && relationship === 'sister'}
                 autoIncluded={autoCount('sister_full') > 0}
               />
@@ -284,13 +288,13 @@ function TreeDisplay() {
         <>
           <div className="mb-1 text-center">
             <span className="text-[9px] font-medium tracking-wider text-gray-400 uppercase">
-              Children
+              {t('familyTree.children')}
             </span>
           </div>
           <div className="flex flex-wrap justify-center gap-1.5">
             {totalSons > 0 && (
               <HeirBadge
-                label={totalSons === 1 ? 'Son' : `${totalSons} Sons`}
+                label={totalSons === 1 ? t('relationship.son') : `${totalSons} ${t('relationship.son')}`}
                 isYou={userIsChild && autoCount('son') > 0}
                 autoIncluded={autoCount('son') > 0}
               />
@@ -299,8 +303,8 @@ function TreeDisplay() {
               <HeirBadge
                 label={
                   totalDaughters === 1
-                    ? 'Daughter'
-                    : `${totalDaughters} Daughters`
+                    ? t('relationship.daughter')
+                    : `${totalDaughters} ${t('relationship.daughter')}`
                 }
                 isYou={userIsChild && autoCount('daughter') > 0}
                 autoIncluded={autoCount('daughter') > 0}
@@ -312,7 +316,7 @@ function TreeDisplay() {
 
       {!hasAny && (
         <p className="mt-2 text-center text-xs text-gray-400">
-          Add family members to see them here
+          {t('familyTree.addFamilyMembers')}
         </p>
       )}
     </div>

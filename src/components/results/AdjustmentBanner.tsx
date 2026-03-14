@@ -1,6 +1,7 @@
 import type { AdjustmentType } from '@/core/faraid/types'
 import type Fraction from 'fraction.js'
 import { fractionToString } from '@/core/utils/display'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface AdjustmentBannerProps {
   adjustment: AdjustmentType
@@ -29,17 +30,17 @@ export function AdjustmentBanner({
   adjustment,
   totalBeforeAdjustment,
 }: AdjustmentBannerProps) {
+  const { t } = useTranslation()
+
   if (adjustment === 'none') return null
 
   const isAwl = adjustment === 'awl'
+  const fraction = fractionToString(totalBeforeAdjustment)
 
-  const heading = isAwl
-    ? 'Awl (Proportional Reduction) Applied'
-    : 'Radd (Surplus Return) Applied'
+  const heading = isAwl ? t('results.awlTitle') : t('results.raddTitle')
 
-  const description = isAwl
-    ? `The total prescribed shares exceeded the estate (${fractionToString(totalBeforeAdjustment)}). All shares have been proportionally reduced so each heir receives a fair portion.`
-    : `The total prescribed shares were less than the full estate (${fractionToString(totalBeforeAdjustment)}). The surplus has been redistributed to eligible blood-relative heirs. Spouses are excluded from Radd per Hanafi jurisprudence.`
+  const descriptionTemplate = isAwl ? t('results.awlDescription') : t('results.raddDescription')
+  const description = descriptionTemplate.replace('{fraction}', fraction)
 
   const containerClass = isAwl
     ? 'border-l-4 border-amber-400 bg-amber-50'

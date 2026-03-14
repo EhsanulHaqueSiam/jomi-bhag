@@ -1,21 +1,4 @@
-/** Content map for special case descriptions. */
-const specialCaseInfo: Record<string, { title: string; description: string }> = {
-  kalalah: {
-    title: 'Kalalah',
-    description:
-      'The deceased has no children, no father, and no grandfather. Siblings inherit according to Quran 4:12 (uterine) and 4:176 (full/consanguine).',
-  },
-  umariyyatayn: {
-    title: 'Umariyyatayn (Two Omari Cases)',
-    description:
-      "Per Omar's (RA) ruling: the mother receives 1/3 of the remainder after the spouse's share, not 1/3 of the entire estate.",
-  },
-  mushtarakah: {
-    title: 'Mushtarakah (Shared Case)',
-    description:
-      "Hanafi ruling: full siblings receive nothing as Asaba when there is no remainder. Note: Shafi'i and Maliki schools would have full siblings share in the uterine siblings' 1/3 portion.",
-  },
-}
+import { useTranslation } from '@/i18n/useTranslation'
 
 /** Decorative star icon for callout boxes. */
 function StarIcon({ className }: { className?: string }) {
@@ -36,7 +19,15 @@ interface SpecialCaseCalloutProps {
 }
 
 export function SpecialCaseCallout({ specialCases }: SpecialCaseCalloutProps) {
+  const { t } = useTranslation()
+
   if (specialCases.length === 0) return null
+
+  const specialCaseInfo: Record<string, { titleKey: string; descriptionKey: string }> = {
+    kalalah: { titleKey: 'results.kalalahTitle', descriptionKey: 'results.kalalahDescription' },
+    umariyyatayn: { titleKey: 'results.umariyyataynTitle', descriptionKey: 'results.umariyyataynDescription' },
+    mushtarakah: { titleKey: 'results.mushtarakahTitle', descriptionKey: 'results.mushtarakahDescription' },
+  }
 
   return (
     <div className="space-y-3">
@@ -51,10 +42,10 @@ export function SpecialCaseCallout({ specialCases }: SpecialCaseCalloutProps) {
           >
             <StarIcon className="absolute right-3 top-3 h-5 w-5 text-gold-300" />
             <h3 className="text-sm font-semibold text-gold-700">
-              {info.title}
+              {t(info.titleKey)}
             </h3>
             <p className="mt-1 pr-6 text-sm leading-relaxed text-gray-700">
-              {info.description}
+              {t(info.descriptionKey)}
             </p>
           </div>
         )

@@ -1,10 +1,12 @@
 import { useRef, useState } from 'react'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface ImportDropZoneProps {
   onFileSelected: (file: File) => void
 }
 
 export function ImportDropZone({ onFileSelected }: ImportDropZoneProps) {
+  const { t } = useTranslation()
   const [dragCounter, setDragCounter] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -88,7 +90,7 @@ export function ImportDropZone({ onFileSelected }: ImportDropZoneProps) {
         />
       </svg>
       <p className="text-sm text-gray-500">
-        Drag JSON file here or click to browse
+        {t('json.dragOrBrowse')}
       </p>
       <input
         ref={inputRef}

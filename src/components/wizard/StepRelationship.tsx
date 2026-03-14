@@ -6,8 +6,10 @@ import { ImportDropZone } from '@/components/json/ImportDropZone'
 import { ImportConfirmDialog } from '@/components/json/ImportConfirmDialog'
 import { Toast } from '@/components/json/Toast'
 import { useJsonImport } from '@/hooks/useJsonImport'
+import { useTranslation } from '@/i18n/useTranslation'
 
 export function StepRelationship() {
+  const { t } = useTranslation()
   const relationship = useWizardStore((s) => s.relationship)
   const userGender = useWizardStore((s) => s.userGender)
   const motherAlive = useWizardStore((s) => s.motherAlive)
@@ -40,16 +42,16 @@ export function StepRelationship() {
       {needsGenderDisambiguation && (
         <div className="space-y-3">
           <p className="text-sm font-medium text-gray-700">
-            I am the deceased's...
+            {t('relationship.iAmThe')}
           </p>
           <div className="flex gap-3">
             <OptionButton
-              label="Son"
+              label={t('relationship.son')}
               selected={userGender === 'male'}
               onClick={() => setUserGender('male')}
             />
             <OptionButton
-              label="Daughter"
+              label={t('relationship.daughter')}
               selected={userGender === 'female'}
               onClick={() => setUserGender('female')}
             />
@@ -61,16 +63,16 @@ export function StepRelationship() {
       {needsMotherAlivePrompt && (
         <div className="space-y-3">
           <p className="text-sm font-medium text-gray-700">
-            Is the deceased's wife (your mother) alive?
+            {t('relationship.isMotherAlive')}
           </p>
           <div className="flex gap-3">
             <OptionButton
-              label="Yes"
+              label={t('relationship.yes')}
               selected={motherAlive === true}
               onClick={() => setMotherAlive(true)}
             />
             <OptionButton
-              label="No"
+              label={t('relationship.no')}
               selected={motherAlive === false}
               onClick={() => setMotherAlive(false)}
             />
@@ -82,16 +84,16 @@ export function StepRelationship() {
       {needsDeceasedGenderSelector && (
         <div className="space-y-3">
           <p className="text-sm font-medium text-gray-700">
-            The deceased was...
+            {t('relationship.deceasedWas')}
           </p>
           <div className="flex gap-3">
             <OptionButton
-              label="Male"
+              label={t('relationship.male')}
               selected={deceasedGender === 'male'}
               onClick={() => setDeceasedGender('male')}
             />
             <OptionButton
-              label="Female"
+              label={t('relationship.female')}
               selected={deceasedGender === 'female'}
               onClick={() => setDeceasedGender('female')}
             />
@@ -117,7 +119,7 @@ export function StepRelationship() {
               >
                 &#9654;
               </span>
-              Advanced options
+              {t('relationship.advancedOptions')}
             </button>
 
             {advancedOpen && (
@@ -139,17 +141,16 @@ export function StepRelationship() {
                     />
                   </button>
                   <span className="text-sm text-gray-700">
-                    Apply MFLO Section 4 (orphaned grandchildren)
+                    {t('relationship.applyMflo')}
                   </span>
-                  <Tooltip content="The Muslim Family Laws Ordinance 1961 Section 4 allows orphaned grandchildren to inherit their parent's share. This diverges from traditional Hanafi jurisprudence." />
+                  <Tooltip content={t('relationship.mfloTooltip')} />
                 </div>
 
                 {mfloEnabled && (
                   <div className="flex gap-2 rounded-lg border border-gold-500 bg-gold-50 p-3 text-sm text-gold-600">
                     <span className="mt-0.5 flex-shrink-0">&#9888;</span>
                     <p>
-                      MFLO Section 4 modifies traditional Hanafi inheritance rules.
-                      Consult a qualified scholar for guidance.
+                      {t('relationship.mfloWarning')}
                     </p>
                   </div>
                 )}
@@ -165,7 +166,7 @@ export function StepRelationship() {
           <div className="w-full border-t border-gray-200"></div>
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-white px-3 text-sm text-gray-500">or import from file</span>
+          <span className="bg-white px-3 text-sm text-gray-500">{t('relationship.orImportFromFile')}</span>
         </div>
       </div>
       <ImportDropZone onFileSelected={importFromFile} />

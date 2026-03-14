@@ -1,3 +1,5 @@
+import { useTranslation } from '@/i18n/useTranslation'
+
 export type DistributionView = 'group' | 'individual'
 
 interface ViewToggleProps {
@@ -7,12 +9,14 @@ interface ViewToggleProps {
 }
 
 export function ViewToggle({ view, onViewChange, disabled }: ViewToggleProps) {
+  const { t } = useTranslation()
+
   if (disabled) return null
 
   return (
     <div
       role="tablist"
-      aria-label="Distribution view"
+      aria-label={t('distribution.distributionView')}
       className="inline-flex rounded-full bg-gray-100 p-1"
     >
       <button
@@ -26,7 +30,7 @@ export function ViewToggle({ view, onViewChange, disabled }: ViewToggleProps) {
             : 'text-gray-500 hover:text-gray-700',
         ].join(' ')}
       >
-        By Group
+        {t('distribution.byGroup')}
       </button>
       <button
         role="tab"
@@ -39,7 +43,7 @@ export function ViewToggle({ view, onViewChange, disabled }: ViewToggleProps) {
             : 'text-gray-500 hover:text-gray-700',
         ].join(' ')}
       >
-        By Individual
+        {t('distribution.byIndividual')}
       </button>
     </div>
   )

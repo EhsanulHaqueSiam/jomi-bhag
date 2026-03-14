@@ -13,7 +13,8 @@ import { StepAccordion } from '@/components/results/StepAccordion'
 import { IslamicBasisSection } from '@/components/results/IslamicBasisSection'
 import { ModeToggle } from '@/components/results/ModeToggle'
 import { getAllReferences } from '@/core/faraid/references'
-import { HEIR_TYPE_LABELS } from '@/core/utils/display'
+import { HEIR_TYPE_LABELS, getHeirTypeLabel } from '@/core/utils/display'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const bdtFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -72,6 +73,7 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
 
   const { downloadPdf, printPdf, isGenerating, error: pdfError, dismissError } = usePdfExport()
   const { exportJson } = useJsonExport()
+  const { t, language } = useTranslation()
 
   const isDetailed = viewMode === 'detailed'
 
@@ -86,13 +88,13 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
       {pdfError && (
         <div className="flex items-center justify-between rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
           <span>{pdfError}</span>
-          <button type="button" onClick={dismissError} className="ml-2 font-medium hover:text-red-900">Dismiss</button>
+          <button type="button" onClick={dismissError} className="ml-2 font-medium hover:text-red-900">{t('results.dismiss')}</button>
         </div>
       )}
 
       {/* Header area -- clean, just the title */}
       <h2 className="text-xl font-bold text-gray-900">
-        Inheritance Results
+        {t('results.title')}
       </h2>
 
       {/* Mode toggle pill + hint text */}
@@ -108,7 +110,7 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
               transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
               className="text-xs text-gray-400"
             >
-              Switch to Detailed for charts, legal references, and calculation steps
+              {t('results.switchToDetailed')}
             </motion.p>
           )}
         </AnimatePresence>
@@ -116,14 +118,14 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
 
       {/* Summary card -- heir shares at a glance */}
       <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <h3 className="mb-3 text-sm font-semibold text-gray-700">Inheritance Summary</h3>
+        <h3 className="mb-3 text-sm font-semibold text-gray-700">{t('results.inheritanceSummary')}</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100 text-left text-xs font-medium text-gray-500">
-                <th className="pb-2 pr-4">Heir</th>
-                <th className="pb-2 pr-4">Share</th>
-                {totalEstateValue > 0 && <th className="pb-2 text-right">Amount</th>}
+                <th className="pb-2 pr-4">{t('results.heir')}</th>
+                <th className="pb-2 pr-4">{t('results.share')}</th>
+                {totalEstateValue > 0 && <th className="pb-2 text-right">{t('results.amount')}</th>}
               </tr>
             </thead>
             <motion.tbody
@@ -132,7 +134,7 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
               variants={tableStaggerContainer}
             >
               {activeShares.map((share, i) => {
-                const label = HEIR_TYPE_LABELS[share.heirType] ?? share.heirType
+                const label = getHeirTypeLabel(share.heirType, language)
                 const displayLabel = share.count > 1 ? `${label} (x${share.count})` : label
                 const fraction = share.totalShare.toFraction()
                 const amount = totalEstateValue > 0
@@ -244,7 +246,7 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
                 <path d="M3 3h6v6H3V3zm8 0h6v6h-6V3zM3 11h6v6H3v-6zm8 0h6v6h-6v-6z" opacity="0.6" />
                 <path d="M9 6l3-3m0 0l3 3m-3-3v8m-3 3l3 3m0 0l3-3m-3 3V9" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              Distribute Assets
+              {t('results.distributeAssets')}
             </button>
           )}
           <button
@@ -260,7 +262,7 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
                 <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
             )}
-            <span className="hidden sm:inline">Download PDF</span>
+            <span className="hidden sm:inline">{t('results.downloadPdf')}</span>
           </button>
           <button
             type="button"
@@ -271,7 +273,7 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clipRule="evenodd" />
             </svg>
-            <span className="hidden sm:inline">Print</span>
+            <span className="hidden sm:inline">{t('results.print')}</span>
           </button>
           <button
             type="button"
@@ -281,21 +283,21 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
-            <span className="hidden sm:inline">Export JSON</span>
+            <span className="hidden sm:inline">{t('results.exportJson')}</span>
           </button>
           <button
             type="button"
             onClick={() => setStep(1)}
             className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100"
           >
-            Edit Heirs
+            {t('results.editHeirs')}
           </button>
           <button
             type="button"
             onClick={() => setStep(3)}
             className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100"
           >
-            Edit Properties
+            {t('results.editProperties')}
           </button>
         </div>
       </div>

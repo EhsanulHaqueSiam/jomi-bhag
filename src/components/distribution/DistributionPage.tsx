@@ -6,6 +6,7 @@ import { useDistributionStore } from '@/stores/distributionStore'
 import { useIndividualDistributionStore } from '@/stores/individualDistributionStore'
 import { useWizardStore } from '@/stores/wizardStore'
 import { CompensationBanner } from '@/components/division/CompensationBanner'
+import { useTranslation } from '@/i18n/useTranslation'
 import { DistributionBoard } from './DistributionBoard'
 import { DistributionControls } from './DistributionControls'
 import { SummaryBanner } from './SummaryBanner'
@@ -35,6 +36,7 @@ function IndividualControls({
   canUndo: boolean
   onStartCeremony: () => void
 }) {
+  const { t } = useTranslation()
   return (
     <div className="flex items-center justify-end gap-2">
       {/* Undo button */}
@@ -61,7 +63,7 @@ function IndividualControls({
                 clipRule="evenodd"
               />
             </svg>
-            Undo
+            {t('distribution.undo')}
           </motion.button>
         )}
       </AnimatePresence>
@@ -80,7 +82,7 @@ function IndividualControls({
         >
           <path d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" />
         </svg>
-        Draw Lots (Qurah)
+        {t('distribution.drawLots')}
       </button>
     </div>
   )
@@ -94,6 +96,8 @@ function IndividualCompensationBanner({
   compensations: IndividualCompensation[]
   customNames: Record<string, string>
 }) {
+  const { t } = useTranslation()
+
   if (compensations.length === 0) return null
 
   const getName = (id: string, fallback: string) =>
@@ -102,12 +106,12 @@ function IndividualCompensationBanner({
   return (
     <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
       <h3 className="text-sm font-semibold text-amber-800">
-        Individual Cash Compensation
+        {t('distribution.individualCashCompensation')}
       </h3>
       <ul className="mt-2 space-y-1">
         {compensations.map((comp, idx) => (
           <li key={idx} className="text-sm text-amber-800">
-            {getName(comp.fromId, comp.fromName)} pays{' '}
+            {getName(comp.fromId, comp.fromName)} {t('distribution.pays')}{' '}
             {getName(comp.toId, comp.toName)}{' '}
             {bdtFormatter.format(comp.amount)}
           </li>
@@ -122,6 +126,7 @@ interface DistributionPageProps {
 }
 
 export function DistributionPage({ onNavigate }: DistributionPageProps) {
+  const { t } = useTranslation()
   const [view, setView] = useState<DistributionView>('group')
   const [showQurahCeremony, setShowQurahCeremony] = useState(false)
   const [revealedCount, setRevealedCount] = useState(0)
@@ -268,7 +273,7 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
   if (!distributionResult) {
     return (
       <div className="py-12 text-center text-gray-500">
-        No assets to distribute. Add properties or movable assets first.
+        {t('distribution.noAssets')}
       </div>
     )
   }
@@ -278,33 +283,33 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
       {/* Header bar */}
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-gray-900">
-          Asset Distribution
+          {t('distribution.title')}
         </h2>
         <button
           type="button"
           onClick={handleBackToResults}
           className="rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100"
         >
-          Back to Results
+          {t('distribution.backToResults')}
         </button>
       </div>
 
       {/* Summary stats bar */}
       <div className="grid grid-cols-2 gap-2 md:flex md:flex-row md:gap-4">
         <div className="rounded-lg bg-gray-50 px-3 py-2">
-          <div className="text-xs text-gray-500">Properties</div>
+          <div className="text-xs text-gray-500">{t('distribution.properties')}</div>
           <div className="text-sm font-semibold text-gray-900">{properties.length}</div>
         </div>
         <div className="rounded-lg bg-gray-50 px-3 py-2">
-          <div className="text-xs text-gray-500">Movable Assets</div>
+          <div className="text-xs text-gray-500">{t('distribution.movableAssets')}</div>
           <div className="text-sm font-semibold text-gray-900">{movableAssets.length}</div>
         </div>
         <div className="rounded-lg bg-gray-50 px-3 py-2">
-          <div className="text-xs text-gray-500">Total Value</div>
+          <div className="text-xs text-gray-500">{t('distribution.totalValue')}</div>
           <div className="text-sm font-semibold text-gray-900">{bdtFormatter.format(totalValue)}</div>
         </div>
         <div className="rounded-lg bg-gray-50 px-3 py-2">
-          <div className="text-xs text-gray-500">Heirs</div>
+          <div className="text-xs text-gray-500">{t('distribution.heirs')}</div>
           <div className="text-sm font-semibold text-gray-900">{activeShares.length}</div>
         </div>
       </div>

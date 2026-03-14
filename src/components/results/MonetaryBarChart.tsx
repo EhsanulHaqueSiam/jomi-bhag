@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { useWizardStore } from '@/stores/wizardStore'
+import { useTranslation } from '@/i18n/useTranslation'
 import { buildChartData, EMERALD_COLORS } from '@/components/results/chartData'
 import type { ChartDatum } from '@/components/results/chartData'
 
@@ -31,6 +32,8 @@ export function MonetaryBarChart() {
   const results = useWizardStore((s) => s.results)
   const totalEstateValue = useWizardStore((s) => s.totalEstateValue)
 
+  const { t } = useTranslation()
+
   if (!results || totalEstateValue <= 0) return null
 
   const activeShares = results.shares.filter((s) => s.shareType !== 'blocked')
@@ -41,7 +44,7 @@ export function MonetaryBarChart() {
   return (
     <div id="pdf-bar-chart">
       <h3 className="mb-2 text-sm font-medium text-gray-500">
-        Monetary Comparison
+        {t('results.monetaryComparison')}
       </h3>
       <ResponsiveContainer width="100%" height={chartData.length * 48 + 40}>
         <BarChart

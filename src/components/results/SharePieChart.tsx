@@ -6,6 +6,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { useWizardStore } from '@/stores/wizardStore'
+import { useTranslation } from '@/i18n/useTranslation'
 import { buildChartData } from '@/components/results/chartData'
 import type { ChartDatum } from '@/components/results/chartData'
 
@@ -29,6 +30,8 @@ export function SharePieChart() {
   const results = useWizardStore((s) => s.results)
   const totalEstateValue = useWizardStore((s) => s.totalEstateValue)
 
+  const { t } = useTranslation()
+
   if (!results) return null
 
   const activeShares = results.shares.filter((s) => s.shareType !== 'blocked')
@@ -39,13 +42,13 @@ export function SharePieChart() {
   return (
     <div id="pdf-pie-chart">
       <h3 className="mb-2 text-sm font-medium text-gray-500">
-        Share Distribution
+        {t('results.shareDistribution')}
       </h3>
       <div className="relative">
         {/* Center label overlay -- CSS positioned for reliable rendering */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <span className="text-lg font-semibold text-gray-700">
-            {chartData.length} heirs
+            {chartData.length} {t('results.heirs')}
           </span>
         </div>
         <ResponsiveContainer width="100%" height={280}>

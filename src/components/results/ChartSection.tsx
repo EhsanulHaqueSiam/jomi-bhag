@@ -1,11 +1,14 @@
 import { motion } from 'motion/react'
 import { useWizardStore } from '@/stores/wizardStore'
+import { useTranslation } from '@/i18n/useTranslation'
 import { SharePieChart } from '@/components/results/SharePieChart'
 import { MonetaryBarChart } from '@/components/results/MonetaryBarChart'
 
 export function ChartSection() {
   const results = useWizardStore((s) => s.results)
   const totalEstateValue = useWizardStore((s) => s.totalEstateValue)
+
+  const { t } = useTranslation()
 
   if (!results) return null
 
@@ -24,7 +27,7 @@ export function ChartSection() {
       ) : (
         <div className="flex items-center justify-center rounded-xl border border-dashed border-gray-200 p-8">
           <p className="text-sm italic text-gray-400">
-            Enter estate value to see monetary comparison
+            {t('results.enterEstateValueHint')}
           </p>
         </div>
       )}

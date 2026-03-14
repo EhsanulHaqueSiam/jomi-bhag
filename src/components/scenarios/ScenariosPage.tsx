@@ -5,6 +5,7 @@ import { useWizardStore } from '@/stores/wizardStore'
 import { ScenarioCard } from './ScenarioCard'
 import { EmptyState } from './EmptyState'
 import { ComparisonView } from './ComparisonView'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface ScenariosPageProps {
   onNavigate: (page: AppPage) => void
@@ -26,6 +27,7 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
   const hasUnsavedChanges = useScenariosStore((s) => s.hasUnsavedChanges)
   const updateLastSavedHash = useScenariosStore((s) => s.updateLastSavedHash)
 
+  const { t } = useTranslation()
   const [saveMessage, setSaveMessage] = useState<string | null>(null)
   const [loadConfirmId, setLoadConfirmId] = useState<string | null>(null)
   const [showClearConfirm, setShowClearConfirm] = useState(false)
@@ -74,7 +76,7 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
   const handleSave = () => {
     const id = saveScenario()
     if (id) {
-      setSaveMessage('Scenario saved!')
+      setSaveMessage(t('scenarios.scenarioSaved'))
       setTimeout(() => setSaveMessage(null), 2000)
     }
   }
@@ -129,23 +131,23 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
     <div className="space-y-4">
       {/* Top actions bar */}
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-lg font-bold text-gray-900">My Scenarios</h2>
+        <h2 className="text-lg font-bold text-gray-900">{t('scenarios.title')}</h2>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={handleNewCalculation}
             className="rounded-lg border border-emerald-300 px-3 py-1.5 text-xs font-medium text-emerald-700 transition-colors hover:bg-emerald-50"
           >
-            + New Calculation
+            {t('scenarios.newCalculation')}
           </button>
           <button
             type="button"
             onClick={handleSave}
             disabled={atLimit}
             className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
-            title={atLimit ? 'Maximum 20 scenarios reached' : 'Save current calculation'}
+            title={atLimit ? t('scenarios.maxReached') : t('scenarios.saveCurrentTitle')}
           >
-            Save Current
+            {t('scenarios.saveCurrent')}
           </button>
         </div>
       </div>
@@ -160,7 +162,7 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
       {/* Near-limit warning */}
       {nearLimit && (
         <div className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-700">
-          You have {scenarios.length}/{MAX_SCENARIOS} saved scenarios
+          {t('scenarios.nearLimit').replace('{current}', String(scenarios.length)).replace('{max}', String(MAX_SCENARIOS))}
         </div>
       )}
 
@@ -168,7 +170,7 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
       {loadConfirmId && (
         <div className="rounded-lg border border-amber-200 bg-amber-50 p-3">
           <p className="text-sm font-medium text-amber-800">
-            You have unsaved changes. Save current scenario before loading?
+            {t('scenarios.unsavedChanges')}
           </p>
           <div className="mt-2 flex gap-2">
             <button
@@ -176,21 +178,21 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
               onClick={() => handleSaveAndLoad(loadConfirmId)}
               className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700"
             >
-              Save & Load
+              {t('scenarios.saveAndLoad')}
             </button>
             <button
               type="button"
               onClick={() => performLoad(loadConfirmId)}
               className="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50"
             >
-              Load Without Saving
+              {t('scenarios.loadWithoutSaving')}
             </button>
             <button
               type="button"
               onClick={() => setLoadConfirmId(null)}
               className="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700"
             >
-              Cancel
+              {t('buttons.cancel')}
             </button>
           </div>
         </div>
@@ -203,7 +205,7 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
           onClick={startCompare}
           className="w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700"
         >
-          Compare Selected Scenarios
+          {t('scenarios.compareSelected')}
         </button>
       )}
 
@@ -229,7 +231,7 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
           {showClearConfirm ? (
             <div className="rounded-lg border border-red-200 bg-red-50 p-3">
               <p className="text-sm font-medium text-red-800">
-                This will permanently delete all {scenarios.length} scenarios. Are you sure?
+                {t('scenarios.clearConfirm').replace('{count}', String(scenarios.length))}
               </p>
               <div className="mt-2 flex gap-2">
                 <button
@@ -237,14 +239,14 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
                   onClick={handleClearAll}
                   className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700"
                 >
-                  Yes, Delete All
+                  {t('scenarios.yesDeleteAll')}
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowClearConfirm(false)}
                   className="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700"
                 >
-                  Cancel
+                  {t('buttons.cancel')}
                 </button>
               </div>
             </div>
@@ -254,7 +256,7 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
               onClick={() => setShowClearConfirm(true)}
               className="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-500 transition-colors hover:bg-red-50"
             >
-              Clear All Scenarios
+              {t('scenarios.clearAll')}
             </button>
           )}
         </div>

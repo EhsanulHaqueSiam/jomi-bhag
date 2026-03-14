@@ -9,6 +9,7 @@ import { StepFamilyAndSiblings } from '@/components/wizard/StepFamilyAndSiblings
 import { FamilyTree } from '@/components/wizard/FamilyTree'
 import { ResultsPage } from '@/components/results/ResultsPage'
 import { StepEstateInventory } from '@/components/assets/StepEstateInventory'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface WizardShellProps {
   onNavigate: (page: AppPage) => void
@@ -60,6 +61,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
     }
   })()
 
+  const { t } = useTranslation()
   const [direction, setDirection] = useState(1)
 
   const handleBack = () => {
@@ -89,7 +91,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
           <span className="mr-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-100 text-[10px] font-medium text-gray-400">
             i
           </span>
-          This calculator assumes the deceased's parents have passed away
+          {t('relationship.assumesParentsDeceased')}
         </p>
       )}
 
@@ -125,7 +127,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
         <div className="mt-8 hidden justify-between md:flex">
           {currentStep > 1 ? (
             <Button variant="secondary" onClick={handleBack}>
-              Back
+              {t('buttons.back')}
             </Button>
           ) : (
             <div />
@@ -136,7 +138,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
               onClick={handleNext}
               disabled={!isCurrentStepValid}
             >
-              Next
+              {t('buttons.next')}
             </Button>
           )}
           {currentStep === 3 && (
@@ -146,14 +148,14 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
                 onClick={handleCalculate}
                 className="text-sm font-medium text-emerald-600 hover:text-emerald-700"
               >
-                Skip to Results
+                {t('buttons.skipToResults')}
               </button>
               <Button
                 variant="primary"
                 onClick={handleCalculate}
                 disabled={!isCurrentStepValid}
               >
-                Calculate Shares
+                {t('buttons.calculateShares')}
               </Button>
             </div>
           )}
@@ -169,7 +171,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
           <div className="flex gap-3">
             {currentStep > 1 && (
               <Button variant="secondary" onClick={handleBack} fullWidth>
-                Back
+                {t('buttons.back')}
               </Button>
             )}
             {currentStep < 3 && (
@@ -179,7 +181,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
                 disabled={!isCurrentStepValid}
                 fullWidth
               >
-                Next
+                {t('buttons.next')}
               </Button>
             )}
             {currentStep === 3 && (
@@ -189,7 +191,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
                 disabled={!isCurrentStepValid}
                 fullWidth
               >
-                Calculate Shares
+                {t('buttons.calculateShares')}
               </Button>
             )}
           </div>
@@ -199,7 +201,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
               onClick={handleCalculate}
               className="text-center text-sm font-medium text-emerald-600 hover:text-emerald-700"
             >
-              Skip to Results
+              {t('buttons.skipToResults')}
             </button>
           )}
         </div>

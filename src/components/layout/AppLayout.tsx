@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import type { AppPage } from '@/types/scenario'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface AppLayoutProps {
   children: ReactNode
@@ -9,6 +10,12 @@ interface AppLayoutProps {
 
 export function AppLayout({ children, page, onNavigate }: AppLayoutProps) {
   const isWide = page === 'distribution'
+  const { t, language, setLanguage } = useTranslation()
+
+  // Update html lang attribute dynamically
+  useEffect(() => {
+    document.documentElement.lang = language
+  }, [language])
 
   return (
     <div className="relative min-h-screen bg-gray-50">
@@ -23,12 +30,25 @@ export function AppLayout({ children, page, onNavigate }: AppLayoutProps) {
 
       {/* Header */}
       <header className="relative px-4 py-6 text-center md:py-8">
-        <h1 className="text-2xl font-bold text-emerald-800 md:text-3xl">
-          Jomi-Bhag
-        </h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Islamic Inheritance Calculator
-        </p>
+        <div className="flex items-center justify-center gap-3">
+          <div>
+            <h1 className="text-2xl font-bold text-emerald-800 md:text-3xl">
+              {t('app.title')}
+            </h1>
+            <p className="mt-1 text-sm text-gray-500">
+              {t('app.subtitle')}
+            </p>
+          </div>
+          {/* Language switcher */}
+          <button
+            type="button"
+            onClick={() => setLanguage(language === 'en' ? 'bn' : 'en')}
+            className="absolute right-4 top-6 rounded-full border border-emerald-200 bg-white px-3 py-1 text-xs font-medium text-emerald-700 shadow-sm transition-colors hover:bg-emerald-50 md:top-8"
+            aria-label={language === 'en' ? 'Switch to Bangla' : 'Switch to English'}
+          >
+            {language === 'en' ? 'বাংলা' : 'English'}
+          </button>
+        </div>
 
         {/* Desktop navigation tabs */}
         <nav className="mt-4 hidden justify-center gap-6 md:flex" aria-label="Main navigation">
@@ -41,7 +61,7 @@ export function AppLayout({ children, page, onNavigate }: AppLayoutProps) {
                 : 'text-gray-500 hover:text-emerald-600'
             }`}
           >
-            Calculator
+            {t('nav.calculator')}
             {page === 'wizard' && (
               <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-emerald-600" />
             )}
@@ -55,7 +75,7 @@ export function AppLayout({ children, page, onNavigate }: AppLayoutProps) {
                 : 'text-gray-500 hover:text-emerald-600'
             }`}
           >
-            My Scenarios
+            {t('nav.myScenarios')}
             {page === 'scenarios' && (
               <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-emerald-600" />
             )}
@@ -103,7 +123,7 @@ export function AppLayout({ children, page, onNavigate }: AppLayoutProps) {
               clipRule="evenodd"
             />
           </svg>
-          Calculator
+          {t('nav.calculator')}
         </button>
         <button
           type="button"
@@ -116,7 +136,7 @@ export function AppLayout({ children, page, onNavigate }: AppLayoutProps) {
           <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
           </svg>
-          My Scenarios
+          {t('nav.myScenarios')}
         </button>
       </nav>
     </div>

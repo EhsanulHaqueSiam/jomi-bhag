@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface SummaryBannerProps {
   balancedCount: number
@@ -6,6 +7,7 @@ interface SummaryBannerProps {
 }
 
 export function SummaryBanner({ balancedCount, totalCount }: SummaryBannerProps) {
+  const { t } = useTranslation()
   const allBalanced = balancedCount === totalCount && totalCount > 0
   const noneBalanced = balancedCount === 0
 
@@ -40,16 +42,15 @@ export function SummaryBanner({ balancedCount, totalCount }: SummaryBannerProps)
       >
         {allBalanced ? (
           <p className={`text-sm font-semibold ${textClass}`}>
-            All groups balanced!
+            {t('distribution.allGroupsBalanced')}
           </p>
         ) : noneBalanced ? (
           <p className={`text-sm ${textClass}`}>
-            {balancedCount}/{totalCount} groups balanced -- drag items to
-            equalize
+            {t('distribution.groupsBalancedDrag').replace('{balanced}', String(balancedCount)).replace('{total}', String(totalCount))}
           </p>
         ) : (
           <p className={`text-sm ${textClass}`}>
-            {balancedCount}/{totalCount} groups balanced
+            {t('distribution.groupsBalanced').replace('{balanced}', String(balancedCount)).replace('{total}', String(totalCount))}
           </p>
         )}
       </motion.div>

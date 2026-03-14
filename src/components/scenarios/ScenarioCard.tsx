@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import type { Scenario } from '@/types/scenario'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const bdtFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -36,6 +37,7 @@ export function ScenarioCard({
   onDelete,
   onRename,
 }: ScenarioCardProps) {
+  const { t } = useTranslation()
   const [isEditing, setIsEditing] = useState(false)
   const [editValue, setEditValue] = useState(scenario.name)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
@@ -153,7 +155,7 @@ export function ScenarioCard({
           <div className="mt-3 flex items-center gap-3 border-t border-gray-100 pt-2">
             {showDeleteConfirm ? (
               <div className="flex items-center gap-2 text-xs">
-                <span className="text-gray-600">Delete this scenario?</span>
+                <span className="text-gray-600">{t('scenarios.deleteScenario')}</span>
                 <button
                   type="button"
                   onClick={() => {
@@ -162,14 +164,14 @@ export function ScenarioCard({
                   }}
                   className="font-medium text-red-600 hover:text-red-700"
                 >
-                  Confirm
+                  {t('buttons.confirm')}
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowDeleteConfirm(false)}
                   className="font-medium text-gray-500 hover:text-gray-700"
                 >
-                  Cancel
+                  {t('buttons.cancel')}
                 </button>
               </div>
             ) : (
@@ -179,21 +181,21 @@ export function ScenarioCard({
                   onClick={onLoad}
                   className="text-xs font-medium text-emerald-600 hover:text-emerald-700"
                 >
-                  Load
+                  {t('buttons.load')}
                 </button>
                 <button
                   type="button"
                   onClick={onDuplicate}
                   className="text-xs font-medium text-gray-500 hover:text-gray-600"
                 >
-                  Duplicate
+                  {t('scenarios.duplicate')}
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowDeleteConfirm(true)}
                   className="text-xs font-medium text-red-500 hover:text-red-600"
                 >
-                  Delete
+                  {t('buttons.delete')}
                 </button>
               </>
             )}

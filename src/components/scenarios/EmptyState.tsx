@@ -1,8 +1,12 @@
+import { useTranslation } from '@/i18n/useTranslation'
+
 interface EmptyStateProps {
   onNewCalculation: () => void
 }
 
 export function EmptyState({ onNewCalculation }: EmptyStateProps) {
+  const { t } = useTranslation()
+
   return (
     <div className="flex flex-col items-center px-4 py-12 text-center">
       {/* Folder/document icon */}
@@ -26,10 +30,10 @@ export function EmptyState({ onNewCalculation }: EmptyStateProps) {
       </svg>
 
       <h3 className="mt-4 text-lg font-semibold text-gray-700">
-        No saved scenarios
+        {t('scenarios.noSavedScenarios')}
       </h3>
       <p className="mt-1.5 max-w-xs text-sm text-gray-500">
-        Save your current calculation to compare different inheritance scenarios
+        {t('scenarios.saveToCompare')}
       </p>
 
       <button
@@ -37,7 +41,7 @@ export function EmptyState({ onNewCalculation }: EmptyStateProps) {
         onClick={onNewCalculation}
         className="mt-6 rounded-xl border border-emerald-300 px-6 py-3 text-sm font-medium text-emerald-700 transition-colors hover:bg-emerald-50 active:bg-emerald-100"
       >
-        + New Calculation
+        {t('scenarios.newCalculation')}
       </button>
     </div>
   )

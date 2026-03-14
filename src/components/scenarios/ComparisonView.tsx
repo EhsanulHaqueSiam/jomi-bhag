@@ -1,6 +1,8 @@
 import type { Scenario } from '@/types/scenario'
 import type { HeirType, ShareResult } from '@/core/faraid/types'
-import { HEIR_TYPE_LABELS } from '@/core/utils/display'
+import { getHeirTypeLabel } from '@/core/utils/display'
+import { useTranslation } from '@/i18n/useTranslation'
+import type { Language } from '@/i18n/LanguageContext'
 
 const bdtFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -32,7 +34,7 @@ interface UnifiedHeirRow {
   isDifferent: boolean
 }
 
-function buildUnifiedRows(a: Scenario, b: Scenario): UnifiedHeirRow[] {
+function buildUnifiedRows(a: Scenario, b: Scenario, language: Language): UnifiedHeirRow[] {
   const sharesA = a.state.results?.shares.filter((s) => s.shareType !== 'blocked') ?? []
   const sharesB = b.state.results?.shares.filter((s) => s.shareType !== 'blocked') ?? []
 
@@ -60,7 +62,7 @@ function buildUnifiedRows(a: Scenario, b: Scenario): UnifiedHeirRow[] {
 
     rows.push({
       heirType: ht,
-      label: HEIR_TYPE_LABELS[ht] ?? ht,
+      label: getHeirTypeLabel(ht, language),
       shareA: sa,
       shareB: sb,
       isDifferent,
@@ -111,12 +113,13 @@ export function ComparisonView({
   scenarioB,
   onClose,
 }: ComparisonViewProps) {
-  const rows = buildUnifiedRows(scenarioA, scenarioB)
+  const { t, language } = useTranslation()
+  const rows = buildUnifiedRows(scenarioA, scenarioB, language)
 
   const adjustmentLabel = (adj: string) => {
-    if (adj === 'awl') return 'Awl'
-    if (adj === 'radd') return 'Radd'
-    return 'None'
+    if (adj === 'awl') return t('scenarios.awl')
+    if (adj === 'radd') return t('scenarios.radd')
+    return t('scenarios.none')
   }
 
   const adjustmentsDiffer =
@@ -128,20 +131,20 @@ export function ComparisonView({
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-bold text-gray-900">Comparing</h2>
+        <h2 className="text-lg font-bold text-gray-900">{t('scenarios.comparing')}</h2>
         <button
           type="button"
           onClick={onClose}
           className="rounded-lg px-3 py-1.5 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
         >
-          Close
+          {t('buttons.close')}
         </button>
       </div>
 
       {/* Scenario names row */}
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3">
-          <div className="text-xs font-medium text-emerald-600">Scenario A</div>
+          <div className="text-xs font-medium text-emerald-600">{t('scenarios.scenarioA')}</div>
           <div className="mt-0.5 text-sm font-semibold text-gray-900">
             {scenarioA.name}
           </div>
@@ -150,7 +153,7 @@ export function ComparisonView({
           </div>
         </div>
         <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3">
-          <div className="text-xs font-medium text-emerald-600">Scenario B</div>
+          <div className="text-xs font-medium text-emerald-600">{t('scenarios.scenarioB')}</div>
           <div className="mt-0.5 text-sm font-semibold text-gray-900">
             {scenarioB.name}
           </div>
@@ -168,17 +171,17 @@ export function ComparisonView({
             : 'border-gray-200 bg-gray-50'
         }`}
       >
-        <div className="text-xs font-medium text-gray-600">Estate Value</div>
+        <div className="text-xs font-medium text-gray-600">{t('scenarios.estateValueLabel')}</div>
         <div className="mt-1 grid grid-cols-2 gap-3">
           <div className="text-sm font-medium text-gray-900">
             {scenarioA.summary.totalEstateValue > 0
               ? bdtFormatter.format(scenarioA.summary.totalEstateValue)
-              : 'Not specified'}
+              : t('scenarios.notSpecified')}
           </div>
           <div className="text-sm font-medium text-gray-900">
             {scenarioB.summary.totalEstateValue > 0
               ? bdtFormatter.format(scenarioB.summary.totalEstateValue)
-              : 'Not specified'}
+              : t('scenarios.notSpecified')}
           </div>
         </div>
       </div>
@@ -191,7 +194,7 @@ export function ComparisonView({
             : 'border-gray-200 bg-gray-50'
         }`}
       >
-        <div className="text-xs font-medium text-gray-600">Adjustment</div>
+        <div className="text-xs font-medium text-gray-600">{t('scenarios.adjustment')}</div>
         <div className="mt-1 grid grid-cols-2 gap-3">
           <div className="text-sm font-medium text-gray-900">
             {adjustmentLabel(scenarioA.summary.adjustment)}
@@ -205,7 +208,7 @@ export function ComparisonView({
       {/* Heir Shares Table */}
       <div>
         <h3 className="mb-2 text-sm font-semibold text-gray-700">
-          Heir Shares
+          {t('scenarios.heirShares')}
         </h3>
 
         {/* Desktop table */}
@@ -213,7 +216,7 @@ export function ComparisonView({
           <table className="w-full text-sm" data-testid="comparison-table">
             <thead>
               <tr className="bg-gray-50 text-left">
-                <th className="px-3 py-2 font-medium text-gray-600">Heir</th>
+                <th className="px-3 py-2 font-medium text-gray-600">{t('results.heir')}</th>
                 <th className="px-3 py-2 font-medium text-gray-600">
                   {scenarioA.name}
                 </th>

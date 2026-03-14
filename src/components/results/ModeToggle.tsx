@@ -1,13 +1,15 @@
 import { useWizardStore } from '@/stores/wizardStore'
-
-const modes = [
-  { value: 'simple' as const, label: 'Simple' },
-  { value: 'detailed' as const, label: 'Detailed' },
-]
+import { useTranslation } from '@/i18n/useTranslation'
 
 export function ModeToggle() {
   const viewMode = useWizardStore((s) => s.viewMode)
   const setViewMode = useWizardStore((s) => s.setViewMode)
+  const { t } = useTranslation()
+
+  const modes = [
+    { value: 'simple' as const, label: t('results.simple') },
+    { value: 'detailed' as const, label: t('results.detailed') },
+  ]
 
   return (
     <div

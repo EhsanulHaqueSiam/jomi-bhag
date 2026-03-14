@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import type { CalculationStep } from '@/core/faraid/types'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface StepAccordionProps {
   steps: CalculationStep[]
@@ -40,12 +41,14 @@ export function StepAccordion({ steps }: StepAccordionProps) {
     })
   }, [])
 
+  const { t } = useTranslation()
+
   if (steps.length === 0) return null
 
   return (
     <div>
       <h3 className="text-sm font-semibold text-gray-900">
-        Calculation Steps
+        {t('results.calculationSteps')}
       </h3>
       <div className="mt-1 mb-3 h-px bg-gray-200" />
       <div className="divide-y divide-gray-100 rounded-xl border border-gray-200 bg-white">

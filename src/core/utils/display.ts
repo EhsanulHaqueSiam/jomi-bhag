@@ -1,5 +1,8 @@
 import type Fraction from 'fraction.js'
 import type { HeirType } from '@/core/faraid/types'
+import type { Language } from '@/i18n/LanguageContext'
+import { en } from '@/i18n/translations/en'
+import { bn } from '@/i18n/translations/bn'
 
 /**
  * Format a Fraction as a readable string like "1/3" or "7/24".
@@ -58,4 +61,16 @@ export const SHARE_TYPE_LABELS: Record<string, string> = {
   asaba: 'Residuary (Asaba)',
   radd_adjusted: 'Adjusted (Radd)',
   blocked: 'Blocked',
+}
+
+/** Language-aware heir type label lookup. */
+export function getHeirTypeLabel(type: HeirType, language: Language): string {
+  const labels = language === 'bn' ? bn.results.heirTypes : en.results.heirTypes
+  return (labels as Record<string, string>)[type] ?? type
+}
+
+/** Language-aware share type label lookup. */
+export function getShareTypeLabel(type: string, language: Language): string {
+  const labels = language === 'bn' ? bn.results.shareTypes : en.results.shareTypes
+  return (labels as Record<string, string>)[type] ?? type
 }

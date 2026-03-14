@@ -6,6 +6,7 @@ import { computeAssetValue } from '@/core/assets/valuation'
 import type { PropertyType } from '@/core/land/types'
 import { PROPERTY_TYPES } from '@/data/bd-land-data'
 import { ASSET_CATEGORIES } from '@/data/movable-asset-data'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const displayFormatter = new Intl.NumberFormat('en-IN')
 
@@ -24,6 +25,7 @@ export function EstateBreakdownCard() {
   const getAllPropertiesTotal = useWizardStore((s) => s.getAllPropertiesTotal)
   const getMovableAssetsTotal = useWizardStore((s) => s.getMovableAssetsTotal)
 
+  const { t, language } = useTranslation()
   const [isFocused, setIsFocused] = useState(false)
   const [isOverriding, setIsOverriding] = useState(false)
   const [showProperties, setShowProperties] = useState(false)
@@ -67,7 +69,7 @@ export function EstateBreakdownCard() {
           htmlFor="estate-value"
           className="mb-1.5 block text-sm font-medium text-gray-700"
         >
-          Total Estate Value (BDT)
+          {t('estate.totalEstateValueBdt')}
         </label>
         <div className="relative">
           <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-medium">
@@ -99,12 +101,12 @@ export function EstateBreakdownCard() {
     .filter((c) => c.total > 0)
 
   const categories = [
-    { label: 'Land', value: breakdown.land },
-    { label: 'Structures', value: breakdown.structures },
-    { label: 'Trees/Crops', value: breakdown.trees },
-    { label: 'Ponds', value: breakdown.ponds },
+    { label: t('estate.land'), value: breakdown.land },
+    { label: t('estate.structures'), value: breakdown.structures },
+    { label: t('estate.treesCrops'), value: breakdown.trees },
+    { label: t('estate.ponds'), value: breakdown.ponds },
     ...(movableAssetsTotal > 0
-      ? [{ label: 'Movable Assets', value: movableAssetsTotal }]
+      ? [{ label: t('estate.movableAssetsLabel'), value: movableAssetsTotal }]
       : []),
   ]
 
@@ -112,7 +114,7 @@ export function EstateBreakdownCard() {
     <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 md:p-5">
       {/* Header: title + total */}
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium text-gray-700">Estate Value</h3>
+        <h3 className="text-sm font-medium text-gray-700">{t('estate.estateValue')}</h3>
         <span className="text-xl font-bold text-emerald-700">
           &#2547;{displayFormatter.format(isOverriding ? totalEstateValue : propertiesTotal)}
         </span>
@@ -154,18 +156,18 @@ export function EstateBreakdownCard() {
             onClick={handleSwitchBack}
             className="text-xs font-medium text-emerald-600 underline hover:text-emerald-700"
           >
-            Use auto-calculated value
+            {t('estate.useAutoCalculated')}
           </button>
         </div>
       ) : (
         <div className="mt-2 flex items-center gap-2">
-          <span className="text-xs text-emerald-600">Auto-calculated from properties</span>
+          <span className="text-xs text-emerald-600">{t('estate.autoCalculated')}</span>
           <button
             type="button"
             onClick={() => setIsOverriding(true)}
             className="text-xs font-medium text-emerald-700 underline hover:text-emerald-800"
           >
-            Override total
+            {t('estate.overrideTotal')}
           </button>
         </div>
       )}
@@ -177,7 +179,7 @@ export function EstateBreakdownCard() {
           onClick={() => setShowProperties(!showProperties)}
           className="text-xs font-medium text-emerald-700 underline hover:text-emerald-800"
         >
-          {showProperties ? 'Hide properties' : 'View properties'}
+          {showProperties ? t('estate.hideProperties') : t('estate.viewProperties')}
         </button>
 
         <AnimatePresence initial={false}>
