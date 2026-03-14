@@ -2,6 +2,7 @@ import { renderHook, act, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useWizardStore } from '@/stores/wizardStore'
 import { useDistributionStore } from '@/stores/distributionStore'
+import { useIndividualDistributionStore } from '@/stores/individualDistributionStore'
 import { useJsonImport } from '@/hooks/useJsonImport'
 
 // ---------------------------------------------------------------------------
@@ -10,6 +11,7 @@ import { useJsonImport } from '@/hooks/useJsonImport'
 
 beforeEach(() => {
   vi.restoreAllMocks()
+  useIndividualDistributionStore.getState().reset()
 
   useWizardStore.setState({
     currentStep: 1,
@@ -49,6 +51,20 @@ function makeValidJsonString(): string {
     appVersion: '1.0.0',
     exportDate: '2026-01-01',
     data: { relationship: 'wife', sonCount: 2 },
+  })
+}
+
+function makeValidJsonWithIndividualData(): string {
+  return JSON.stringify({
+    schemaVersion: 1,
+    appVersion: '1.0.0',
+    exportDate: '2026-01-01',
+    data: {
+      relationship: 'wife',
+      sonCount: 2,
+      customHeirNames: { son_0: 'Ahmed', son_1: 'Karim' },
+      individualDistribution: { assignments: [], qurahUsed: true },
+    },
   })
 }
 
@@ -222,6 +238,129 @@ describe('useJsonImport', () => {
 
     await waitFor(() => {
       expect(result.current.pendingState).not.toBeNull()
+    })
+  })
+
+  describe('individual data restoration', () => {
+    it('confirmImport applies customHeirNames to individualDistributionStore', async () => {
+      const { result } = renderHook(() => useJsonImport())
+
+      const file = createFile(makeValidJsonWithIndividualData(), 'individual.json', {
+        type: 'application/json',
+      })
+
+      act(() => {
+        result.current.importFromFile(file)
+      })
+
+      await waitFor(() => {
+        expect(result.current.pendingState).not.toBeNull()
+      })
+
+      act(() => {
+        result.current.confirmImport()
+      })
+
+      const indState = useIndividualDistributionStore.getState()
+      expect(indState.customNames).toEqual({ son_0: 'Ahmed', son_1: 'Karim' })
+    })
+
+    it('confirmImport applies qurahUsed from individualDistribution', async () => {
+      const { result } = renderHook(() => useJsonImport())
+
+      const file = createFile(makeValidJsonWithIndividualData(), 'qurah.json', {
+        type: 'application/json',
+      })
+
+      act(() => {
+        result.current.importFromFile(file)
+      })
+
+      await waitFor(() => {
+        expect(result.current.pendingState).not.toBeNull()
+      })
+
+      act(() => {
+        result.current.confirmImport()
+      })
+
+      const indState = useIndividualDistributionStore.getState()
+      expect(indState.qurahUsed).toBe(true)
+      expect(indState.hasBeenUsed).toBe(true)
+    })
+
+    it('confirmImport resets individualDistributionStore when no individual data present', async () => {
+      // Pre-set stale data
+      useIndividualDistributionStore.setState({
+        customNames: { son_0: 'OldName' },
+        hasBeenUsed: true,
+      })
+
+      const { result } = renderHook(() => useJsonImport())
+
+      // Import JSON WITHOUT individual data
+      const file = createFile(makeValidJsonString(), 'no-individual.json', {
+        type: 'application/json',
+      })
+
+      act(() => {
+        result.current.importFromFile(file)
+      })
+
+      await waitFor(() => {
+        expect(result.current.pendingState).not.toBeNull()
+      })
+
+      act(() => {
+        result.current.confirmImport()
+      })
+
+      const indState = useIndividualDistributionStore.getState()
+      expect(indState.customNames).toEqual({})
+      expect(indState.hasBeenUsed).toBe(false)
+    })
+
+    it('cancelImport clears pending individual data', async () => {
+      const { result } = renderHook(() => useJsonImport())
+
+      // Import JSON WITH individual data
+      const fileWithData = createFile(makeValidJsonWithIndividualData(), 'with-data.json', {
+        type: 'application/json',
+      })
+
+      act(() => {
+        result.current.importFromFile(fileWithData)
+      })
+
+      await waitFor(() => {
+        expect(result.current.pendingState).not.toBeNull()
+      })
+
+      // Cancel
+      act(() => {
+        result.current.cancelImport()
+      })
+
+      // Import JSON WITHOUT individual data
+      const fileWithout = createFile(makeValidJsonString(), 'without-data.json', {
+        type: 'application/json',
+      })
+
+      act(() => {
+        result.current.importFromFile(fileWithout)
+      })
+
+      await waitFor(() => {
+        expect(result.current.pendingState).not.toBeNull()
+      })
+
+      act(() => {
+        result.current.confirmImport()
+      })
+
+      // No stale customNames should be applied
+      const indState = useIndividualDistributionStore.getState()
+      expect(indState.customNames).toEqual({})
     })
   })
 })

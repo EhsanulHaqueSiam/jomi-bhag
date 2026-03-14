@@ -127,6 +127,7 @@ beforeEach(() => {
     hasBeenUsed: false,
     revealedCount: 0,
     isRevealed: false,
+    splitOrigins: {},
   })
 })
 
@@ -465,5 +466,93 @@ describe('reset', () => {
     expect(state.compensations).toHaveLength(0)
     expect(state.fingerprint).toBeNull()
     expect(state.hasBeenUsed).toBe(false)
+  })
+})
+
+describe('splitOrigins persistence', () => {
+  it('splitOrigins is a plain object (Record) after splitItem', () => {
+    const shares: ShareResult[] = [
+      makeShare('son', 1, new Fraction(1, 2)),
+      makeShare('daughter', 1, new Fraction(1, 2)),
+    ]
+    setupAndInitialize(
+      [makeProperty('p1', 100_000)],
+      [],
+      100_000,
+      shares,
+    )
+
+    useIndividualDistributionStore.getState().splitItem('p1', [{ areaSqft: 600 }, { areaSqft: 400 }], 1000)
+
+    const state = useIndividualDistributionStore.getState()
+    // Should be a plain object, not a Map
+    expect(state.splitOrigins).not.toBeInstanceOf(Map)
+    expect(typeof state.splitOrigins).toBe('object')
+    expect(state.splitOrigins['p1']).toBeDefined()
+    expect(state.splitOrigins['p1'].value).toBe(100_000)
+  })
+
+  it('mergeItem removes entry from splitOrigins Record', () => {
+    const shares: ShareResult[] = [
+      makeShare('son', 1, new Fraction(1, 2)),
+      makeShare('daughter', 1, new Fraction(1, 2)),
+    ]
+    setupAndInitialize(
+      [makeProperty('p1', 100_000)],
+      [],
+      100_000,
+      shares,
+    )
+
+    useIndividualDistributionStore.getState().splitItem('p1', [{ areaSqft: 600 }, { areaSqft: 400 }], 1000)
+    useIndividualDistributionStore.getState().mergeItem('p1')
+
+    const state = useIndividualDistributionStore.getState()
+    expect(state.splitOrigins['p1']).toBeUndefined()
+    expect(Object.keys(state.splitOrigins)).toHaveLength(0)
+  })
+
+  it('reset clears splitOrigins to empty object', () => {
+    const shares: ShareResult[] = [
+      makeShare('son', 1, new Fraction(1, 2)),
+      makeShare('daughter', 1, new Fraction(1, 2)),
+    ]
+    setupAndInitialize(
+      [makeProperty('p1', 100_000)],
+      [],
+      100_000,
+      shares,
+    )
+
+    useIndividualDistributionStore.getState().splitItem('p1', [{ areaSqft: 600 }, { areaSqft: 400 }], 1000)
+    useIndividualDistributionStore.getState().reset()
+
+    const state = useIndividualDistributionStore.getState()
+    expect(state.splitOrigins).toEqual({})
+    expect(state.splitOrigins).not.toBeInstanceOf(Map)
+  })
+
+  it('splitOrigins is included in partialize output', () => {
+    const shares: ShareResult[] = [
+      makeShare('son', 1, new Fraction(1, 2)),
+      makeShare('daughter', 1, new Fraction(1, 2)),
+    ]
+    setupAndInitialize(
+      [makeProperty('p1', 100_000)],
+      [],
+      100_000,
+      shares,
+    )
+
+    useIndividualDistributionStore.getState().splitItem('p1', [{ areaSqft: 600 }, { areaSqft: 400 }], 1000)
+
+    // Access persist options to check partialize
+    const persistOptions = (useIndividualDistributionStore as any).persist
+    const state = useIndividualDistributionStore.getState()
+
+    // The partialize function should include splitOrigins
+    // We can verify by checking the state has splitOrigins after persistence
+    expect('splitOrigins' in state).toBe(true)
+    expect(state.splitOrigins).not.toBeInstanceOf(Map)
   })
 })

@@ -62,6 +62,8 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
       sisterUterineCount: 0,
       properties: [],
       expandedPropertyId: null,
+      movableAssets: [],
+      expandedAssetId: null,
       results: null,
       totalEstateValue: 0,
       viewMode: 'simple',

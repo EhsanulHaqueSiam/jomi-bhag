@@ -2,10 +2,18 @@ import { useState, useCallback } from 'react'
 import type { WizardState } from '@/types/wizard'
 import { useWizardStore } from '@/stores/wizardStore'
 import { useDistributionStore } from '@/stores/distributionStore'
+import { useIndividualDistributionStore } from '@/stores/individualDistributionStore'
 import { validateAndParseImport } from '@/core/json/importData'
 
 export function useJsonImport() {
   const [pendingState, setPendingState] = useState<WizardState | null>(null)
+  const [pendingIndividualData, setPendingIndividualData] = useState<{
+    customHeirNames?: Record<string, string>
+    individualDistribution?: {
+      assignments: { individualId: string; assignedItemIds: string[] }[]
+      qurahUsed: boolean
+    } | null
+  } | null>(null)
   const [toast, setToast] = useState<{
     message: string | null
     type: 'success' | 'error'
@@ -52,6 +60,10 @@ export function useJsonImport() {
         }
 
         setPendingState(result.state)
+        setPendingIndividualData({
+          customHeirNames: result.customHeirNames,
+          individualDistribution: result.individualDistribution,
+        })
       }
 
       reader.readAsText(file)
@@ -64,13 +76,29 @@ export function useJsonImport() {
 
     useWizardStore.setState(pendingState)
     useDistributionStore.getState().resetDistribution()
+    useIndividualDistributionStore.getState().reset()
     useWizardStore.getState().calculateShares()
+
+    if (pendingIndividualData?.customHeirNames) {
+      useIndividualDistributionStore.setState({
+        customNames: pendingIndividualData.customHeirNames,
+      })
+    }
+    if (pendingIndividualData?.individualDistribution) {
+      useIndividualDistributionStore.setState({
+        qurahUsed: pendingIndividualData.individualDistribution.qurahUsed,
+        hasBeenUsed: true,
+      })
+    }
+
     setPendingState(null)
+    setPendingIndividualData(null)
     setToast({ message: 'Data imported successfully', type: 'success' })
-  }, [pendingState])
+  }, [pendingState, pendingIndividualData])
 
   const cancelImport = useCallback(() => {
     setPendingState(null)
+    setPendingIndividualData(null)
   }, [])
 
   return {

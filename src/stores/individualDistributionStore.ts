@@ -36,7 +36,7 @@ interface IndividualDistributionState {
   revealedCount: number
   isRevealed: boolean
   // Track split parcel origins for merging
-  splitOrigins: Map<string, DistributionItem> // parentId -> originalItem
+  splitOrigins: Record<string, DistributionItem> // parentId -> originalItem
 }
 
 interface IndividualDistributionActions {
@@ -68,7 +68,7 @@ export const useIndividualDistributionStore = create<IndividualDistributionStore
       hasBeenUsed: false,
       revealedCount: 0,
       isRevealed: false,
-      splitOrigins: new Map(),
+      splitOrigins: {},
 
       // Actions
 
@@ -100,7 +100,7 @@ export const useIndividualDistributionStore = create<IndividualDistributionStore
           qurahUsed: false,
           revealedCount: 0,
           isRevealed: false,
-          splitOrigins: new Map(),
+          splitOrigins: {},
         })
       },
 
@@ -196,8 +196,8 @@ export const useIndividualDistributionStore = create<IndividualDistributionStore
         })
 
         // Track the original for potential merge
-        const newSplitOrigins = new Map(splitOrigins)
-        newSplitOrigins.set(itemId, originalItem)
+        const newSplitOrigins = { ...splitOrigins }
+        newSplitOrigins[itemId] = originalItem
 
         const compensations = calculateIndividualCompensations(newIndividuals)
 
@@ -212,7 +212,7 @@ export const useIndividualDistributionStore = create<IndividualDistributionStore
       mergeItem: (parentId) => {
         const { individuals, items, splitOrigins } = get()
 
-        const originalItem = splitOrigins.get(parentId)
+        const originalItem = splitOrigins[parentId]
         if (!originalItem) return
 
         // Find all sub-items for this parent (they won't have a direct parentId field,
@@ -263,8 +263,7 @@ export const useIndividualDistributionStore = create<IndividualDistributionStore
         })
 
         // Remove from split origins
-        const newSplitOrigins = new Map(splitOrigins)
-        newSplitOrigins.delete(parentId)
+        const { [parentId]: _, ...newSplitOrigins } = splitOrigins
 
         const compensations = calculateIndividualCompensations(newIndividuals)
 
@@ -315,7 +314,7 @@ export const useIndividualDistributionStore = create<IndividualDistributionStore
           hasBeenUsed: false,
           revealedCount: 0,
           isRevealed: false,
-          splitOrigins: new Map(),
+          splitOrigins: {},
         })
       },
     }),
@@ -330,6 +329,7 @@ export const useIndividualDistributionStore = create<IndividualDistributionStore
         fingerprint: state.fingerprint,
         hasBeenUsed: state.hasBeenUsed,
         qurahUsed: state.qurahUsed,
+        splitOrigins: state.splitOrigins,
       }),
     },
   ),
