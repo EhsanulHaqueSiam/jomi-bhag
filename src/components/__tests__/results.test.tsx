@@ -203,23 +203,19 @@ describe('RSLT-02: shows Quranic reference', () => {
   })
 })
 
-describe('RSLT-03: step accordion (behind collapsible)', () => {
+describe('RSLT-03: step accordion (in detailed mode)', () => {
   beforeEach(() => {
     useWizardStore.setState({
       ...baseStoreState,
       results: makeSimpleOutput(),
+      viewMode: 'detailed',
     })
   })
 
-  it('shows step descriptions after expanding collapsible section', async () => {
+  it('shows step descriptions in detailed mode', async () => {
     render(<App />)
 
-    // Step accordion is hidden by default behind collapsible
-    expect(screen.queryByText('Calculation Steps')).not.toBeInTheDocument()
-
-    // Expand the collapsible
-    fireEvent.click(screen.getByText('Islamic Legal Basis & Calculation Steps'))
-
+    // Step accordion visible directly in detailed mode
     await waitFor(() => {
       expect(screen.getByText('Calculation Steps')).toBeInTheDocument()
     })
@@ -231,8 +227,7 @@ describe('RSLT-03: step accordion (behind collapsible)', () => {
   it('expands a step to show detail text when clicked', async () => {
     render(<App />)
 
-    // Expand the collapsible first
-    fireEvent.click(screen.getByText('Islamic Legal Basis & Calculation Steps'))
+    // Steps visible directly in detailed mode
     await waitFor(() => {
       expect(screen.getByText('Identify heirs')).toBeInTheDocument()
     })
@@ -252,8 +247,7 @@ describe('RSLT-03: step accordion (behind collapsible)', () => {
   it('allows multiple steps to be open simultaneously', async () => {
     render(<App />)
 
-    // Expand the collapsible first
-    fireEvent.click(screen.getByText('Islamic Legal Basis & Calculation Steps'))
+    // Steps visible directly in detailed mode
     await waitFor(() => {
       expect(screen.getByText('Identify heirs')).toBeInTheDocument()
     })
@@ -275,45 +269,65 @@ describe('RSLT-03: step accordion (behind collapsible)', () => {
   })
 })
 
-describe('Collapsible sections', () => {
+describe('RSLT-06: mode toggle', () => {
   beforeEach(() => {
     useWizardStore.setState({
       ...baseStoreState,
       results: makeSimpleOutput(),
+      viewMode: 'simple',
+      hasToggledMode: false,
     })
   })
 
-  it('hides step accordion and Islamic basis by default', () => {
+  it('renders ModeToggle radiogroup', () => {
+    render(<App />)
+
+    expect(screen.getByRole('radiogroup', { name: 'View mode' })).toBeInTheDocument()
+  })
+
+  it('simple mode hides Calculation Steps and Islamic Basis', () => {
     render(<App />)
 
     expect(screen.queryByText('Calculation Steps')).not.toBeInTheDocument()
     expect(screen.queryByText('Islamic Basis')).not.toBeInTheDocument()
   })
 
-  it('shows Islamic Basis section after expanding collapsible', async () => {
+  it('detailed mode shows Calculation Steps and Islamic Basis inline', () => {
+    useWizardStore.setState({ viewMode: 'detailed' })
     render(<App />)
 
-    // Not visible initially
-    expect(screen.queryByText('Islamic Basis')).not.toBeInTheDocument()
-
-    // Expand the collapsible
-    fireEvent.click(screen.getByText('Islamic Legal Basis & Calculation Steps'))
-
-    await waitFor(() => {
-      expect(screen.getByText('Islamic Basis')).toBeInTheDocument()
-    })
+    expect(screen.getByText('Calculation Steps')).toBeInTheDocument()
+    expect(screen.getByText('Islamic Basis')).toBeInTheDocument()
   })
 
-  it('shows Charts & Visualizations collapsible toggle', () => {
+  it('collapsible toggle buttons do not exist', () => {
     render(<App />)
 
-    expect(screen.getByText('Charts & Visualizations')).toBeInTheDocument()
+    // The old collapsible toggle buttons should not exist
+    expect(screen.queryByText('Charts & Visualizations')).not.toBeInTheDocument()
+    expect(screen.queryByText('Islamic Legal Basis & Calculation Steps')).not.toBeInTheDocument()
   })
 
-  it('shows Inheritance Summary table', () => {
+  it('shows hint text in simple mode with hasToggledMode=false', () => {
     render(<App />)
 
+    expect(screen.getByText('Switch to Detailed for charts, legal references, and calculation steps')).toBeInTheDocument()
+  })
+
+  it('hides hint text when hasToggledMode=true', () => {
+    useWizardStore.setState({ hasToggledMode: true })
+    render(<App />)
+
+    expect(screen.queryByText('Switch to Detailed for charts, legal references, and calculation steps')).not.toBeInTheDocument()
+  })
+
+  it('shows Inheritance Summary table in both modes', () => {
+    render(<App />)
     expect(screen.getByText('Inheritance Summary')).toBeInTheDocument()
+
+    useWizardStore.setState({ viewMode: 'detailed' })
+    render(<App />)
+    expect(screen.getAllByText('Inheritance Summary').length).toBeGreaterThan(0)
   })
 })
 

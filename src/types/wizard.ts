@@ -174,4 +174,5 @@ export interface WizardState {
   results: FaraidOutput | null
   totalEstateValue: number
   viewMode: 'simple' | 'detailed'
+  hasToggledMode: boolean
 }

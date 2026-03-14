@@ -109,6 +109,7 @@ export const useWizardStore = create<WizardStore>()(
   results: null,
   totalEstateValue: 0,
   viewMode: 'simple',
+  hasToggledMode: false,
 
   // Actions
 
@@ -233,7 +234,7 @@ export const useWizardStore = create<WizardStore>()(
   },
 
   setViewMode: (mode) => {
-    set({ viewMode: mode })
+    set({ viewMode: mode, hasToggledMode: true })
   },
 
   isStepValid: (step) => {
@@ -513,6 +514,7 @@ export const useWizardStore = create<WizardStore>()(
         results: state.results,
         totalEstateValue: state.totalEstateValue,
         viewMode: state.viewMode,
+        hasToggledMode: state.hasToggledMode,
       }),
     },
   ),
