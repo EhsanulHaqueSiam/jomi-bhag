@@ -484,7 +484,7 @@ export const useWizardStore = create<WizardStore>()(
           }
           state.completedSteps = Array.from(newCompleted)
         }
-        return state as WizardStore
+        return state as unknown as WizardStore
       },
       partialize: (state) => ({
         currentStep: state.currentStep,
