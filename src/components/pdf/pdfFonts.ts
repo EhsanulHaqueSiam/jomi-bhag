@@ -3,6 +3,7 @@ import { Font } from '@react-pdf/renderer'
 import InterRegular from '@/assets/fonts/Inter-Regular.ttf'
 import InterSemiBold from '@/assets/fonts/Inter-SemiBold.ttf'
 import InterBold from '@/assets/fonts/Inter-Bold.ttf'
+import InterItalic from '@/assets/fonts/Inter-Italic.ttf'
 import NotoNaskhArabicRegular from '@/assets/fonts/NotoNaskhArabic-Regular.ttf'
 
 Font.register({
@@ -10,6 +11,7 @@ Font.register({
   fonts: [
     { src: InterRegular, fontWeight: 400 },
     { src: InterSemiBold, fontWeight: 600 },
+    { src: InterItalic, fontWeight: 400, fontStyle: 'italic' },
     { src: InterBold, fontWeight: 700 },
   ],
 })
