@@ -8,9 +8,9 @@ last_updated: "2026-03-14T13:41:31.821Z"
 last_activity: "2026-03-14 - Completed Phase 16 Plan 01: Wire ModeToggle into ResultsPage, compact citation footer"
 progress:
   total_phases: 17
-  completed_phases: 16
-  total_plans: 37
-  completed_plans: 37
+  completed_phases: 17
+  total_plans: 38
+  completed_plans: 38
   percent: 100
 ---
 
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Accurate, unbiased Islamic inheritance division -- the app strictly follows Faraid rules for every calculation without favoring any heir.
-**Current focus:** Phase 16 -- Wire results mode toggle (simple/detailed view switching).
+**Current focus:** Phase 17 -- Dead code cleanup and documentation fix.
 
 ## Current Position
 
-Phase: 16 (Wire Results Mode Toggle)
+Phase: 17 (Dead Code Cleanup and Documentation Fix)
 Plan: 1 of 1 complete
 Status: Complete
-Last activity: 2026-03-14 - Completed Phase 16 Plan 01: Wire ModeToggle into ResultsPage, compact citation footer
+Last activity: 2026-03-14 - Completed Phase 17 Plan 01: Dead code cleanup, bar chart coloring, documentation fix
 
-Progress: [##########] 37/37 plans (100%)
+Progress: [##########] 38/38 plans (100%)
 
 ## Performance Metrics
 
@@ -82,6 +82,7 @@ Progress: [##########] 37/37 plans (100%)
 | Phase 14 P04 | 4min | 2 tasks | 5 files |
 | Phase 15 P01 | 6min | 2 tasks | 9 files |
 | Phase 16 P01 | 5min | 2 tasks | 6 files |
+| Phase 17 P01 | 6min | 2 tasks | 23 files |
 
 ## Accumulated Context
 
@@ -226,6 +227,8 @@ Recent decisions affecting current work:
 - [Phase 16]: hasToggledMode set true on any setViewMode call for permanent hint dismissal
 - [Phase 16]: Compact citation uses An-Nisa prefix (all Faraid verses from Surah An-Nisa)
 - [Phase 16]: Collapsible disclosure buttons fully removed; viewMode-driven conditional rendering replaces them
+- [Phase 17]: PdfLotDivision types and lotDivision field fully removed from PdfData (distribution supersedes entirely)
+- [Phase 17]: Pre-existing hasToggledMode tsc errors fixed inline as part of cleanup
 
 ### Pending Todos
 
@@ -263,6 +266,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T13:41:31.819Z
-Stopped at: Phase 17 context gathered
-Resume file: .planning/phases/17-dead-code-cleanup-and-documentation-fix/17-CONTEXT.md
+Last session: 2026-03-14T13:59:28Z
+Stopped at: Completed 17-01-PLAN.md
+Resume file: .planning/phases/17-dead-code-cleanup-and-documentation-fix/17-01-SUMMARY.md

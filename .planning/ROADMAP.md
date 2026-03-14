@@ -26,7 +26,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 12: JSON Import and Export** - Export full estate data as JSON for backup/portability, import JSON files (even partial) to populate wizard for editing and recalculation (completed 2015-03-13)
 - [x] **Phase 15: Fix JSON Import & Persistence Gaps** - Fix useJsonImport to restore customHeirNames and individualDistribution, fix scenario reset for movable assets, fix splitOrigins persistence (gap closure) (completed 2026-03-14)
 - [x] **Phase 16: Wire Results Mode Toggle** - Connect orphaned ModeToggle component to ResultsPage for simple/detailed view switching (gap closure) (completed 2026-03-14)
-- [ ] **Phase 17: Dead Code Cleanup & Documentation Fix** - Remove dead LotDivisionPage, StepFamily, StepSiblings code, fix MonetaryBarChart coloring, update REQUIREMENTS.md traceability (gap closure)
+- [x] **Phase 17: Dead Code Cleanup & Documentation Fix** - Remove dead LotDivisionPage, StepFamily, StepSiblings code, fix MonetaryBarChart coloring, update REQUIREMENTS.md traceability (gap closure) (completed 2026-03-14)
 
 ## Phase Details
 
@@ -185,7 +185,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 14. Per-Heir Asset Breakdown | 4/4 | Complete    | 2015-03-13 |
 | 15. Fix JSON Import & Persistence Gaps | 1/1 | Complete    | 2026-03-14 |
 | 16. Wire Results Mode Toggle | 1/1 | Complete    | 2026-03-14 |
-| 17. Dead Code Cleanup & Documentation Fix | 0/1 | Not started | - |
+| 17. Dead Code Cleanup & Documentation Fix | 1/1 | Complete   | 2026-03-14 |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
 **Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, livestock, custom items) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
@@ -319,7 +319,7 @@ Plans:
   2. MonetaryBarChart renders per-bar emerald coloring
   3. Phase 11 types.ts stale comment removed
   4. REQUIREMENTS.md traceability table shows "Complete" for all verified Phase 9-14 requirements
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 17-01-PLAN.md -- Delete 9 dead files (LotDivisionPage, GroupCard, ParcelRow, QurahReference, divisionStore, StepFamily, StepSiblings, division.test.tsx, PdfLotDivisionSection), clean all import references, fix MonetaryBarChart per-bar emerald coloring, remove stale comment, update REQUIREMENTS.md traceability
