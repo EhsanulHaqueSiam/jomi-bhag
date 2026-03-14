@@ -258,6 +258,7 @@ None yet.
 | 8 | UX overhaul: merge wizard steps, streamline results, polish distribution | 2026-03-14 | fdcf029 | [8-ux-overhaul-streamline-full-wizard-to-di](./quick/8-ux-overhaul-streamline-full-wizard-to-di/) |
 | 9 | Fix CSS: FOUC, wizard container width, heir card text clipping | 2026-03-14 | fc10085 | [9-fix-css-issues-in-heircard-text-overflow](./quick/9-fix-css-issues-in-heircard-text-overflow/) |
 | 10 | Add premium micro-interactions across wizard and results | 2026-03-14 | eb317e8 | [10-add-premium-micro-interactions-across-wi](./quick/10-add-premium-micro-interactions-across-wi/) |
+| 11 | Fix PDF download crash: Inter italic font not registered | 2026-03-14 | 19844f6 | [11-pdf-download-failed-could-not-resolve-fo](./quick/11-pdf-download-failed-could-not-resolve-fo/) |
 
 ### Blockers/Concerns
 
@@ -266,6 +267,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T13:59:28Z
-Stopped at: Completed 17-01-PLAN.md
-Resume file: .planning/phases/17-dead-code-cleanup-and-documentation-fix/17-01-SUMMARY.md
+Last session: 2026-03-14T14:39:42Z
+Stopped at: Completed quick-11 (PDF italic font fix)
+Resume file: .planning/quick/11-pdf-download-failed-could-not-resolve-fo/11-SUMMARY.md
