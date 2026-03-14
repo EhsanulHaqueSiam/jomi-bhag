@@ -15,13 +15,19 @@ export function usePdfExport() {
     let pieChartImage: string | null = null
     let barChartImage: string | null = null
 
+    // Exclude Recharts tooltip wrapper nodes -- their internal code accesses
+    // coordinate state that is null during non-interactive capture, causing crashes
+    const filterRechartsTooltips = (node: HTMLElement): boolean => {
+      return !node.classList?.contains('recharts-tooltip-wrapper')
+    }
+
     try {
       const { toPng } = await import('html-to-image')
 
       const pieEl = document.getElementById('pdf-pie-chart')
       if (pieEl && pieEl.offsetHeight > 0) {
         try {
-          pieChartImage = await toPng(pieEl, { pixelRatio: 2, backgroundColor: '#ffffff' })
+          pieChartImage = await toPng(pieEl, { pixelRatio: 2, backgroundColor: '#ffffff', filter: filterRechartsTooltips })
         } catch {
           // Individual chart capture failure is non-critical
         }
@@ -30,7 +36,7 @@ export function usePdfExport() {
       const barEl = document.getElementById('pdf-bar-chart')
       if (barEl && barEl.offsetHeight > 0) {
         try {
-          barChartImage = await toPng(barEl, { pixelRatio: 2, backgroundColor: '#ffffff' })
+          barChartImage = await toPng(barEl, { pixelRatio: 2, backgroundColor: '#ffffff', filter: filterRechartsTooltips })
         } catch {
           // Individual chart capture failure is non-critical
         }
