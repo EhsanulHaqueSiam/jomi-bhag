@@ -68,7 +68,7 @@ export function AppLayout({ children, page, onNavigate }: AppLayoutProps) {
         className={`relative px-4 pb-32 md:mx-auto md:pb-8 ${
           isWide
             ? 'md:max-w-5xl md:px-6 lg:max-w-7xl lg:px-8'
-            : 'md:max-w-lg lg:max-w-xl'
+            : 'md:max-w-2xl lg:max-w-3xl'
         }`}
       >
         <div

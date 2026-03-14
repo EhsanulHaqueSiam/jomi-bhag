@@ -126,15 +126,15 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
           <>
             <div className="flex items-baseline justify-between">
               <span className="text-sm text-gray-500">Each</span>
-              <div className="flex items-baseline gap-2 text-right">
+              <div className="flex items-baseline gap-1.5 text-right">
                 <span className="text-sm font-medium text-gray-700">
                   {fractionToString(share.sharePerHeir)}
                 </span>
-                <span className="text-sm text-gray-500">
+                <span className="text-xs text-gray-500">
                   ({fractionToPercent(share.sharePerHeir)})
                 </span>
                 {totalEstateValue > 0 && bdtEach && (
-                  <span className="text-sm font-medium text-emerald-700">
+                  <span className="truncate text-sm font-medium text-emerald-700">
                     {bdtEach}
                   </span>
                 )}
@@ -142,15 +142,15 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
             </div>
             <div className="flex items-baseline justify-between">
               <span className="text-sm font-medium text-gray-700">Total</span>
-              <div className="flex items-baseline gap-2 text-right">
+              <div className="flex items-baseline gap-1.5 text-right">
                 <span className="text-base font-semibold text-gray-900">
                   {fractionToString(share.totalShare)}
                 </span>
-                <span className="text-sm text-gray-500">
+                <span className="text-xs text-gray-500">
                   ({fractionToPercent(share.totalShare)})
                 </span>
                 {totalEstateValue > 0 && bdtTotal && (
-                  <span className="text-base font-semibold text-emerald-700">
+                  <span className="truncate text-base font-semibold text-emerald-700">
                     {bdtTotal}
                   </span>
                 )}
@@ -162,12 +162,12 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
             <span className="text-base font-semibold text-gray-900">
               {fractionToString(share.totalShare)}
             </span>
-            <div className="flex items-baseline gap-2">
-              <span className="text-sm text-gray-500">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-xs text-gray-500">
                 {fractionToPercent(share.totalShare)}
               </span>
               {totalEstateValue > 0 && bdtTotal && (
-                <span className="text-base font-semibold text-emerald-700">
+                <span className="truncate text-base font-semibold text-emerald-700">
                   {bdtTotal}
                 </span>
               )}
