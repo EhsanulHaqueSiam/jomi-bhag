@@ -13,7 +13,7 @@ import { StepAccordion } from '@/components/results/StepAccordion'
 import { IslamicBasisSection } from '@/components/results/IslamicBasisSection'
 import { ModeToggle } from '@/components/results/ModeToggle'
 import { getAllReferences } from '@/core/faraid/references'
-import { HEIR_TYPE_LABELS, getHeirTypeLabel } from '@/core/utils/display'
+import { getHeirTypeLabel } from '@/core/utils/display'
 import { useTranslation } from '@/i18n/useTranslation'
 
 const bdtFormatter = new Intl.NumberFormat('en-IN', {

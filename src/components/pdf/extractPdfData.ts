@@ -9,8 +9,6 @@ import {
   fractionToString,
   fractionToPercent,
   fractionToBDT,
-  HEIR_TYPE_LABELS,
-  SHARE_TYPE_LABELS,
   getHeirTypeLabel,
   getShareTypeLabel,
 } from '@/core/utils/display'

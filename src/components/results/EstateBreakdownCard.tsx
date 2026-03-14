@@ -25,7 +25,7 @@ export function EstateBreakdownCard() {
   const getAllPropertiesTotal = useWizardStore((s) => s.getAllPropertiesTotal)
   const getMovableAssetsTotal = useWizardStore((s) => s.getMovableAssetsTotal)
 
-  const { t, language } = useTranslation()
+  const { t } = useTranslation()
   const [isFocused, setIsFocused] = useState(false)
   const [isOverriding, setIsOverriding] = useState(false)
   const [showProperties, setShowProperties] = useState(false)
