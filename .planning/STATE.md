@@ -244,6 +244,7 @@ None yet.
 | 6 | Audit and verify Faraid engine correctness (10 edge case tests) | 2026-03-14 | fa145fd | [6-audit-and-verify-faraid-engine-correctne](./quick/6-audit-and-verify-faraid-engine-correctne/) |
 | 7 | Fix PDF download and print not working | 2026-03-14 | ce1f928 | [7-fix-pdf-download-and-print-not-working-a](./quick/7-fix-pdf-download-and-print-not-working-a/) |
 | 8 | UX overhaul: merge wizard steps, streamline results, polish distribution | 2026-03-14 | fdcf029 | [8-ux-overhaul-streamline-full-wizard-to-di](./quick/8-ux-overhaul-streamline-full-wizard-to-di/) |
+| 9 | Fix CSS: FOUC, wizard container width, heir card text clipping | 2026-03-14 | fc10085 | [9-fix-css-issues-in-heircard-text-overflow](./quick/9-fix-css-issues-in-heircard-text-overflow/) |
 
 ### Blockers/Concerns
 
