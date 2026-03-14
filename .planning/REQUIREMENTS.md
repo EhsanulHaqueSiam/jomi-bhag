@@ -49,7 +49,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **RSLT-03**: App provides step-by-step calculation explanation showing how shares were derived
 - [x] **RSLT-04**: App displays pie chart showing proportional share distribution
 - [x] **RSLT-05**: App displays bar chart showing monetary amount per heir
-- [ ] **RSLT-06**: App provides dual mode -- simple view for general public, detailed view for legal professionals
+- [x] **RSLT-06**: App provides dual mode -- simple view for general public, detailed view for legal professionals
 
 ### Output & Export
 
@@ -208,7 +208,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RSLT-01 | Phase 3 | Complete |
 | RSLT-02 | Phase 3 | Complete |
 | RSLT-03 | Phase 3 | Complete |
-| RSLT-06 | Phase 16 | Pending |
+| RSLT-06 | Phase 16 | Complete |
 | PROP-01 | Phase 4 | Complete |
 | PROP-02 | Phase 4 | Complete |
 | PROP-03 | Phase 4 | Complete |

@@ -25,7 +25,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 11: Interactive Asset Distribution** - Drag-and-drop Kanban board for distributing all assets among heir groups with real-time equilibrium indicators and smart randomization (completed 2015-03-13)
 - [x] **Phase 12: JSON Import and Export** - Export full estate data as JSON for backup/portability, import JSON files (even partial) to populate wizard for editing and recalculation (completed 2015-03-13)
 - [x] **Phase 15: Fix JSON Import & Persistence Gaps** - Fix useJsonImport to restore customHeirNames and individualDistribution, fix scenario reset for movable assets, fix splitOrigins persistence (gap closure) (completed 2026-03-14)
-- [ ] **Phase 16: Wire Results Mode Toggle** - Connect orphaned ModeToggle component to ResultsPage for simple/detailed view switching (gap closure)
+- [x] **Phase 16: Wire Results Mode Toggle** - Connect orphaned ModeToggle component to ResultsPage for simple/detailed view switching (gap closure) (completed 2026-03-14)
 - [ ] **Phase 17: Dead Code Cleanup & Documentation Fix** - Remove dead LotDivisionPage, StepFamily, StepSiblings code, fix MonetaryBarChart coloring, update REQUIREMENTS.md traceability (gap closure)
 
 ## Phase Details
@@ -184,7 +184,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 13. Land Settlement Methods | 3/3 | Complete    | 2015-03-13 |
 | 14. Per-Heir Asset Breakdown | 4/4 | Complete    | 2015-03-13 |
 | 15. Fix JSON Import & Persistence Gaps | 1/1 | Complete    | 2026-03-14 |
-| 16. Wire Results Mode Toggle | 0/1 | Not started | - |
+| 16. Wire Results Mode Toggle | 1/1 | Complete   | 2026-03-14 |
 | 17. Dead Code Cleanup & Documentation Fix | 0/0 | Not started | - |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
@@ -304,7 +304,7 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. ModeToggle component is rendered in ResultsPage and controls viewMode state
   2. Simple mode shows fractions/percentages only, detailed mode shows full calculation trace with legal citations
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 16-01-PLAN.md -- Wire ModeToggle into ResultsPage with conditional section rendering, add hasToggledMode hint persistence to wizardStore, remove collapsible disclosures, add compact per-heir Quran citation footer in detailed mode, update tests

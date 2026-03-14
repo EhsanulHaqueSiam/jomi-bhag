@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Phase 16 context gathered
-last_updated: "2026-03-14T13:13:56.682Z"
-last_activity: "2026-03-14 - Completed Phase 15 Plan 01: Fix JSON import individual data, scenario reset, splitOrigins persistence"
+stopped_at: Completed 16-01-PLAN.md
+last_updated: "2026-03-14T13:33:01.581Z"
+last_activity: "2026-03-14 - Completed Phase 16 Plan 01: Wire ModeToggle into ResultsPage, compact citation footer"
 progress:
   total_phases: 17
-  completed_phases: 15
-  total_plans: 36
-  completed_plans: 36
+  completed_phases: 16
+  total_plans: 37
+  completed_plans: 37
   percent: 100
 ---
 
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 
 ## Current Position
 
-Phase: 15 (Fix JSON Import and Persistence Gaps)
+Phase: 16 (Wire Results Mode Toggle)
 Plan: 1 of 1 complete
 Status: Complete
-Last activity: 2026-03-14 - Completed Phase 15 Plan 01: Fix JSON import individual data, scenario reset, splitOrigins persistence
+Last activity: 2026-03-14 - Completed Phase 16 Plan 01: Wire ModeToggle into ResultsPage, compact citation footer
 
-Progress: [##########] 36/36 plans (100%)
+Progress: [##########] 37/37 plans (100%)
 
 ## Performance Metrics
 
@@ -81,6 +81,7 @@ Progress: [##########] 36/36 plans (100%)
 | Phase 14 P03 | 5min | 2 tasks | 6 files |
 | Phase 14 P04 | 4min | 2 tasks | 5 files |
 | Phase 15 P01 | 6min | 2 tasks | 9 files |
+| Phase 16 P01 | 5min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -222,6 +223,9 @@ Recent decisions affecting current work:
 - [Phase 15]: Only restore customNames and qurahUsed from import (not assignments) because item IDs are regenerated
 - [Phase 15]: splitOrigins converted from Map to Record for JSON serialization with Zustand persist
 - [Phase 15]: pendingIndividualData kept internal to useJsonImport (not exposed) for ImportConfirmDialog backward compatibility
+- [Phase 16]: hasToggledMode set true on any setViewMode call for permanent hint dismissal
+- [Phase 16]: Compact citation uses An-Nisa prefix (all Faraid verses from Surah An-Nisa)
+- [Phase 16]: Collapsible disclosure buttons fully removed; viewMode-driven conditional rendering replaces them
 
 ### Pending Todos
 
@@ -259,6 +263,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T13:13:56.680Z
-Stopped at: Phase 16 context gathered
-Resume file: .planning/phases/16-wire-results-mode-toggle/16-CONTEXT.md
+Last session: 2026-03-14T13:33:01.579Z
+Stopped at: Completed 16-01-PLAN.md
+Resume file: None
