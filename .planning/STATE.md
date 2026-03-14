@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 15-01-PLAN.md (JSON import and persistence gap closure)
-last_updated: "2026-03-14T12:55:12.257Z"
+stopped_at: Phase 16 context gathered
+last_updated: "2026-03-14T13:13:56.682Z"
 last_activity: "2026-03-14 - Completed Phase 15 Plan 01: Fix JSON import individual data, scenario reset, splitOrigins persistence"
 progress:
   total_phases: 17
@@ -259,6 +259,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14
-Stopped at: Phase 15 complete, ready to plan Phase 16
-Resume file: None
+Last session: 2026-03-14T13:13:56.680Z
+Stopped at: Phase 16 context gathered
+Resume file: .planning/phases/16-wire-results-mode-toggle/16-CONTEXT.md
