@@ -18,10 +18,10 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-13)
+See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Accurate, unbiased Islamic inheritance division -- the app strictly follows Faraid rules for every calculation without favoring any heir.
-**Current focus:** Phase 15 complete -- JSON import and persistence gap closure (individual data restoration, scenario reset, splitOrigins persistence).
+**Current focus:** Phase 16 -- Wire results mode toggle (simple/detailed view switching).
 
 ## Current Position
 
@@ -259,6 +259,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T12:50:39Z
-Stopped at: Completed 15-01-PLAN.md (JSON import and persistence gap closure)
+Last session: 2026-03-14
+Stopped at: Phase 15 complete, ready to plan Phase 16
 Resume file: None

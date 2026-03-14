@@ -66,4 +66,4 @@ Accurate, unbiased Islamic inheritance division — the app strictly follows Far
 | Free forever model | Public service for BD community, no monetization barriers | — Pending |
 
 ---
-*Last updated: 2026-03-13 after Phase 3*
+*Last updated: 2026-03-14 after Phase 15*
