@@ -49,7 +49,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **RSLT-03**: App provides step-by-step calculation explanation showing how shares were derived
 - [x] **RSLT-04**: App displays pie chart showing proportional share distribution
 - [x] **RSLT-05**: App displays bar chart showing monetary amount per heir
-- [x] **RSLT-06**: App provides dual mode -- simple view for general public, detailed view for legal professionals
+- [ ] **RSLT-06**: App provides dual mode -- simple view for general public, detailed view for legal professionals
 
 ### Output & Export
 
@@ -141,11 +141,11 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **P14-13**: Per-individual equilibrium bars: green within 2%, amber within 5%, red beyond 5% of target BDT value
 - [x] **P14-14**: Mobile "Move to..." dropdown shows flat list of all individual heir names
 - [x] **P14-15**: HeirIcon (male/female silhouette) shown on each individual column header
-- [ ] **P14-16**: Individual Qurah ceremony overlay with bismillah header, staggered reveal at 200ms per column, prefers-reduced-motion support
-- [ ] **P14-17**: JSON export includes custom heir names and individual distribution assignments when individual view was used
+- [x] **P14-16**: Individual Qurah ceremony overlay with bismillah header, staggered reveal at 200ms per column, prefers-reduced-motion support
+- [x] **P14-17**: JSON export includes custom heir names and individual distribution assignments when individual view was used
 - [ ] **P14-18**: JSON import restores custom names and individual assignments (missing fields use defaults for backward compat)
-- [ ] **P14-19**: Scenarios save and restore individual distribution state including custom names
-- [ ] **P14-20**: Both views fully independent -- switching never affects the other's state
+- [x] **P14-19**: Scenarios save and restore individual distribution state including custom names
+- [x] **P14-20**: Both views fully independent -- switching never affects the other's state
 - [x] **P14-21**: PDF "Individual Asset Breakdown" section appears only when individual view was used, placed after Distribution Summary
 - [x] **P14-22**: PDF individual sections grouped by heir type with equilibrium indicators, compensation table, and summary line
 - [x] **P14-23**: PDF includes Qurah reference in individual section when Qurah was used
@@ -208,7 +208,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RSLT-01 | Phase 3 | Complete |
 | RSLT-02 | Phase 3 | Complete |
 | RSLT-03 | Phase 3 | Complete |
-| RSLT-06 | Phase 3 | Complete |
+| RSLT-06 | Phase 16 | Pending |
 | PROP-01 | Phase 4 | Complete |
 | PROP-02 | Phase 4 | Complete |
 | PROP-03 | Phase 4 | Complete |
@@ -227,68 +227,68 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRST-01 | Phase 8 | Complete |
 | PRST-02 | Phase 8 | Complete |
 | PRST-03 | Phase 8 | Complete |
-| P9-SC1 | Phase 9 | Planned |
-| P9-SC2 | Phase 9 | Planned |
-| P9-SC3 | Phase 9 | Planned |
-| P9-SC4 | Phase 9 | Planned |
-| P10-SC1 | Phase 10 | Planned |
-| P10-SC2 | Phase 10 | Planned |
-| P10-SC3 | Phase 10 | Planned |
-| P10-SC4 | Phase 10 | Planned |
-| P10-SC5 | Phase 10 | Planned |
-| P11-01 | Phase 11 | Planned |
-| P11-02 | Phase 11 | Planned |
-| P11-03 | Phase 11 | Planned |
-| P11-04 | Phase 11 | Planned |
-| P11-05 | Phase 11 | Planned |
-| P11-06 | Phase 11 | Planned |
-| P11-07 | Phase 11 | Planned |
-| P11-08 | Phase 11 | Planned |
-| P11-09 | Phase 11 | Planned |
-| P12-01 | Phase 12 | Planned |
-| P12-02 | Phase 12 | Planned |
-| P12-03 | Phase 12 | Planned |
-| P12-04 | Phase 12 | Planned |
-| P12-05 | Phase 12 | Planned |
-| P12-06 | Phase 12 | Planned |
-| P12-07 | Phase 12 | Planned |
-| P12-08 | Phase 12 | Planned |
-| P12-09 | Phase 12 | Planned |
-| P13-01 | Phase 13 | Planned |
-| P13-02 | Phase 13 | Planned |
-| P13-03 | Phase 13 | Planned |
-| P13-04 | Phase 13 | Planned |
-| P13-05 | Phase 13 | Planned |
-| P13-06 | Phase 13 | Planned |
-| P13-07 | Phase 13 | Planned |
-| P13-08 | Phase 13 | Planned |
-| P13-09 | Phase 13 | Planned |
-| P13-10 | Phase 13 | Planned |
-| P13-11 | Phase 13 | Planned |
-| P13-12 | Phase 13 | Planned |
-| P14-01 | Phase 14 | Planned |
-| P14-02 | Phase 14 | Planned |
-| P14-03 | Phase 14 | Planned |
-| P14-04 | Phase 14 | Planned |
-| P14-05 | Phase 14 | Planned |
-| P14-06 | Phase 14 | Planned |
-| P14-07 | Phase 14 | Planned |
-| P14-08 | Phase 14 | Planned |
-| P14-09 | Phase 14 | Planned |
-| P14-10 | Phase 14 | Planned |
-| P14-11 | Phase 14 | Planned |
-| P14-12 | Phase 14 | Planned |
-| P14-13 | Phase 14 | Planned |
-| P14-14 | Phase 14 | Planned |
-| P14-15 | Phase 14 | Planned |
-| P14-16 | Phase 14 | Planned |
-| P14-17 | Phase 14 | Planned |
-| P14-18 | Phase 14 | Planned |
-| P14-19 | Phase 14 | Planned |
-| P14-20 | Phase 14 | Planned |
-| P14-21 | Phase 14 | Planned |
-| P14-22 | Phase 14 | Planned |
-| P14-23 | Phase 14 | Planned |
+| P9-SC1 | Phase 9 | Complete |
+| P9-SC2 | Phase 9 | Complete |
+| P9-SC3 | Phase 9 | Complete |
+| P9-SC4 | Phase 9 | Complete |
+| P10-SC1 | Phase 10 | Complete |
+| P10-SC2 | Phase 10 | Complete |
+| P10-SC3 | Phase 10 | Complete |
+| P10-SC4 | Phase 10 | Complete |
+| P10-SC5 | Phase 10 | Complete |
+| P11-01 | Phase 11 | Complete |
+| P11-02 | Phase 11 | Complete |
+| P11-03 | Phase 11 | Complete |
+| P11-04 | Phase 11 | Complete |
+| P11-05 | Phase 11 | Complete |
+| P11-06 | Phase 11 | Complete |
+| P11-07 | Phase 11 | Complete |
+| P11-08 | Phase 11 | Complete |
+| P11-09 | Phase 11 | Complete |
+| P12-01 | Phase 12 | Complete |
+| P12-02 | Phase 12 | Complete |
+| P12-03 | Phase 12 | Complete |
+| P12-04 | Phase 12 | Complete |
+| P12-05 | Phase 12 | Complete |
+| P12-06 | Phase 12 | Complete |
+| P12-07 | Phase 12 | Complete |
+| P12-08 | Phase 12 | Complete |
+| P12-09 | Phase 12 | Complete |
+| P13-01 | Phase 13 | Complete |
+| P13-02 | Phase 13 | Complete |
+| P13-03 | Phase 13 | Complete |
+| P13-04 | Phase 13 | Complete |
+| P13-05 | Phase 13 | Complete |
+| P13-06 | Phase 13 | Complete |
+| P13-07 | Phase 13 | Complete |
+| P13-08 | Phase 13 | Complete |
+| P13-09 | Phase 13 | Complete |
+| P13-10 | Phase 13 | Complete |
+| P13-11 | Phase 13 | Complete |
+| P13-12 | Phase 13 | Complete |
+| P14-01 | Phase 14 | Complete |
+| P14-02 | Phase 14 | Complete |
+| P14-03 | Phase 14 | Complete |
+| P14-04 | Phase 14 | Complete |
+| P14-05 | Phase 14 | Complete |
+| P14-06 | Phase 14 | Complete |
+| P14-07 | Phase 14 | Complete |
+| P14-08 | Phase 14 | Complete |
+| P14-09 | Phase 14 | Complete |
+| P14-10 | Phase 14 | Complete |
+| P14-11 | Phase 14 | Complete |
+| P14-12 | Phase 14 | Complete |
+| P14-13 | Phase 14 | Complete |
+| P14-14 | Phase 14 | Complete |
+| P14-15 | Phase 14 | Complete |
+| P14-16 | Phase 14 | Complete |
+| P14-17 | Phase 14 | Complete |
+| P14-18 | Phase 15 | Pending |
+| P14-19 | Phase 14 | Complete |
+| P14-20 | Phase 14 | Complete |
+| P14-21 | Phase 14 | Complete |
+| P14-22 | Phase 14 | Complete |
+| P14-23 | Phase 14 | Complete |
 
 **Coverage:**
 - v1 requirements: 39 total

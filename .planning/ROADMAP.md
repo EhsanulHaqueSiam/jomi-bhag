@@ -24,6 +24,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 10: Movable Assets and Complete Estate Inventory** - Gold, silver, cash, vehicles, jewelry, furniture, investments, livestock, and all non-land assets with Islamic rules for indivisible item division (completed 2015-03-13)
 - [x] **Phase 11: Interactive Asset Distribution** - Drag-and-drop Kanban board for distributing all assets among heir groups with real-time equilibrium indicators and smart randomization (completed 2015-03-13)
 - [x] **Phase 12: JSON Import and Export** - Export full estate data as JSON for backup/portability, import JSON files (even partial) to populate wizard for editing and recalculation (completed 2015-03-13)
+- [ ] **Phase 15: Fix JSON Import & Persistence Gaps** - Fix useJsonImport to restore customHeirNames and individualDistribution, fix scenario reset for movable assets, fix splitOrigins persistence (gap closure)
+- [ ] **Phase 16: Wire Results Mode Toggle** - Connect orphaned ModeToggle component to ResultsPage for simple/detailed view switching (gap closure)
+- [ ] **Phase 17: Dead Code Cleanup & Documentation Fix** - Remove dead LotDivisionPage, StepFamily, StepSiblings code, fix MonetaryBarChart coloring, update REQUIREMENTS.md traceability (gap closure)
 
 ## Phase Details
 
@@ -180,6 +183,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 12. JSON Import and Export | 2/2 | Complete    | 2015-03-13 |
 | 13. Land Settlement Methods | 3/3 | Complete    | 2015-03-13 |
 | 14. Per-Heir Asset Breakdown | 4/4 | Complete    | 2015-03-13 |
+| 15. Fix JSON Import & Persistence Gaps | 0/0 | Not started | - |
+| 16. Wire Results Mode Toggle | 0/0 | Not started | - |
+| 17. Dead Code Cleanup & Documentation Fix | 0/0 | Not started | - |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
 **Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, livestock, custom items) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
@@ -275,3 +281,33 @@ Plans:
 - [ ] 14-02-PLAN.md -- UI components (ViewToggle, IndividualBoard, IndividualColumn, InlineRename, ParcelSplitDialog, IndividualMobileFallback), HeirIcon extraction, DistributionPage integration with view toggle, and component tests
 - [ ] 14-03-PLAN.md -- IndividualQurahCeremony overlay with staggered reveal, JSON export/import extension for individual data, scenario persistence extension, and integration tests
 - [ ] 14-04-PLAN.md -- PDF PdfIndividualSection component with heir-type grouping, equilibrium indicators, compensation table, extractPdfData extension, PdfDocument wiring, and integration tests
+
+### Phase 15: Fix JSON Import & Persistence Gaps
+**Goal**: JSON import correctly restores custom heir names and individual distribution assignments, scenario reset clears all state, and splitOrigins persists across page reloads
+**Depends on**: Phase 14
+**Requirements**: P14-18, PRST-02 (minor)
+**Gap Closure:** Closes gaps from v1.0 audit
+**Success Criteria** (what must be TRUE):
+  1. JSON import restores customHeirNames and individualDistribution to individualDistributionStore
+  2. ScenariosPage "New Calculation" resets movableAssets and expandedAssetId
+  3. splitOrigins Map survives page reload via persist partialize
+
+### Phase 16: Wire Results Mode Toggle
+**Goal**: Users can toggle between simple and detailed views on the Results page
+**Depends on**: Phase 3
+**Requirements**: RSLT-06
+**Gap Closure:** Closes gaps from v1.0 audit
+**Success Criteria** (what must be TRUE):
+  1. ModeToggle component is rendered in ResultsPage and controls viewMode state
+  2. Simple mode shows fractions/percentages only, detailed mode shows full calculation trace with legal citations
+
+### Phase 17: Dead Code Cleanup & Documentation Fix
+**Goal**: Remove unreachable dead code, fix minor UI issues, and update REQUIREMENTS.md to reflect actual completion status
+**Depends on**: None
+**Requirements**: P9-SC3 (documentation only)
+**Gap Closure:** Closes gaps from v1.0 audit
+**Success Criteria** (what must be TRUE):
+  1. LotDivisionPage, divisionStore, StepFamily.tsx, StepSiblings.tsx removed
+  2. MonetaryBarChart renders per-bar emerald coloring
+  3. Phase 11 types.ts stale comment removed
+  4. REQUIREMENTS.md traceability table shows "Complete" for all verified Phase 9-14 requirements
