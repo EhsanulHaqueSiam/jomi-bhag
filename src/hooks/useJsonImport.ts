@@ -62,7 +62,7 @@ export function useJsonImport() {
   const confirmImport = useCallback(() => {
     if (!pendingState) return
 
-    useWizardStore.setState(pendingState, true)
+    useWizardStore.setState(pendingState)
     useDistributionStore.getState().resetDistribution()
     setPendingState(null)
     setToast({ message: 'Data imported successfully', type: 'success' })

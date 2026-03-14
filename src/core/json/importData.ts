@@ -205,7 +205,7 @@ function validateMovableAsset(raw: unknown): MovableAsset | null {
   const base = {
     id: crypto.randomUUID(),
     isIndivisible: asBoolean(raw.isIndivisible, false),
-    indivisibleResolution: isObject(raw.indivisibleResolution) ? raw.indivisibleResolution as MovableAsset['indivisibleResolution'] : null,
+    indivisibleResolution: isObject(raw.indivisibleResolution) ? raw.indivisibleResolution as unknown as MovableAsset['indivisibleResolution'] : null,
   }
 
   switch (category) {
