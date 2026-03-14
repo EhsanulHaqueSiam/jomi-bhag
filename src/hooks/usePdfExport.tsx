@@ -36,6 +36,12 @@ export function usePdfExport() {
     const state = getStoreState()
     if (!state.results) throw new Error('No results to export')
 
+    // Validate that Fraction objects are real instances (not plain objects from stale localStorage)
+    const firstShare = state.results.shares[0]
+    if (firstShare && typeof firstShare.totalShare?.toFraction !== 'function') {
+      throw new Error('Stale data — please recalculate shares (click "Edit Heirs" then recalculate)')
+    }
+
     // Capture charts from DOM (non-critical, won't throw)
     const { pieChartImage, barChartImage } = await captureCharts()
 
@@ -52,16 +58,21 @@ export function usePdfExport() {
     const distributionState = (await import('@/stores/distributionStore')).useDistributionStore.getState()
     const distributionResult = distributionState.distributionResult
 
-    const pdfData = extractPdfData(
-      state.results,
-      state.properties,
-      state.totalEstateValue,
-      pieChartImage,
-      barChartImage,
-      divisionResult,
-      state.movableAssets,
-      distributionResult,
-    )
+    let pdfData
+    try {
+      pdfData = extractPdfData(
+        state.results,
+        state.properties,
+        state.totalEstateValue,
+        pieChartImage,
+        barChartImage,
+        divisionResult,
+        state.movableAssets,
+        distributionResult,
+      )
+    } catch (extractErr) {
+      throw new Error(`Data extraction failed: ${extractErr instanceof Error ? extractErr.message : String(extractErr)}`)
+    }
 
     // Generate PDF blob
     const blob = await pdf(<PdfDocument data={pdfData} />).toBlob()
@@ -86,8 +97,9 @@ export function usePdfExport() {
         URL.revokeObjectURL(url)
       }, 100)
     } catch (err) {
-      console.error('PDF download failed:', err)
-      setError('PDF download failed. Please try again.')
+      const msg = err instanceof Error ? err.message : String(err)
+      console.error('PDF download failed:', msg, err)
+      setError(`PDF download failed: ${msg}`)
     } finally {
       setIsGenerating(false)
     }
@@ -122,8 +134,9 @@ export function usePdfExport() {
         }, 60000)
       }
     } catch (err) {
-      console.error('PDF print failed:', err)
-      setError('PDF print failed. Please try again.')
+      const msg = err instanceof Error ? err.message : String(err)
+      console.error('PDF print failed:', msg, err)
+      setError(`PDF print failed: ${msg}`)
     } finally {
       setIsGenerating(false)
     }
