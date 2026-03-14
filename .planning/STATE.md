@@ -5,7 +5,7 @@ milestone_name: milestone
 status: completed
 stopped_at: Completed 17-01-PLAN.md
 last_updated: "2026-03-14T14:05:13.826Z"
-last_activity: "2026-03-14 - Completed quick task 11: PDF download failed: Could not resolve font for Inter, fontWeight 400, fontStyle italic"
+last_activity: "2026-03-14 - Completed quick task 12: Update README with comprehensive details and features"
 progress:
   total_phases: 17
   completed_phases: 17
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 Phase: 17 (Dead Code Cleanup and Documentation Fix)
 Plan: 1 of 1 complete
 Status: Complete
-Last activity: 2026-03-14 - Completed quick task 11: Fix PDF italic font resolution error
+Last activity: 2026-03-14 - Completed quick task 12: Update README with comprehensive details and features
 
 Progress: [##########] 38/38 plans (100%)
 
@@ -259,6 +259,7 @@ None yet.
 | 9 | Fix CSS: FOUC, wizard container width, heir card text clipping | 2026-03-14 | fc10085 | [9-fix-css-issues-in-heircard-text-overflow](./quick/9-fix-css-issues-in-heircard-text-overflow/) |
 | 10 | Add premium micro-interactions across wizard and results | 2026-03-14 | eb317e8 | [10-add-premium-micro-interactions-across-wi](./quick/10-add-premium-micro-interactions-across-wi/) |
 | 11 | Fix PDF download crash: Inter italic font not registered | 2026-03-14 | 19844f6 | [11-pdf-download-failed-could-not-resolve-fo](./quick/11-pdf-download-failed-could-not-resolve-fo/) |
+| 12 | Update README with comprehensive details and features | 2026-03-14 | d7dbecd | [12-update-readme-with-details-and-features](./quick/12-update-readme-with-details-and-features/) |
 
 ### Blockers/Concerns
 
@@ -267,6 +268,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T14:39:42Z
-Stopped at: Completed quick-11 (PDF italic font fix)
-Resume file: .planning/quick/11-pdf-download-failed-could-not-resolve-fo/11-SUMMARY.md
+Last session: 2026-03-14T14:45:06Z
+Stopped at: Completed quick-12 (README rewrite)
+Resume file: .planning/quick/12-update-readme-with-details-and-features/12-SUMMARY.md
