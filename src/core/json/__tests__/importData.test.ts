@@ -249,14 +249,26 @@ describe('validateAndParseImport', () => {
     )
   })
 
-  it('sets currentStep to 1 and completedSteps to [] (fresh navigation)', () => {
+  it('sets currentStep to 1 and completedSteps to [1,2,3,4] for navigability after import', () => {
     const exported = makeFullExport()
     const result = validateAndParseImport(exported)
 
     expect(result.success).toBe(true)
     if (!result.success) return
     expect(result.state.currentStep).toBe(1)
-    expect(result.state.completedSteps).toEqual([])
+    expect(result.state.completedSteps).toEqual([1, 2, 3, 4])
+  })
+
+  it('sets completedSteps to [1,2,3,4] even with minimal data', () => {
+    const result = validateAndParseImport({
+      relationship: 'father',
+      sonCount: 2,
+    })
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.state.completedSteps).toEqual([1, 2, 3, 4])
+      expect(result.state.currentStep).toBe(1)
+    }
   })
 
   it('validates movable asset category-specific fields (gold_silver without metalType gets defaults)', () => {
