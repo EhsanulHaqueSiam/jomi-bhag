@@ -33,6 +33,23 @@ function capitalize(s: string): string {
 }
 
 /**
+ * Sanitize text for PDF rendering by stripping characters from Unicode blocks
+ * not supported by registered PDF fonts (Inter + Noto Naskh Arabic).
+ *
+ * Keeps: ASCII (U+0000-U+007F), Latin Extended (U+0080-U+024F), Arabic (U+0600-U+06FF).
+ * Strips: Bengali (U+0980-U+09FF), Devanagari, CJK, and all other unsupported scripts.
+ *
+ * This prevents @react-pdf/renderer from crashing with "Cannot read properties of null
+ * (reading 'xCoordinate')" when Inter font's OpenType GPOS engine encounters unsupported glyphs.
+ */
+export function sanitizeForPdf(str: string): string {
+  return str
+    .replace(/[^\u0000-\u024F\u0600-\u06FF]/g, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim()
+}
+
+/**
  * Extract a serializable PdfData object from engine output and property data.
  * All Fraction objects are converted to pre-formatted strings.
  * No Zustand hooks, no DOM access -- pure data transformation.
@@ -57,7 +74,7 @@ function getAssetItemName(asset: MovableAsset): string {
       return asset.count > 1 ? `${asset.count} ${label}` : label
     }
     case 'custom':
-      return asset.name || 'Custom Item'
+      return sanitizeForPdf(asset.name || 'Custom Item')
     case 'cash':
       return 'Cash/Bank Deposits'
     case 'jewelry':
@@ -130,7 +147,7 @@ export function extractPdfData(
 
   // Map properties to PdfProperty
   const pdfProperties: PdfProperty[] = properties.map((prop) => ({
-    nickname: prop.nickname,
+    nickname: sanitizeForPdf(prop.nickname),
     type: capitalize(prop.type ?? ''),
     division: prop.division ? capitalize(prop.division) : null,
     upazila: prop.upazila,
@@ -180,7 +197,7 @@ export function extractPdfData(
         detail = {
           method: 'physical_division',
           subParcels: settlement.subParcels.map((sp) => ({
-            name: sp.name,
+            name: sanitizeForPdf(sp.name),
             area: `${Math.round(fromSqft(sp.areaSqft, areaUnit, division) * 100) / 100} ${areaUnit}`,
             appraisedValue: sp.appraisedValue,
           })),
@@ -260,7 +277,7 @@ export function extractPdfData(
     }
 
     return {
-      propertyName: prop.nickname,
+      propertyName: sanitizeForPdf(prop.nickname),
       propertyValue: propValue,
       detail,
     }
@@ -353,8 +370,8 @@ export function extractPdfData(
 
       const heir: PdfIndividualHeir = {
         id: individual.id,
-        displayName,
-        subtitle,
+        displayName: sanitizeForPdf(displayName),
+        subtitle: subtitle ? sanitizeForPdf(subtitle) : null,
         heirType: heirTypeLabel,
         targetValue: Math.round(individual.targetValue),
         assignedValue: Math.round(individual.assignedValue),
@@ -376,8 +393,8 @@ export function extractPdfData(
     }))
 
     const compensations = indivState.compensations.map((comp) => ({
-      fromName: indivState.customNames[comp.fromId] || comp.fromName,
-      toName: indivState.customNames[comp.toId] || comp.toName,
+      fromName: sanitizeForPdf(indivState.customNames[comp.fromId] || comp.fromName),
+      toName: sanitizeForPdf(indivState.customNames[comp.toId] || comp.toName),
       amount: Math.round(comp.amount),
     }))
 
