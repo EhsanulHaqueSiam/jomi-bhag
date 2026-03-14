@@ -250,6 +250,7 @@ describe('DistributionControls', () => {
     render(
       <DistributionControls
         onRandomize={() => {}}
+        onAutoDistribute={() => {}}
         onUndo={() => {}}
         canUndo={true}
       />,
@@ -261,11 +262,24 @@ describe('DistributionControls', () => {
     render(
       <DistributionControls
         onRandomize={() => {}}
+        onAutoDistribute={() => {}}
         onUndo={() => {}}
         canUndo={false}
       />,
     )
     expect(screen.queryByText('Undo')).not.toBeInTheDocument()
+  })
+
+  it('shows Auto-distribute button', () => {
+    render(
+      <DistributionControls
+        onRandomize={() => {}}
+        onAutoDistribute={() => {}}
+        onUndo={() => {}}
+        canUndo={false}
+      />,
+    )
+    expect(screen.getByText('Auto-distribute')).toBeInTheDocument()
   })
 })
 

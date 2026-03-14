@@ -15,15 +15,12 @@ import type { ShareResult } from '@/core/faraid/types'
 import type { DistributionItem, DistributionGroup } from '@/core/distribution/types'
 import type { Property } from '@/core/land/types'
 import type { LandSettlement } from '@/core/land/settlement-types'
-import { SummaryBanner } from './SummaryBanner'
 import { HeirColumn } from './HeirColumn'
 import { AssetCard } from './AssetCard'
 
 interface DistributionBoardProps {
   groups: DistributionGroup[]
   items: DistributionItem[]
-  balancedCount: number
-  totalCount: number
   onMoveItem: (itemId: string, from: HeirType, to: HeirType) => void
   properties: Property[]
   shares: ShareResult[]
@@ -33,8 +30,6 @@ interface DistributionBoardProps {
 export function DistributionBoard({
   groups,
   items,
-  balancedCount,
-  totalCount,
   onMoveItem,
   properties,
   shares,
@@ -112,9 +107,6 @@ export function DistributionBoard({
       onDragEnd={handleDragEnd}
     >
       <div className="space-y-4">
-        {/* Summary banner */}
-        <SummaryBanner balancedCount={balancedCount} totalCount={totalCount} />
-
         {/* Kanban columns grid */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:flex lg:flex-row lg:overflow-x-auto">
           {groups.map((group) => (

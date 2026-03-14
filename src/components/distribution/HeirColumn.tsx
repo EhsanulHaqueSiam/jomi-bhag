@@ -65,6 +65,17 @@ export function HeirColumn({
             <h3 className="text-base font-semibold text-gray-900">
               {group.label}
             </h3>
+            {(() => {
+              const matchingShare = shares.find((s) => s.heirType === group.heirType)
+              if (matchingShare) {
+                return (
+                  <span className="text-base font-semibold text-emerald-600">
+                    {matchingShare.totalShare.toFraction()}
+                  </span>
+                )
+              }
+              return null
+            })()}
             {group.count > 1 && (
               <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
                 x{group.count}

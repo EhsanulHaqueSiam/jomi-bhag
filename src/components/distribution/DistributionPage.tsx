@@ -8,6 +8,7 @@ import { useWizardStore } from '@/stores/wizardStore'
 import { CompensationBanner } from '@/components/division/CompensationBanner'
 import { DistributionBoard } from './DistributionBoard'
 import { DistributionControls } from './DistributionControls'
+import { SummaryBanner } from './SummaryBanner'
 import { ViewToggle } from './ViewToggle'
 import { IndividualBoard } from './IndividualBoard'
 import { IndividualQurahCeremony } from './IndividualQurahCeremony'
@@ -161,6 +162,8 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
   // Wizard store
   const setStep = useWizardStore((s) => s.setStep)
   const properties = useWizardStore((s) => s.properties)
+  const movableAssets = useWizardStore((s) => s.movableAssets)
+  const getAllPropertiesTotal = useWizardStore((s) => s.getAllPropertiesTotal)
   const results = useWizardStore((s) => s.results)
   const updateProperty = useWizardStore((s) => s.updateProperty)
 
@@ -248,10 +251,19 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
     [updateProperty],
   )
 
+  const handleAutoDistribute = useCallback(() => {
+    computeDistribution()
+    randomize()
+  }, [computeDistribution, randomize])
+
   const canUndoGroup = previousSnapshot !== null
   const canUndoIndividual = indPreviousSnapshot !== null
   const groupSummary = getEquilibriumSummary()
   const individualSummary = indGetEquilibriumSummary()
+
+  // Stats
+  const activeShares = shares.filter((s) => s.shareType !== 'blocked')
+  const totalValue = getAllPropertiesTotal()
 
   if (!distributionResult) {
     return (
@@ -277,15 +289,39 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
         </button>
       </div>
 
+      {/* Summary stats bar */}
+      <div className="grid grid-cols-2 gap-2 md:flex md:flex-row md:gap-4">
+        <div className="rounded-lg bg-gray-50 px-3 py-2">
+          <div className="text-xs text-gray-500">Properties</div>
+          <div className="text-sm font-semibold text-gray-900">{properties.length}</div>
+        </div>
+        <div className="rounded-lg bg-gray-50 px-3 py-2">
+          <div className="text-xs text-gray-500">Movable Assets</div>
+          <div className="text-sm font-semibold text-gray-900">{movableAssets.length}</div>
+        </div>
+        <div className="rounded-lg bg-gray-50 px-3 py-2">
+          <div className="text-xs text-gray-500">Total Value</div>
+          <div className="text-sm font-semibold text-gray-900">{bdtFormatter.format(totalValue)}</div>
+        </div>
+        <div className="rounded-lg bg-gray-50 px-3 py-2">
+          <div className="text-xs text-gray-500">Heirs</div>
+          <div className="text-sm font-semibold text-gray-900">{activeShares.length}</div>
+        </div>
+      </div>
+
       {/* View toggle */}
       <ViewToggle view={view} onViewChange={setView} />
 
       {/* Group view */}
       {view === 'group' && (
         <>
-          {/* Controls: Randomize + Undo */}
+          {/* Equilibrium banner (promoted from inside board) */}
+          <SummaryBanner balancedCount={groupSummary.balanced} totalCount={groupSummary.total} />
+
+          {/* Controls: Auto-distribute + Randomize + Undo */}
           <DistributionControls
             onRandomize={randomize}
+            onAutoDistribute={handleAutoDistribute}
             onUndo={undoGroup}
             canUndo={canUndoGroup}
           />
@@ -297,8 +333,6 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
           <DistributionBoard
             groups={distributionResult.groups}
             items={distributionResult.items}
-            balancedCount={groupSummary.balanced}
-            totalCount={groupSummary.total}
             onMoveItem={moveItem}
             properties={properties}
             shares={shares}
