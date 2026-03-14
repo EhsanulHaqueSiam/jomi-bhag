@@ -78,7 +78,7 @@ export function HeirColumn({
       </div>
 
       {/* Body: scrollable list of asset cards */}
-      <div className="flex-1 space-y-2 overflow-y-auto px-4 pb-4" style={{ maxHeight: '400px' }}>
+      <div className="flex-1 space-y-2 overflow-y-auto px-4 pb-4 max-h-[400px] lg:max-h-[600px]">
         {items.length === 0 ? (
           <div className="rounded-lg border-2 border-dashed border-gray-200 px-4 py-6 text-center text-sm text-gray-400">
             Drag items here

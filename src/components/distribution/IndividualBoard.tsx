@@ -255,7 +255,7 @@ export function IndividualBoard({
                 {typeIndividuals.map((ind) => (
                   <div
                     key={ind.id}
-                    className="lg:min-w-[260px] lg:flex-shrink-0 lg:flex-1"
+                    className="lg:min-w-[280px] lg:flex-shrink-0 lg:flex-1"
                   >
                     <IndividualColumnComponent
                       individual={ind}

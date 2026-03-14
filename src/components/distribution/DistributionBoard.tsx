@@ -120,7 +120,7 @@ export function DistributionBoard({
           {groups.map((group) => (
             <div
               key={group.heirType}
-              className="lg:min-w-[280px] lg:flex-shrink-0 lg:flex-1"
+              className="lg:min-w-[300px] lg:flex-shrink-0 lg:flex-1"
             >
               <HeirColumn
                 group={group}
