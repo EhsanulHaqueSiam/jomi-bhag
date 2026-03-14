@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'motion/react'
 import { useWizardStore } from '@/stores/wizardStore'
 import { Tooltip } from '@/components/ui/Tooltip'
 import { ImportDropZone } from '@/components/json/ImportDropZone'
@@ -174,6 +175,11 @@ export function StepRelationship() {
   )
 }
 
+const prefersReducedMotion =
+  typeof window !== 'undefined' &&
+  typeof window.matchMedia === 'function' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 function OptionButton({
   label,
   selected,
@@ -184,9 +190,18 @@ function OptionButton({
   onClick: () => void
 }) {
   return (
-    <button
+    <motion.button
       type="button"
       onClick={onClick}
+      whileTap={!prefersReducedMotion ? { scale: 0.95 } : undefined}
+      animate={
+        !prefersReducedMotion && selected
+          ? { scale: [1, 1.05, 1] }
+          : undefined
+      }
+      transition={
+        prefersReducedMotion ? { duration: 0 } : { duration: 0.2 }
+      }
       className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
         selected
           ? 'bg-emerald-600 text-white shadow-md'
@@ -194,6 +209,6 @@ function OptionButton({
       }`}
     >
       {label}
-    </button>
+    </motion.button>
   )
 }
