@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Quick task 10 complete (premium micro-interactions across wizard and results)
-last_updated: "2026-03-14T11:51:45.920Z"
-last_activity: "2026-03-14 - Completed quick task 10: Premium micro-interactions (step animation, button press, stagger reveal, count-up, toast spring)"
+status: in_progress
+stopped_at: Completed 15-01-PLAN.md (JSON import and persistence gap closure)
+last_updated: "2026-03-14T12:50:39.000Z"
+last_activity: "2026-03-14 - Completed Phase 15 Plan 01: Fix JSON import individual data, scenario reset, splitOrigins persistence"
 progress:
-  total_phases: 14
+  total_phases: 15
   completed_phases: 14
-  total_plans: 35
-  completed_plans: 35
+  total_plans: 36
+  completed_plans: 36
   percent: 100
 ---
 
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-13)
 
 **Core value:** Accurate, unbiased Islamic inheritance division -- the app strictly follows Faraid rules for every calculation without favoring any heir.
-**Current focus:** Phase 14 complete -- Per-heir asset breakdown (individual kanban cards showing each heir's land parcels and assets separately).
+**Current focus:** Phase 15 complete -- JSON import and persistence gap closure (individual data restoration, scenario reset, splitOrigins persistence).
 
 ## Current Position
 
-Phase: 14 of 13 (Per-Heir Asset Breakdown)
-Plan: 4 of 4 complete
+Phase: 15 (Fix JSON Import and Persistence Gaps)
+Plan: 1 of 1 complete
 Status: Complete
-Last activity: 2026-03-14 - Completed quick task 10: Premium micro-interactions (step animation, button press, stagger reveal, count-up, toast spring)
+Last activity: 2026-03-14 - Completed Phase 15 Plan 01: Fix JSON import individual data, scenario reset, splitOrigins persistence
 
-Progress: [##########] 35/35 plans (100%)
+Progress: [##########] 36/36 plans (100%)
 
 ## Performance Metrics
 
@@ -80,6 +80,7 @@ Progress: [##########] 35/35 plans (100%)
 | Phase 14 P02 | 6min | 2 tasks | 10 files |
 | Phase 14 P03 | 5min | 2 tasks | 6 files |
 | Phase 14 P04 | 4min | 2 tasks | 5 files |
+| Phase 15 P01 | 6min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -218,6 +219,9 @@ Recent decisions affecting current work:
 - [Quick-8]: Results page sticky action bar with all actions consolidated at bottom
 - [Quick-8]: Distribution page Auto-distribute button calls computeDistribution() + randomize() in sequence
 - [Quick-8]: Persist version bumped to 2 with migration mapping old 5-step numbering to new 4-step
+- [Phase 15]: Only restore customNames and qurahUsed from import (not assignments) because item IDs are regenerated
+- [Phase 15]: splitOrigins converted from Map to Record for JSON serialization with Zustand persist
+- [Phase 15]: pendingIndividualData kept internal to useJsonImport (not exposed) for ImportConfirmDialog backward compatibility
 
 ### Pending Todos
 
@@ -255,6 +259,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T11:08:00Z
-Stopped at: Quick task 10 complete (premium micro-interactions across wizard and results)
+Last session: 2026-03-14T12:50:39Z
+Stopped at: Completed 15-01-PLAN.md (JSON import and persistence gap closure)
 Resume file: None

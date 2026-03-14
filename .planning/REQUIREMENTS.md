@@ -143,7 +143,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **P14-15**: HeirIcon (male/female silhouette) shown on each individual column header
 - [x] **P14-16**: Individual Qurah ceremony overlay with bismillah header, staggered reveal at 200ms per column, prefers-reduced-motion support
 - [x] **P14-17**: JSON export includes custom heir names and individual distribution assignments when individual view was used
-- [ ] **P14-18**: JSON import restores custom names and individual assignments (missing fields use defaults for backward compat)
+- [x] **P14-18**: JSON import restores custom names and individual assignments (missing fields use defaults for backward compat)
 - [x] **P14-19**: Scenarios save and restore individual distribution state including custom names
 - [x] **P14-20**: Both views fully independent -- switching never affects the other's state
 - [x] **P14-21**: PDF "Individual Asset Breakdown" section appears only when individual view was used, placed after Distribution Summary
@@ -283,7 +283,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | P14-15 | Phase 14 | Complete |
 | P14-16 | Phase 14 | Complete |
 | P14-17 | Phase 14 | Complete |
-| P14-18 | Phase 15 | Pending |
+| P14-18 | Phase 15 | Complete |
 | P14-19 | Phase 14 | Complete |
 | P14-20 | Phase 14 | Complete |
 | P14-21 | Phase 14 | Complete |
