@@ -12,24 +12,34 @@ export function usePdfExport() {
     pieChartImage: string | null
     barChartImage: string | null
   }> {
+    let pieChartImage: string | null = null
+    let barChartImage: string | null = null
+
     try {
       const { toPng } = await import('html-to-image')
 
       const pieEl = document.getElementById('pdf-pie-chart')
+      if (pieEl && pieEl.offsetHeight > 0) {
+        try {
+          pieChartImage = await toPng(pieEl, { pixelRatio: 2, backgroundColor: '#ffffff' })
+        } catch {
+          // Individual chart capture failure is non-critical
+        }
+      }
+
       const barEl = document.getElementById('pdf-bar-chart')
-
-      const pieChartImage = pieEl
-        ? await toPng(pieEl, { pixelRatio: 2, backgroundColor: '#ffffff' })
-        : null
-      const barChartImage = barEl
-        ? await toPng(barEl, { pixelRatio: 2, backgroundColor: '#ffffff' })
-        : null
-
-      return { pieChartImage, barChartImage }
+      if (barEl && barEl.offsetHeight > 0) {
+        try {
+          barChartImage = await toPng(barEl, { pixelRatio: 2, backgroundColor: '#ffffff' })
+        } catch {
+          // Individual chart capture failure is non-critical
+        }
+      }
     } catch {
-      // Chart capture is non-critical — PDF works without charts
-      return { pieChartImage: null, barChartImage: null }
+      // html-to-image import failure is non-critical
     }
+
+    return { pieChartImage, barChartImage }
   }
 
   async function generatePdfBlob(): Promise<Blob> {

@@ -4,7 +4,6 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Label,
 } from 'recharts'
 import { useWizardStore } from '@/stores/wizardStore'
 import { buildChartData } from '@/components/results/chartData'
@@ -59,22 +58,8 @@ export function SharePieChart() {
               outerRadius="85%"
               paddingAngle={2}
               strokeWidth={0}
-            >
-              <Label
-                position="center"
-                content={() => (
-                  <text
-                    x="50%"
-                    y="50%"
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    className="fill-gray-700 text-lg font-semibold"
-                  >
-                    {chartData.length} heirs
-                  </text>
-                )}
-              />
-            </Pie>
+            />
+
             <Tooltip content={<ChartTooltip />} />
             <Legend
               formatter={(value: string) => (
