@@ -184,7 +184,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 13. Land Settlement Methods | 3/3 | Complete    | 2015-03-13 |
 | 14. Per-Heir Asset Breakdown | 4/4 | Complete    | 2015-03-13 |
 | 15. Fix JSON Import & Persistence Gaps | 1/1 | Complete    | 2026-03-14 |
-| 16. Wire Results Mode Toggle | 1/1 | Complete   | 2026-03-14 |
+| 16. Wire Results Mode Toggle | 1/1 | Complete    | 2026-03-14 |
 | 17. Dead Code Cleanup & Documentation Fix | 0/0 | Not started | - |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
