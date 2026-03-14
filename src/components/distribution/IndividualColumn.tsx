@@ -56,7 +56,7 @@ interface IndividualColumnProps {
   onSplit: (itemId: string, splits: { areaSqft: number }[], totalAreaSqft: number) => void
   onMerge: (parentId: string) => void
   properties: Property[]
-  splitOrigins: Map<string, DistributionItem>
+  splitOrigins: Record<string, DistributionItem>
 }
 
 export const IndividualColumnComponent = React.memo(function IndividualColumnComponent({
@@ -86,11 +86,10 @@ export const IndividualColumnComponent = React.memo(function IndividualColumnCom
 
   // Check if an item is a split sub-parcel that can be merged
   const canMerge = (item: DistributionItem): string | null => {
-    for (const [parentId, _original] of splitOrigins) {
+    for (const [parentId, originalItem] of Object.entries(splitOrigins)) {
       // Sub-items have labels starting with original label
       if (item.label.includes('(') && item.type === 'property') {
         // Check if this looks like a split sub-parcel
-        const originalItem = splitOrigins.get(parentId)
         if (originalItem && item.label.startsWith(originalItem.label + ' (')) {
           return parentId
         }

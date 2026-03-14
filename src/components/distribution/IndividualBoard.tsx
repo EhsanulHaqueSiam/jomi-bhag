@@ -30,7 +30,7 @@ interface IndividualBoardProps {
   onSplit: (itemId: string, splits: { areaSqft: number }[], totalAreaSqft: number) => void
   onMerge: (parentId: string) => void
   properties: Property[]
-  splitOrigins: Map<string, DistributionItem>
+  splitOrigins: Record<string, DistributionItem>
 }
 
 /** Faraid priority order for section rendering. */

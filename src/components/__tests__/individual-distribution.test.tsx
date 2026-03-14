@@ -297,7 +297,7 @@ describe('DistributionPage view toggle', () => {
       hasBeenUsed: true,
       revealedCount: 0,
       isRevealed: false,
-      splitOrigins: new Map(),
+      splitOrigins: {},
     })
   })
 
