@@ -184,7 +184,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 13. Land Settlement Methods | 3/3 | Complete    | 2015-03-13 |
 | 14. Per-Heir Asset Breakdown | 4/4 | Complete    | 2015-03-13 |
 | 15. Fix JSON Import & Persistence Gaps | 1/1 | Complete    | 2026-03-14 |
-| 16. Wire Results Mode Toggle | 0/0 | Not started | - |
+| 16. Wire Results Mode Toggle | 0/1 | Not started | - |
 | 17. Dead Code Cleanup & Documentation Fix | 0/0 | Not started | - |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
@@ -304,6 +304,10 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. ModeToggle component is rendered in ResultsPage and controls viewMode state
   2. Simple mode shows fractions/percentages only, detailed mode shows full calculation trace with legal citations
+**Plans:** 1 plan
+
+Plans:
+- [ ] 16-01-PLAN.md -- Wire ModeToggle into ResultsPage with conditional section rendering, add hasToggledMode hint persistence to wizardStore, remove collapsible disclosures, add compact per-heir Quran citation footer in detailed mode, update tests
 
 ### Phase 17: Dead Code Cleanup & Documentation Fix
 **Goal**: Remove unreachable dead code, fix minor UI issues, and update REQUIREMENTS.md to reflect actual completion status
