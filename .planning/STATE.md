@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in_progress
+status: completed
 stopped_at: Completed 15-01-PLAN.md (JSON import and persistence gap closure)
-last_updated: "2026-03-14T12:50:39.000Z"
+last_updated: "2026-03-14T12:55:12.257Z"
 last_activity: "2026-03-14 - Completed Phase 15 Plan 01: Fix JSON import individual data, scenario reset, splitOrigins persistence"
 progress:
-  total_phases: 15
-  completed_phases: 14
+  total_phases: 17
+  completed_phases: 15
   total_plans: 36
   completed_plans: 36
   percent: 100
