@@ -8,6 +8,8 @@ interface AppLayoutProps {
 }
 
 export function AppLayout({ children, page, onNavigate }: AppLayoutProps) {
+  const isWide = page === 'distribution' || page === 'division'
+
   return (
     <div className="relative min-h-screen bg-gray-50">
       {/* Subtle Islamic geometric pattern background */}
@@ -62,8 +64,20 @@ export function AppLayout({ children, page, onNavigate }: AppLayoutProps) {
       </header>
 
       {/* Main content area */}
-      <main className="relative px-4 pb-32 md:mx-auto md:max-w-lg md:pb-8 lg:max-w-xl">
-        <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm md:p-8">
+      <main
+        className={`relative px-4 pb-32 md:mx-auto md:pb-8 ${
+          isWide
+            ? 'md:max-w-5xl md:px-6 lg:max-w-7xl lg:px-8'
+            : 'md:max-w-lg lg:max-w-xl'
+        }`}
+      >
+        <div
+          className={
+            isWide
+              ? 'p-0 md:p-4'
+              : 'rounded-2xl border border-gray-100 bg-white p-4 shadow-sm md:p-8'
+          }
+        >
           {children}
         </div>
       </main>
