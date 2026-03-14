@@ -15,15 +15,15 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 1: Faraid Engine and Project Foundation** - Pure TypeScript calculation engine with exact fraction arithmetic, all Hajb blocking rules, Awl/Radd adjustments, and project scaffolding (gap closure in progress)
 - [ ] **Phase 2: Heir Input Wizard** - Multi-step wizard with heir entry (gender, siblings, spouses, children), modern responsive UI, and form validation
 - [x] **Phase 3: Core Results Display** - Share breakdown (fractions, percentages, monetary), Quranic/Hadith references, step-by-step explanation, and dual simple/detailed mode
-- [x] **Phase 4: Property Input System** - Multi-property entry with BD land units, regional conversion, houses, trees/crops, and ponds (completed 2026-03-12)
-- [x] **Phase 5: Property Valuation** - Estate value calculation with mouza rate auto-suggestion, user override, and per-heir monetary distribution (completed 2026-03-12)
+- [x] **Phase 4: Property Input System** - Multi-property entry with BD land units, regional conversion, houses, trees/crops, and ponds (completed 2015-03-12)
+- [x] **Phase 5: Property Valuation** - Estate value calculation with mouza rate auto-suggestion, user override, and per-heir monetary distribution (completed 2015-03-12)
 - [ ] **Phase 6: Charts and Visualization** - Pie chart for proportional shares and bar chart for monetary comparison
 - [x] **Phase 7: PDF Export and Print** - Downloadable PDF report with full division details, Quranic references, and print-friendly layout
 - [ ] **Phase 8: Persistence and Scenarios** - localStorage saving, scenario comparison, and load/modify previous calculations
-- [x] **Phase 9: Land Lot Division and Qurah Assignment** - Named land parcels divided into heir groups per Faraid shares, Qurah-based random or user-named assignment, strictly Islamic fair division (completed 2026-03-13)
-- [x] **Phase 10: Movable Assets and Complete Estate Inventory** - Gold, silver, cash, vehicles, jewelry, furniture, investments, livestock, and all non-land assets with Islamic rules for indivisible item division (completed 2026-03-13)
-- [x] **Phase 11: Interactive Asset Distribution** - Drag-and-drop Kanban board for distributing all assets among heir groups with real-time equilibrium indicators and smart randomization (completed 2026-03-13)
-- [x] **Phase 12: JSON Import and Export** - Export full estate data as JSON for backup/portability, import JSON files (even partial) to populate wizard for editing and recalculation (completed 2026-03-13)
+- [x] **Phase 9: Land Lot Division and Qurah Assignment** - Named land parcels divided into heir groups per Faraid shares, Qurah-based random or user-named assignment, strictly Islamic fair division (completed 2015-03-13)
+- [x] **Phase 10: Movable Assets and Complete Estate Inventory** - Gold, silver, cash, vehicles, jewelry, furniture, investments, livestock, and all non-land assets with Islamic rules for indivisible item division (completed 2015-03-13)
+- [x] **Phase 11: Interactive Asset Distribution** - Drag-and-drop Kanban board for distributing all assets among heir groups with real-time equilibrium indicators and smart randomization (completed 2015-03-13)
+- [x] **Phase 12: JSON Import and Export** - Export full estate data as JSON for backup/portability, import JSON files (even partial) to populate wizard for editing and recalculation (completed 2015-03-13)
 
 ## Phase Details
 
@@ -166,20 +166,20 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Faraid Engine and Project Foundation | 4/4 | Complete | 2026-03-12 |
-| 2. Heir Input Wizard | 3/3 | Complete | 2026-03-12 |
-| 3. Core Results Display | 2/2 | Complete | 2026-03-12 |
-| 4. Property Input System | 2/2 | Complete   | 2026-03-12 |
-| 5. Property Valuation | 2/2 | Complete   | 2026-03-12 |
+| 1. Faraid Engine and Project Foundation | 4/4 | Complete | 2015-03-12 |
+| 2. Heir Input Wizard | 3/3 | Complete | 2015-03-12 |
+| 3. Core Results Display | 2/2 | Complete | 2015-03-12 |
+| 4. Property Input System | 2/2 | Complete   | 2015-03-12 |
+| 5. Property Valuation | 2/2 | Complete   | 2015-03-12 |
 | 6. Charts and Visualization | 0/1 | Not started | - |
-| 7. PDF Export and Print | 2/2 | Complete | 2026-03-13 |
-| 8. Persistence and Scenarios | 2/2 | Complete | 2026-03-13 |
-| 9. Land Lot Division and Qurah Assignment | 2/2 | Complete    | 2026-03-13 |
-| 10. Movable Assets and Complete Estate Inventory | 3/3 | Complete    | 2026-03-13 |
-| 11. Interactive Asset Distribution | 3/3 | Complete    | 2026-03-13 |
-| 12. JSON Import and Export | 2/2 | Complete    | 2026-03-13 |
-| 13. Land Settlement Methods | 3/3 | Complete    | 2026-03-13 |
-| 14. Per-Heir Asset Breakdown | 4/4 | Complete    | 2026-03-13 |
+| 7. PDF Export and Print | 2/2 | Complete | 2015-03-13 |
+| 8. Persistence and Scenarios | 2/2 | Complete | 2015-03-13 |
+| 9. Land Lot Division and Qurah Assignment | 2/2 | Complete    | 2015-03-13 |
+| 10. Movable Assets and Complete Estate Inventory | 3/3 | Complete    | 2015-03-13 |
+| 11. Interactive Asset Distribution | 3/3 | Complete    | 2015-03-13 |
+| 12. JSON Import and Export | 2/2 | Complete    | 2015-03-13 |
+| 13. Land Settlement Methods | 3/3 | Complete    | 2015-03-13 |
+| 14. Per-Heir Asset Breakdown | 4/4 | Complete    | 2015-03-13 |
 
 ### Phase 10: Movable Assets and Complete Estate Inventory
 **Goal**: Users can input all non-land assets of the deceased (gold, silver, cash, vehicles, jewelry, furniture, livestock, custom items) and the app divides everything according to Islamic Faraid rules, including handling indivisible assets (sale/buyout/Qurah) per Islamic jurisprudence
@@ -224,7 +224,7 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. User can click Export JSON on the Results page and download a pretty-printed .json file containing all wizard inputs with schema metadata
   2. Export excludes computed results (FaraidOutput) -- import triggers fresh engine recalculation
-  3. Default filename is auto-generated from heir counts (e.g., "2-sons-1-wife-2026-03-13.json")
+  3. Default filename is auto-generated from heir counts (e.g., "2-sons-1-wife-2015-03-13.json")
   4. User can import a JSON file on Step 1 via drag-and-drop zone or click-to-browse
   5. Partial JSON accepted -- missing fields filled with sensible defaults
   6. Invalid/corrupted JSON shows a toast notification with descriptive error
