@@ -172,34 +172,42 @@ describe('RSLT-01: displays fraction, percentage, and monetary amounts', () => {
   })
 })
 
-describe('RSLT-02: shows Quranic reference', () => {
+describe('RSLT-02: Quran citation in heir cards', () => {
   beforeEach(() => {
     useWizardStore.setState({
       ...baseStoreState,
       results: makeSimpleOutput(),
+      viewMode: 'simple',
     })
   })
 
-  it('shows expandable Quran reference label on heir card', () => {
+  it('hides Quran reference text in simple mode', () => {
     render(<App />)
 
-    // Quran reference labels should be visible (e.g., "Quran 4:12" for husband)
-    const quranLabels = screen.getAllByText(/Quran \d+:\d+/)
-    expect(quranLabels.length).toBeGreaterThan(0)
+    // No An-Nisa citation should be visible in simple mode
+    expect(screen.queryByText(/An-Nisa/)).not.toBeInTheDocument()
   })
 
-  it('expands reference to show Arabic text with RTL direction', async () => {
+  it('shows compact citation footer in detailed mode', () => {
+    useWizardStore.setState({ viewMode: 'detailed' })
     render(<App />)
 
-    // Click the first Quran reference to expand it
-    const quranLabels = screen.getAllByText(/Quran \d+:\d+/)
-    fireEvent.click(quranLabels[0])
+    // Each active heir card should show An-Nisa citation
+    const citations = screen.getAllByText(/An-Nisa/)
+    expect(citations.length).toBeGreaterThan(0)
+  })
 
-    // After expanding, Arabic text container should appear with dir="rtl"
-    await waitFor(() => {
-      const arabicElements = document.querySelectorAll('[dir="rtl"][lang="ar"]')
-      expect(arabicElements.length).toBeGreaterThan(0)
-    })
+  it('citation footer is non-interactive (no expand/collapse)', () => {
+    useWizardStore.setState({ viewMode: 'detailed' })
+    render(<App />)
+
+    // No expandable QuranReference chevron buttons should exist in heir cards
+    // The old Quran reference buttons with chevrons should be gone
+    const quranButtons = screen.queryAllByText(/Quran \d+:\d+/)
+    // These should not be clickable buttons
+    for (const el of quranButtons) {
+      expect(el.closest('button')).toBeNull()
+    }
   })
 })
 

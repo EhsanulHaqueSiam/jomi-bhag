@@ -7,7 +7,7 @@ import {
   HEIR_TYPE_LABELS,
   SHARE_TYPE_LABELS,
 } from '@/core/utils/display'
-import { QuranReference } from '@/components/results/QuranReference'
+import { getShareReference } from '@/core/faraid/references'
 import { HeirIcon, feminineHeirs } from '@/components/ui/HeirIcon'
 import { useWizardStore } from '@/stores/wizardStore'
 import { useCountUp } from '@/hooks/useCountUp'
@@ -48,7 +48,10 @@ const shareTypeBadgeStyles: Record<string, string> = {
 export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
   const properties = useWizardStore((s) => s.properties)
   const movableAssets = useWizardStore((s) => s.movableAssets)
+  const viewMode = useWizardStore((s) => s.viewMode)
   const [showProperties, setShowProperties] = useState(false)
+
+  const isDetailed = viewMode === 'detailed'
 
   const label = HEIR_TYPE_LABELS[share.heirType] ?? share.heirType
   const isFeminine = feminineHeirs.has(share.heirType)
@@ -280,8 +283,26 @@ export function HeirCard({ share, totalEstateValue }: HeirCardProps) {
         </div>
       )}
 
-      {/* Quran reference */}
-      <QuranReference heirType={share.heirType} />
+      {/* Compact Quran citation footer -- detailed mode only */}
+      {isDetailed && (() => {
+        const refs = getShareReference(share.heirType)
+        const primaryRef = refs[0]
+        if (!primaryRef) return null
+        const verseNum = primaryRef.reference.replace('Quran ', '')
+        const excerpt = primaryRef.englishText.length > 80
+          ? primaryRef.englishText.slice(0, 80).replace(/\s+\S*$/, '') + '...'
+          : primaryRef.englishText
+        return (
+          <div className="mt-3 flex items-start gap-1.5 border-t border-gray-100 pt-2">
+            <svg className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold-500" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+            </svg>
+            <span className="text-xs text-gray-500">
+              An-Nisa {verseNum} &mdash; {excerpt}
+            </span>
+          </div>
+        )
+      })()}
     </div>
   )
 }
