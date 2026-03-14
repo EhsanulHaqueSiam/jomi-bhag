@@ -1,4 +1,4 @@
-import { renderHook, act, waitFor } from '@testing-library/react'
+import { renderHook, act } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useWizardStore } from '@/stores/wizardStore'
 import Fraction from 'fraction.js'
@@ -78,6 +78,7 @@ beforeEach(() => {
 
 describe('usePdfExport', () => {
   it('downloadPdf creates anchor, clicks, and revokes URL', async () => {
+    vi.useFakeTimers()
     useWizardStore.setState({
       results: makeFaraidOutput(),
       properties: [],
@@ -90,15 +91,7 @@ describe('usePdfExport', () => {
     Object.defineProperty(URL, 'createObjectURL', { value: createObjectURL, writable: true })
     Object.defineProperty(URL, 'revokeObjectURL', { value: revokeObjectURL, writable: true })
 
-    const clickSpy = vi.fn()
-    const originalCreateElement = document.createElement.bind(document)
-    vi.spyOn(document, 'createElement').mockImplementation((tag: string) => {
-      const el = originalCreateElement(tag)
-      if (tag === 'a') {
-        el.click = clickSpy
-      }
-      return el
-    })
+    const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {})
 
     // Lazy import after mocks in place
     const { usePdfExport } = await import('@/hooks/usePdfExport')
@@ -110,29 +103,29 @@ describe('usePdfExport', () => {
 
     expect(createObjectURL).toHaveBeenCalled()
     expect(clickSpy).toHaveBeenCalled()
+
+    // revokeObjectURL is called inside setTimeout(100ms)
+    vi.advanceTimersByTime(200)
     expect(revokeObjectURL).toHaveBeenCalled()
+
+    clickSpy.mockRestore()
+    vi.useRealTimers()
   })
 
-  it('throws when no results in store', async () => {
+  it('sets error when no results in store', async () => {
     useWizardStore.setState({ results: null })
 
     const { usePdfExport } = await import('@/hooks/usePdfExport')
     const { result } = renderHook(() => usePdfExport())
 
-    let error: Error | null = null
     await act(async () => {
-      try {
-        await result.current.downloadPdf()
-      } catch (e) {
-        error = e as Error
-      }
+      await result.current.downloadPdf()
     })
 
-    expect(error).not.toBeNull()
-    expect(error!.message).toBe('No results to export')
+    expect(result.current.error).toContain('No results to export')
   })
 
-  it('printPdf calls window.open with blob URL', async () => {
+  it('printPdf creates iframe with blob URL', async () => {
     useWizardStore.setState({
       results: makeFaraidOutput(),
       properties: [],
@@ -144,9 +137,6 @@ describe('usePdfExport', () => {
     Object.defineProperty(URL, 'createObjectURL', { value: createObjectURL, writable: true })
     Object.defineProperty(URL, 'revokeObjectURL', { value: vi.fn(), writable: true })
 
-    const openSpy = vi.fn()
-    vi.spyOn(window, 'open').mockImplementation(openSpy)
-
     const { usePdfExport } = await import('@/hooks/usePdfExport')
     const { result } = renderHook(() => usePdfExport())
 
@@ -154,7 +144,11 @@ describe('usePdfExport', () => {
       await result.current.printPdf()
     })
 
-    expect(openSpy).toHaveBeenCalledWith('blob:print-url', '_blank')
+    expect(createObjectURL).toHaveBeenCalled()
+    // printPdf creates a hidden iframe with the blob URL
+    const iframe = document.querySelector('iframe')
+    expect(iframe).not.toBeNull()
+    expect(iframe?.src).toBe('blob:print-url')
   })
 
   it('isGenerating returns to false after completion (success)', async () => {
