@@ -362,7 +362,7 @@ export function validateAndParseImport(raw: unknown): ImportResult {
   const state: WizardState = {
     // Navigation (reset)
     currentStep: 1,
-    completedSteps: [1, 2, 3, 4],
+    completedSteps: [1, 2, 3],
 
     // Step 1
     relationship,

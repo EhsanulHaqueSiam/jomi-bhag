@@ -86,13 +86,13 @@ describe('Step navigation', () => {
     // Click Next
     clickNavButton('Next')
 
-    // Wait for AnimatePresence transition
+    // Wait for step content to render (Immediate Family is unique to StepFamilyAndSiblings)
     await waitFor(() => {
       expect(screen.getByText('Immediate Family')).toBeInTheDocument()
     })
   })
 
-  it('navigates from Step 2 to Step 3', async () => {
+  it('navigates from Step 2 to Step 3 (Estate Inventory)', async () => {
     render(<App />)
 
     // Select relationship and proceed
@@ -104,11 +104,11 @@ describe('Step navigation', () => {
       expect(screen.getByText('Immediate Family')).toBeInTheDocument()
     })
 
-    // Now on Step 2 -- click Next
+    // Now on Step 2 (combined Family Members) -- click Next to Estate Inventory
     clickNavButton('Next')
 
     await waitFor(() => {
-      expect(screen.getByText('Siblings')).toBeInTheDocument()
+      expect(screen.getByText('Land & Properties')).toBeInTheDocument()
     })
   })
 
@@ -136,7 +136,7 @@ describe('Step navigation', () => {
 })
 
 describe('DSGN-03 wizard flow', () => {
-  it('all 3 steps are reachable through Next navigation', async () => {
+  it('all steps are reachable through Next navigation', async () => {
     render(<App />)
 
     // Step 1
@@ -153,17 +153,17 @@ describe('DSGN-03 wizard flow', () => {
       expect(screen.getByText('Immediate Family')).toBeInTheDocument()
     })
 
-    // Go to Step 3
+    // Go to Step 3 (Estate Inventory)
     clickNavButton('Next')
 
     await waitFor(() => {
-      expect(screen.getByText('Siblings')).toBeInTheDocument()
+      expect(screen.getByText('Land & Properties')).toBeInTheDocument()
     })
   })
 })
 
 describe('HEIR-05 parents excluded', () => {
-  it('no Father or Mother heir entry fields exist in Step 2', async () => {
+  it('no Father or Mother heir entry fields exist in Step 2 (family section)', async () => {
     render(<App />)
 
     // Go to Step 2
@@ -171,6 +171,7 @@ describe('HEIR-05 parents excluded', () => {
     fireEvent.click(screen.getByText('Son'))
     clickNavButton('Next')
 
+    // Wait for step content to render (use unique text from StepFamilyAndSiblings)
     await waitFor(() => {
       expect(screen.getByText('Immediate Family')).toBeInTheDocument()
     })
@@ -186,26 +187,24 @@ describe('HEIR-05 parents excluded', () => {
     expect(screen.getByLabelText('Increase Sons')).toBeInTheDocument()
   })
 
-  it('no Father or Mother heir entry fields exist in Step 3', async () => {
+  it('no Father or Mother heir entry fields exist in Step 2 (siblings section)', async () => {
     render(<App />)
 
-    // Go to Step 3
+    // Go to Step 2
     fireEvent.click(screen.getByText('Father'))
     fireEvent.click(screen.getByText('Son'))
     clickNavButton('Next')
 
-    await waitFor(() => {
-      expect(screen.getByText('Immediate Family')).toBeInTheDocument()
-    })
+    // Wait for Step 2 to fully render
+    const siblingsToggle = await screen.findByText('Add siblings (optional)')
 
-    clickNavButton('Next')
+    // Expand the siblings toggle
+    fireEvent.click(siblingsToggle)
 
-    // Wait for Step 3 content to fully render after AnimatePresence transition
+    // Siblings section should now show Brothers and Sisters, not Father/Mother
     await waitFor(() => {
       expect(screen.getByText('Brothers')).toBeInTheDocument()
     })
-
-    // Step 3 has Brothers and Sisters, not Father/Mother
     expect(screen.getByText('Sisters')).toBeInTheDocument()
     expect(screen.queryByLabelText('Decrease Father')).not.toBeInTheDocument()
     expect(screen.queryByLabelText('Decrease Mother')).not.toBeInTheDocument()

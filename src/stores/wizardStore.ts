@@ -88,7 +88,7 @@ export const useWizardStore = create<WizardStore>()(
   sonCount: 0,
   daughterCount: 0,
 
-  // Step 3
+  // Step 2 (Siblings section)
   siblingTypeExpanded: false,
   brotherFullCount: 0,
   brotherConsanguineCount: 0,
@@ -97,15 +97,15 @@ export const useWizardStore = create<WizardStore>()(
   sisterConsanguineCount: 0,
   sisterUterineCount: 0,
 
-  // Step 4 (Properties)
+  // Step 3 (Properties)
   properties: [],
   expandedPropertyId: null,
 
-  // Step 4 (Movable Assets)
+  // Step 3 (Movable Assets)
   movableAssets: [],
   expandedAssetId: null,
 
-  // Step 5 (Results)
+  // Step 4 (Results)
   results: null,
   totalEstateValue: 0,
   viewMode: 'simple',
@@ -215,13 +215,13 @@ export const useWizardStore = create<WizardStore>()(
     try {
       const results: FaraidOutput = calculateInheritance(input)
       const newCompleted = [...state.completedSteps]
+      if (!newCompleted.includes(2)) {
+        newCompleted.push(2)
+      }
       if (!newCompleted.includes(3)) {
         newCompleted.push(3)
       }
-      if (!newCompleted.includes(4)) {
-        newCompleted.push(4)
-      }
-      set({ results, currentStep: 5, completedSteps: newCompleted })
+      set({ results, currentStep: 4, completedSteps: newCompleted })
     } catch (err) {
       console.error('Faraid calculation failed:', err)
     }
@@ -249,12 +249,10 @@ export const useWizardStore = create<WizardStore>()(
           return false
         return true
       case 2:
-        return true // zero children/spouse is valid
+        return true // combined family+siblings, always valid
       case 3:
-        return true // zero siblings is valid
+        return true // estate inventory, always valid (optional)
       case 4:
-        return true // properties step is always valid (optional)
-      case 5:
         return true // results step is always valid once reached
       default:
         return false
@@ -462,7 +460,32 @@ export const useWizardStore = create<WizardStore>()(
     {
       name: 'jomi-bhag-wizard',
       storage: fractionStorage,
-      version: 1,
+      version: 2,
+      migrate: (persisted: unknown, version: number) => {
+        const state = persisted as Record<string, unknown>
+        if (version < 2) {
+          // Remap 5-step numbering to 4-step:
+          // old step 3 (siblings) -> merged into step 2
+          // old step 4 (estate) -> step 3
+          // old step 5 (results) -> step 4
+          const oldStep = state.currentStep as number
+          if (oldStep >= 5) state.currentStep = 4
+          else if (oldStep >= 4) state.currentStep = 3
+          else if (oldStep >= 3) state.currentStep = 2
+
+          // Remap completedSteps
+          const oldCompleted = (state.completedSteps as number[]) ?? []
+          const newCompleted = new Set<number>()
+          for (const s of oldCompleted) {
+            if (s === 1) newCompleted.add(1)
+            else if (s === 2 || s === 3) newCompleted.add(2)
+            else if (s === 4) newCompleted.add(3)
+            else if (s === 5) newCompleted.add(4)
+          }
+          state.completedSteps = Array.from(newCompleted)
+        }
+        return state as WizardStore
+      },
       partialize: (state) => ({
         currentStep: state.currentStep,
         completedSteps: state.completedSteps,

@@ -237,7 +237,7 @@ export function DistributionPage({ onNavigate }: DistributionPageProps) {
   }, [])
 
   const handleBackToResults = () => {
-    setStep(5)
+    setStep(4)
     onNavigate('wizard')
   }
 

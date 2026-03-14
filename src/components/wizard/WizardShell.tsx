@@ -5,8 +5,7 @@ import { useWizardStore } from '@/stores/wizardStore'
 import { StepIndicator } from '@/components/ui/StepIndicator'
 import { Button } from '@/components/ui/Button'
 import { StepRelationship } from '@/components/wizard/StepRelationship'
-import { StepFamily } from '@/components/wizard/StepFamily'
-import { StepSiblings } from '@/components/wizard/StepSiblings'
+import { StepFamilyAndSiblings } from '@/components/wizard/StepFamilyAndSiblings'
 import { FamilyTree } from '@/components/wizard/FamilyTree'
 import { ResultsPage } from '@/components/results/ResultsPage'
 import { StepEstateInventory } from '@/components/assets/StepEstateInventory'
@@ -53,11 +52,9 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
         if ((relationship === 'father' || relationship === 'mother') && !userGender) return false
         return true
       case 2:
-        return true
+        return true // combined family+siblings, always valid
       case 3:
-        return true
-      case 4:
-        return true
+        return true // estate, always valid
       default:
         return false
     }
@@ -87,7 +84,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
       <StepIndicator />
 
       {/* Parents-deceased info text (hidden on results step) */}
-      {currentStep !== 5 && (
+      {currentStep !== 4 && (
         <p className="mt-3 text-center text-xs text-gray-400">
           <span className="mr-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-100 text-[10px] font-medium text-gray-400">
             i
@@ -97,7 +94,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
       )}
 
       {/* Family tree visualization (hidden on results step) */}
-      {currentStep !== 5 && (
+      {currentStep !== 4 && (
         <div className="mt-4">
           <FamilyTree currentStep={currentStep} />
         </div>
@@ -116,16 +113,15 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
             transition={stepTransition}
           >
             {currentStep === 1 && <StepRelationship />}
-            {currentStep === 2 && <StepFamily />}
-            {currentStep === 3 && <StepSiblings />}
-            {currentStep === 4 && <StepEstateInventory />}
-            {currentStep === 5 && <ResultsPage onNavigate={onNavigate} />}
+            {currentStep === 2 && <StepFamilyAndSiblings />}
+            {currentStep === 3 && <StepEstateInventory />}
+            {currentStep === 4 && <ResultsPage onNavigate={onNavigate} />}
           </motion.div>
         </AnimatePresence>
       </div>
 
       {/* Desktop navigation bar (hidden on results step) */}
-      {currentStep !== 5 && (
+      {currentStep !== 4 && (
         <div className="mt-8 hidden justify-between md:flex">
           {currentStep > 1 ? (
             <Button variant="secondary" onClick={handleBack}>
@@ -134,7 +130,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
           ) : (
             <div />
           )}
-          {currentStep < 4 && (
+          {currentStep < 3 && (
             <Button
               variant="primary"
               onClick={handleNext}
@@ -143,7 +139,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
               Next
             </Button>
           )}
-          {currentStep === 4 && (
+          {currentStep === 3 && (
             <div className="flex items-center gap-3">
               <button
                 type="button"
@@ -165,7 +161,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
       )}
 
       {/* Mobile navigation bar -- fixed bottom (hidden on results step) */}
-      {currentStep !== 5 && (
+      {currentStep !== 4 && (
         <div
           className="fixed left-0 right-0 z-50 flex flex-col gap-2 border-t border-gray-100 bg-white px-4 py-3 md:hidden"
           style={{ bottom: 'calc(52px + env(safe-area-inset-bottom, 0px))' }}
@@ -176,7 +172,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
                 Back
               </Button>
             )}
-            {currentStep < 4 && (
+            {currentStep < 3 && (
               <Button
                 variant="primary"
                 onClick={handleNext}
@@ -186,7 +182,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
                 Next
               </Button>
             )}
-            {currentStep === 4 && (
+            {currentStep === 3 && (
               <Button
                 variant="primary"
                 onClick={handleCalculate}
@@ -197,7 +193,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
               </Button>
             )}
           </div>
-          {currentStep === 4 && (
+          {currentStep === 3 && (
             <button
               type="button"
               onClick={handleCalculate}
@@ -210,7 +206,7 @@ export function WizardShell({ onNavigate }: WizardShellProps) {
       )}
 
       {/* Mobile spacer to ensure content clears fixed bottom bars */}
-      {currentStep !== 5 && (
+      {currentStep !== 4 && (
         <div className="h-28 md:hidden" aria-hidden="true" />
       )}
     </div>

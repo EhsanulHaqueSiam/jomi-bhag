@@ -92,7 +92,7 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
             <span className="hidden sm:inline ml-1">Export JSON</span>
           </Button>
           <ModeToggle />
-          <Button variant="ghost" onClick={() => setStep(4)}>
+          <Button variant="ghost" onClick={() => setStep(3)}>
             Edit Properties
           </Button>
           <Button variant="ghost" onClick={() => setStep(1)}>

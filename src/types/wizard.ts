@@ -22,13 +22,12 @@ export interface WizardStep {
   shortLabel: string
 }
 
-/** The 5 wizard steps in order. */
+/** The 4 wizard steps in order. */
 export const WIZARD_STEPS: WizardStep[] = [
   { number: 1, label: 'Relationship', shortLabel: 'Relationship' },
-  { number: 2, label: 'Family', shortLabel: 'Family' },
-  { number: 3, label: 'Siblings', shortLabel: 'Siblings' },
-  { number: 4, label: 'Estate Inventory', shortLabel: 'Estate' },
-  { number: 5, label: 'Results', shortLabel: 'Results' },
+  { number: 2, label: 'Family Members', shortLabel: 'Family' },
+  { number: 3, label: 'Estate Inventory', shortLabel: 'Estate' },
+  { number: 4, label: 'Results', shortLabel: 'Results' },
 ]
 
 /**
@@ -148,13 +147,13 @@ export interface WizardState {
   // Auto-included heirs (tracked separately for clean replacement)
   autoIncludes: { type: HeirType; count: number }[]
 
-  // Step 2
+  // Step 2 (Family Members: spouse + children + siblings)
   wifeCount: number
   husbandPresent: boolean
   sonCount: number
   daughterCount: number
 
-  // Step 3
+  // Step 2 (Siblings section)
   siblingTypeExpanded: boolean
   brotherFullCount: number
   brotherConsanguineCount: number
@@ -163,15 +162,15 @@ export interface WizardState {
   sisterConsanguineCount: number
   sisterUterineCount: number
 
-  // Step 4 (Properties)
+  // Step 3 (Properties)
   properties: Property[]
   expandedPropertyId: string | null
 
-  // Step 4 (Movable Assets)
+  // Step 3 (Movable Assets)
   movableAssets: MovableAsset[]
   expandedAssetId: string | null
 
-  // Step 5 (Results)
+  // Step 4 (Results)
   results: FaraidOutput | null
   totalEstateValue: number
   viewMode: 'simple' | 'detailed'

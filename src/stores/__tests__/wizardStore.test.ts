@@ -517,27 +517,31 @@ describe('property CRUD', () => {
 })
 
 describe('step reindexing', () => {
-  it('calculateShares now sets currentStep to 5', () => {
+  it('calculateShares now sets currentStep to 4', () => {
     useWizardStore.getState().setRelationship('father')
     useWizardStore.getState().setUserGender('male')
     useWizardStore.getState().calculateShares()
-    expect(useWizardStore.getState().currentStep).toBe(5)
+    expect(useWizardStore.getState().currentStep).toBe(4)
   })
 
-  it('isStepValid(4) returns true (properties always valid)', () => {
+  it('isStepValid(3) returns true (estate always valid)', () => {
+    expect(useWizardStore.getState().isStepValid(3)).toBe(true)
+  })
+
+  it('isStepValid(4) returns true (results always valid)', () => {
     expect(useWizardStore.getState().isStepValid(4)).toBe(true)
   })
 
-  it('isStepValid(5) returns true (results always valid)', () => {
-    expect(useWizardStore.getState().isStepValid(5)).toBe(true)
+  it('isStepValid(5) returns false (no step 5 in 4-step wizard)', () => {
+    expect(useWizardStore.getState().isStepValid(5)).toBe(false)
   })
 
-  it('calculateShares marks steps 3 and 4 as completed', () => {
+  it('calculateShares marks steps 2 and 3 as completed', () => {
     useWizardStore.getState().setRelationship('father')
     useWizardStore.getState().setUserGender('male')
     useWizardStore.getState().calculateShares()
+    expect(useWizardStore.getState().completedSteps).toContain(2)
     expect(useWizardStore.getState().completedSteps).toContain(3)
-    expect(useWizardStore.getState().completedSteps).toContain(4)
   })
 })
 
@@ -695,11 +699,23 @@ describe('movable asset totals', () => {
 })
 
 describe('wizard steps label', () => {
-  it('WIZARD_STEPS[3].label is Estate Inventory', () => {
-    expect(WIZARD_STEPS[3].label).toBe('Estate Inventory')
+  it('WIZARD_STEPS has 4 steps', () => {
+    expect(WIZARD_STEPS).toHaveLength(4)
   })
 
-  it('WIZARD_STEPS[3].shortLabel is Estate', () => {
-    expect(WIZARD_STEPS[3].shortLabel).toBe('Estate')
+  it('WIZARD_STEPS[1].label is Family Members', () => {
+    expect(WIZARD_STEPS[1].label).toBe('Family Members')
+  })
+
+  it('WIZARD_STEPS[2].label is Estate Inventory', () => {
+    expect(WIZARD_STEPS[2].label).toBe('Estate Inventory')
+  })
+
+  it('WIZARD_STEPS[2].shortLabel is Estate', () => {
+    expect(WIZARD_STEPS[2].shortLabel).toBe('Estate')
+  })
+
+  it('WIZARD_STEPS[3].label is Results', () => {
+    expect(WIZARD_STEPS[3].label).toBe('Results')
   })
 })

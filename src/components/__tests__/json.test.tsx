@@ -58,8 +58,8 @@ function makeSimpleOutput(): FaraidOutput {
 // ---------------------------------------------------------------------------
 
 const resultsState = {
-  currentStep: 5,
-  completedSteps: [1, 2, 3, 4],
+  currentStep: 4,
+  completedSteps: [1, 2, 3],
   relationship: 'father' as const,
   deceasedGender: 'male' as const,
   userGender: 'male' as const,

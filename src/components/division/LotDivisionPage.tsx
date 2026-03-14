@@ -76,7 +76,7 @@ export function LotDivisionPage({ onNavigate }: LotDivisionPageProps) {
   }, [qurahMap, isRevealed, divisionResult, revealNextGroup, revealAll])
 
   const handleBackToResults = () => {
-    setStep(5)
+    setStep(4)
     onNavigate('wizard')
   }
 
