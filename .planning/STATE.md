@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-13)
 Phase: 14 of 14 (Per-Heir Asset Breakdown)
 Plan: 4 of 4 complete
 Status: Complete
-Last activity: 2026-03-14 - Completed quick task 6: Audit and verify Faraid engine correctness
+Last activity: 2026-03-14 - Completed quick task 7: Fix PDF download and print not working
 
 Progress: [##########] 35/35 plans (100%)
 
@@ -236,6 +236,7 @@ None yet.
 | 4 | Comprehensive test suite: hooks, AppLayout, e2e expansion | 2026-03-14 | beede94 | [4-comprehensive-test-suite-unit-integratio](./quick/4-comprehensive-test-suite-unit-integratio/) |
 | 5 | Make distribution page wider on desktop | 2026-03-14 | 635d8bb | [5-make-distribution-page-wider-on-desktop-](./quick/5-make-distribution-page-wider-on-desktop-/) |
 | 6 | Audit and verify Faraid engine correctness (10 edge case tests) | 2026-03-14 | fa145fd | [6-audit-and-verify-faraid-engine-correctne](./quick/6-audit-and-verify-faraid-engine-correctne/) |
+| 7 | Fix PDF download and print not working | 2026-03-14 | ce1f928 | [7-fix-pdf-download-and-print-not-working-a](./quick/7-fix-pdf-download-and-print-not-working-a/) |
 
 ### Blockers/Concerns
 
