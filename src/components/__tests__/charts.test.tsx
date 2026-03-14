@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import Fraction from 'fraction.js'
 import App from '@/App'
@@ -130,23 +130,18 @@ const baseStoreState = {
 // RSLT-04: Pie Chart
 // ---------------------------------------------------------------------------
 
-/** Expand the "Charts & Visualizations" collapsible section. */
-function expandChartsSection() {
-  fireEvent.click(screen.getByText('Charts & Visualizations'))
-}
-
 describe('RSLT-04: Pie Chart', () => {
   beforeEach(() => {
     useWizardStore.setState({
       ...baseStoreState,
       results: makeTwoHeirOutput(),
       totalEstateValue: 1000000,
+      viewMode: 'detailed',
     })
   })
 
-  it('renders pie chart with Share Distribution heading after expanding collapsible', async () => {
+  it('renders pie chart with Share Distribution heading in detailed mode', async () => {
     render(<App />)
-    expandChartsSection()
     await waitFor(() => {
       expect(screen.getByText('Share Distribution')).toBeInTheDocument()
     })
@@ -154,7 +149,6 @@ describe('RSLT-04: Pie Chart', () => {
 
   it('shows center label with heir count', async () => {
     render(<App />)
-    expandChartsSection()
     await waitFor(() => {
       expect(screen.getByText('2 heirs')).toBeInTheDocument()
     })
@@ -162,7 +156,6 @@ describe('RSLT-04: Pie Chart', () => {
 
   it('shows legend with heir names including count notation', async () => {
     render(<App />)
-    expandChartsSection()
     await waitFor(() => {
       // Daughter count > 1, so displayed as "Daughter x2" in the chart legend
       expect(screen.getByText(/Daughter x2.*66\.7%/)).toBeInTheDocument()
@@ -176,9 +169,9 @@ describe('RSLT-04: Pie Chart', () => {
       ...baseStoreState,
       results: makeWithBlockedOutput(),
       totalEstateValue: 1000000,
+      viewMode: 'detailed',
     })
     render(<App />)
-    expandChartsSection()
 
     await waitFor(() => {
       expect(screen.getByText('Share Distribution')).toBeInTheDocument()
@@ -200,9 +193,9 @@ describe('RSLT-05: Bar Chart', () => {
       ...baseStoreState,
       results: makeTwoHeirOutput(),
       totalEstateValue: 1000000,
+      viewMode: 'detailed',
     })
     render(<App />)
-    expandChartsSection()
     await waitFor(() => {
       expect(screen.getByText('Monetary Comparison')).toBeInTheDocument()
     })
@@ -213,9 +206,9 @@ describe('RSLT-05: Bar Chart', () => {
       ...baseStoreState,
       results: makeTwoHeirOutput(),
       totalEstateValue: 0,
+      viewMode: 'detailed',
     })
     render(<App />)
-    expandChartsSection()
     await waitFor(() => {
       expect(
         screen.getByText('Enter estate value to see monetary comparison'),
@@ -228,9 +221,9 @@ describe('RSLT-05: Bar Chart', () => {
       ...baseStoreState,
       results: makeTwoHeirOutput(),
       totalEstateValue: 1000000,
+      viewMode: 'detailed',
     })
     render(<App />)
-    expandChartsSection()
     await waitFor(() => {
       // Bar chart should show heir names
       expect(screen.getByText('Monetary Comparison')).toBeInTheDocument()
