@@ -26,7 +26,7 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
   const movableAssets = useWizardStore((s) => s.movableAssets)
   const setStep = useWizardStore((s) => s.setStep)
 
-  const { downloadPdf, printPdf, isGenerating } = usePdfExport()
+  const { downloadPdf, printPdf, isGenerating, error: pdfError, dismissError } = usePdfExport()
   const { exportJson } = useJsonExport()
 
   if (!results) return null
@@ -35,6 +35,13 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
 
   return (
     <div className="space-y-6">
+      {/* PDF error banner */}
+      {pdfError && (
+        <div className="flex items-center justify-between rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+          <span>{pdfError}</span>
+          <button type="button" onClick={dismissError} className="ml-2 font-medium hover:text-red-900">Dismiss</button>
+        </div>
+      )}
       {/* Header area */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-xl font-bold text-gray-900">

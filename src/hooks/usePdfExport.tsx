@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useWizardStore } from '@/stores/wizardStore'
 
 export function usePdfExport() {
   const [isGenerating, setIsGenerating] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   // Read store state (non-reactive -- only read when generating)
   const getStoreState = () => useWizardStore.getState()
@@ -11,26 +12,31 @@ export function usePdfExport() {
     pieChartImage: string | null
     barChartImage: string | null
   }> {
-    const { toPng } = await import('html-to-image')
+    try {
+      const { toPng } = await import('html-to-image')
 
-    const pieEl = document.getElementById('pdf-pie-chart')
-    const barEl = document.getElementById('pdf-bar-chart')
+      const pieEl = document.getElementById('pdf-pie-chart')
+      const barEl = document.getElementById('pdf-bar-chart')
 
-    const pieChartImage = pieEl
-      ? await toPng(pieEl, { pixelRatio: 2, backgroundColor: '#ffffff' })
-      : null
-    const barChartImage = barEl
-      ? await toPng(barEl, { pixelRatio: 2, backgroundColor: '#ffffff' })
-      : null
+      const pieChartImage = pieEl
+        ? await toPng(pieEl, { pixelRatio: 2, backgroundColor: '#ffffff' })
+        : null
+      const barChartImage = barEl
+        ? await toPng(barEl, { pixelRatio: 2, backgroundColor: '#ffffff' })
+        : null
 
-    return { pieChartImage, barChartImage }
+      return { pieChartImage, barChartImage }
+    } catch {
+      // Chart capture is non-critical — PDF works without charts
+      return { pieChartImage: null, barChartImage: null }
+    }
   }
 
   async function generatePdfBlob(): Promise<Blob> {
     const state = getStoreState()
     if (!state.results) throw new Error('No results to export')
 
-    // Capture charts from DOM
+    // Capture charts from DOM (non-critical, won't throw)
     const { pieChartImage, barChartImage } = await captureCharts()
 
     // Dynamic imports for lazy loading (keeps ~450KB out of initial bundle)
@@ -62,45 +68,68 @@ export function usePdfExport() {
     return blob
   }
 
-  async function downloadPdf(): Promise<void> {
+  const downloadPdf = useCallback(async (): Promise<void> => {
     setIsGenerating(true)
+    setError(null)
     try {
       const blob = await generatePdfBlob()
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
       link.download = `jomi-bhag-inheritance-report-${new Date().toISOString().split('T')[0]}.pdf`
+      link.style.display = 'none'
       document.body.appendChild(link)
       link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(url)
+      // Small delay before cleanup to ensure download starts
+      setTimeout(() => {
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
+      }, 100)
+    } catch (err) {
+      console.error('PDF download failed:', err)
+      setError('PDF download failed. Please try again.')
     } finally {
       setIsGenerating(false)
     }
-  }
+  }, [])
 
-  async function printPdf(): Promise<void> {
+  const printPdf = useCallback(async (): Promise<void> => {
     setIsGenerating(true)
+    setError(null)
     try {
       const blob = await generatePdfBlob()
       const url = URL.createObjectURL(blob)
+
+      // Use hidden iframe for printing — more reliable than window.open
+      // which gets popup-blocked on mobile
       const iframe = document.createElement('iframe')
       iframe.style.display = 'none'
       iframe.src = url
       document.body.appendChild(iframe)
+
       iframe.onload = () => {
-        iframe.contentWindow?.focus()
-        iframe.contentWindow?.print()
-        // Cleanup after print dialog closes
+        try {
+          iframe.contentWindow?.print()
+        } catch {
+          // If iframe print fails (cross-origin on some browsers),
+          // fall back to opening in a new tab
+          window.open(url, '_blank')
+        }
+        // Clean up after a delay
         setTimeout(() => {
           document.body.removeChild(iframe)
           URL.revokeObjectURL(url)
-        }, 1000)
+        }, 60000)
       }
+    } catch (err) {
+      console.error('PDF print failed:', err)
+      setError('PDF print failed. Please try again.')
     } finally {
       setIsGenerating(false)
     }
-  }
+  }, [])
 
-  return { downloadPdf, printPdf, isGenerating }
+  const dismissError = useCallback(() => setError(null), [])
+
+  return { downloadPdf, printPdf, isGenerating, error, dismissError }
 }
