@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-13)
 Phase: 14 of 14 (Per-Heir Asset Breakdown)
 Plan: 4 of 4 complete
 Status: Complete
-Last activity: 2026-03-14 - Completed quick task 1: Fix missing next button on mobile - cannot go to next step
+Last activity: 2026-03-14 - Completed quick task 2: Fix Netlify build TypeScript errors in importData.ts and useJsonImport.ts
 
 Progress: [##########] 35/35 plans (100%)
 
@@ -231,6 +231,7 @@ None yet.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 1 | Fix missing next button on mobile - cannot go to next step | 2026-03-14 | 46704fe | [1-fix-missing-next-button-on-mobile-cannot](./quick/1-fix-missing-next-button-on-mobile-cannot/) |
+| 2 | Fix Netlify build TypeScript errors in importData.ts and useJsonImport.ts | 2026-03-14 | e8a6bd7 | [2-fix-netlify-build-typescript-errors-in-i](./quick/2-fix-netlify-build-typescript-errors-in-i/) |
 
 ### Blockers/Concerns
 
