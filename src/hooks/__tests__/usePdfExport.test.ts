@@ -174,6 +174,62 @@ describe('usePdfExport', () => {
     expect(result.current.isGenerating).toBe(false)
   })
 
+  it('toPng is called with filter that excludes recharts-tooltip-wrapper', async () => {
+    useWizardStore.setState({
+      results: makeFaraidOutput(),
+      properties: [],
+      movableAssets: [],
+      totalEstateValue: 1000000,
+    })
+
+    Object.defineProperty(URL, 'createObjectURL', { value: vi.fn(() => 'blob:x'), writable: true })
+    Object.defineProperty(URL, 'revokeObjectURL', { value: vi.fn(), writable: true })
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {})
+
+    // Create chart elements so captureCharts finds them
+    const pieEl = document.createElement('div')
+    pieEl.id = 'pdf-pie-chart'
+    Object.defineProperty(pieEl, 'offsetHeight', { value: 100 })
+    document.body.appendChild(pieEl)
+
+    const barEl = document.createElement('div')
+    barEl.id = 'pdf-bar-chart'
+    Object.defineProperty(barEl, 'offsetHeight', { value: 100 })
+    document.body.appendChild(barEl)
+
+    const { toPng } = await import('html-to-image')
+    const mockedToPng = vi.mocked(toPng)
+
+    const { usePdfExport } = await import('@/hooks/usePdfExport')
+    const { result } = renderHook(() => usePdfExport())
+
+    await act(async () => {
+      await result.current.downloadPdf()
+    })
+
+    // Verify toPng was called with filter option
+    expect(mockedToPng).toHaveBeenCalled()
+    const firstCallOptions = mockedToPng.mock.calls[0]?.[1] as { filter?: (node: HTMLElement) => boolean }
+    expect(firstCallOptions).toBeDefined()
+    expect(typeof firstCallOptions.filter).toBe('function')
+
+    const filterFn = firstCallOptions.filter!
+
+    // Mock element WITH recharts-tooltip-wrapper class should be excluded
+    const tooltipNode = document.createElement('div')
+    tooltipNode.classList.add('recharts-tooltip-wrapper')
+    expect(filterFn(tooltipNode)).toBe(false)
+
+    // Mock element WITHOUT recharts-tooltip-wrapper class should be included
+    const normalNode = document.createElement('div')
+    normalNode.classList.add('recharts-bar')
+    expect(filterFn(normalNode)).toBe(true)
+
+    // Clean up DOM
+    document.body.removeChild(pieEl)
+    document.body.removeChild(barEl)
+  })
+
   it('isGenerating returns to false after error', async () => {
     useWizardStore.setState({ results: null })
 
