@@ -1,0 +1,229 @@
+{
+  "schemaVersion": 1,
+  "appVersion": "1.0.0",
+  "exportDate": "2026-03-14T00:00:00.000Z",
+  "data": {
+    "relationship": "son",
+    "deceasedGender": "male",
+    "userGender": "male",
+    "mfloEnabled": false,
+    "motherAlive": false,
+    "wifeCount": 1,
+    "husbandPresent": false,
+    "sonCount": 5,
+    "daughterCount": 2,
+    "siblingTypeExpanded": false,
+    "brotherFullCount": 0,
+    "brotherConsanguineCount": 0,
+    "brotherUterineCount": 0,
+    "sisterFullCount": 0,
+    "sisterConsanguineCount": 0,
+    "sisterUterineCount": 0,
+    "totalEstateValue": 0,
+    "movableAssets": [],
+    "properties": [
+      {
+        "id": "land-01",
+        "nickname": "বাড়ির জমি (Homestead)",
+        "type": "residential",
+        "division": "dhaka",
+        "upazila": null,
+        "rateSource": "manual",
+        "landAreaSqft": 43560,
+        "landInputUnit": "decimal",
+        "landValue": 5000000,
+        "house": {
+          "estimatedValue": 3000000,
+          "areaSqft": 1200,
+          "constructionType": "brick",
+          "floors": 2,
+          "condition": "good"
+        },
+        "trees": null,
+        "pond": null,
+        "settlement": null
+      },
+      {
+        "id": "land-02",
+        "nickname": "ধানের জমি (Paddy Field - Big)",
+        "type": "agricultural",
+        "division": "rajshahi",
+        "upazila": null,
+        "rateSource": "manual",
+        "landAreaSqft": 435600,
+        "landInputUnit": "decimal",
+        "landValue": 12000000,
+        "house": null,
+        "trees": {
+          "totalEstimatedValue": 500000,
+          "items": [],
+          "isItemized": false
+        },
+        "pond": null,
+        "settlement": null
+      },
+      {
+        "id": "land-03",
+        "nickname": "পুকুর পাড়ের জমি (Pond Plot)",
+        "type": "mixed",
+        "division": "sylhet",
+        "upazila": null,
+        "rateSource": "manual",
+        "landAreaSqft": 87120,
+        "landInputUnit": "decimal",
+        "landValue": 2000000,
+        "house": null,
+        "trees": null,
+        "pond": {
+          "areaSqft": 21780,
+          "areaInputUnit": "decimal",
+          "estimatedValue": 800000
+        },
+        "settlement": null
+      },
+      {
+        "id": "land-04",
+        "nickname": "বাজারের পাশের প্লট (Commercial Plot)",
+        "type": "commercial",
+        "division": "chittagong",
+        "upazila": null,
+        "rateSource": "manual",
+        "landAreaSqft": 21780,
+        "landInputUnit": "decimal",
+        "landValue": 8000000,
+        "house": null,
+        "trees": null,
+        "pond": null,
+        "settlement": null
+      },
+      {
+        "id": "land-05",
+        "nickname": "আমবাগান (Mango Orchard)",
+        "type": "agricultural",
+        "division": "rajshahi",
+        "upazila": null,
+        "rateSource": "manual",
+        "landAreaSqft": 217800,
+        "landInputUnit": "decimal",
+        "landValue": 6000000,
+        "house": null,
+        "trees": {
+          "totalEstimatedValue": 0,
+          "items": [
+            { "species": "Mango (Haribhanga)", "count": 40, "estimatedValue": 1200000 },
+            { "species": "Mango (Langra)", "count": 25, "estimatedValue": 750000 },
+            { "species": "Jackfruit", "count": 10, "estimatedValue": 200000 }
+          ],
+          "isItemized": true
+        },
+        "pond": null,
+        "settlement": null
+      },
+      {
+        "id": "land-06",
+        "nickname": "ভাড়ার বাড়ি (Rental Property)",
+        "type": "residential",
+        "division": "dhaka",
+        "upazila": null,
+        "rateSource": "manual",
+        "landAreaSqft": 32670,
+        "landInputUnit": "decimal",
+        "landValue": 4000000,
+        "house": {
+          "estimatedValue": 5500000,
+          "areaSqft": 2400,
+          "constructionType": "brick",
+          "floors": 3,
+          "condition": "fair"
+        },
+        "trees": null,
+        "pond": null,
+        "settlement": null
+      },
+      {
+        "id": "land-07",
+        "nickname": "মাছের ঘের (Fish Farm)",
+        "type": "mixed",
+        "division": "khulna",
+        "upazila": null,
+        "rateSource": "manual",
+        "landAreaSqft": 174240,
+        "landInputUnit": "decimal",
+        "landValue": 3500000,
+        "house": {
+          "estimatedValue": 200000,
+          "areaSqft": 300,
+          "constructionType": "tin",
+          "floors": 1,
+          "condition": "fair"
+        },
+        "trees": null,
+        "pond": {
+          "areaSqft": 130680,
+          "areaInputUnit": "decimal",
+          "estimatedValue": 2500000
+        },
+        "settlement": null
+      },
+      {
+        "id": "land-08",
+        "nickname": "গুদাম ঘর (Warehouse Plot)",
+        "type": "commercial",
+        "division": "chittagong",
+        "upazila": null,
+        "rateSource": "manual",
+        "landAreaSqft": 65340,
+        "landInputUnit": "decimal",
+        "landValue": 10000000,
+        "house": {
+          "estimatedValue": 4000000,
+          "areaSqft": 3000,
+          "constructionType": "semi_pucca",
+          "floors": 1,
+          "condition": "good"
+        },
+        "trees": null,
+        "pond": null,
+        "settlement": null
+      },
+      {
+        "id": "land-09",
+        "nickname": "ছোট খেত (Small Farmland)",
+        "type": "agricultural",
+        "division": "mymensingh",
+        "upazila": null,
+        "rateSource": "manual",
+        "landAreaSqft": 130680,
+        "landInputUnit": "decimal",
+        "landValue": 1800000,
+        "house": null,
+        "trees": {
+          "totalEstimatedValue": 150000,
+          "items": [],
+          "isItemized": false
+        },
+        "pond": {
+          "areaSqft": 10890,
+          "areaInputUnit": "decimal",
+          "estimatedValue": 300000
+        },
+        "settlement": null
+      },
+      {
+        "id": "land-10",
+        "nickname": "হাইওয়ের পাশে (Highway Frontage)",
+        "type": "commercial",
+        "division": "rangpur",
+        "upazila": null,
+        "rateSource": "manual",
+        "landAreaSqft": 43560,
+        "landInputUnit": "decimal",
+        "landValue": 15000000,
+        "house": null,
+        "trees": null,
+        "pond": null,
+        "settlement": null
+      }
+    ]
+  }
+}
