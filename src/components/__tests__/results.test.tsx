@@ -150,12 +150,14 @@ describe('RSLT-01: displays fraction, percentage, and monetary amounts', () => {
   it('shows fraction and percentage for each heir', () => {
     render(<App />)
 
-    // Husband: 1/4 = 25% (single heir -- no parentheses on percentage)
-    expect(screen.getByText('1/4')).toBeInTheDocument()
+    // Husband: 1/4 = 25% (shown in both summary table and heir cards)
+    const quarterFractions = screen.getAllByText('1/4')
+    expect(quarterFractions.length).toBeGreaterThan(0)
     expect(screen.getByText('25.0%')).toBeInTheDocument()
 
-    // Daughter: total 2/3 = 66.7% (multiple heirs -- parenthesized percentages)
-    expect(screen.getByText('2/3')).toBeInTheDocument()
+    // Daughter: total 2/3 = 66.7% (shown in both summary table and heir cards)
+    const twoThirdFractions = screen.getAllByText('2/3')
+    expect(twoThirdFractions.length).toBeGreaterThan(0)
     expect(screen.getByText('(66.7%)')).toBeInTheDocument()
   })
 
@@ -164,8 +166,9 @@ describe('RSLT-01: displays fraction, percentage, and monetary amounts', () => {
     render(<App />)
 
     // Husband: 1/4 of 12,00,000 = 3,00,000
-    // Look for the formatted BDT string
-    expect(screen.getByText(/3,00,000/)).toBeInTheDocument()
+    // Multiple elements may show this (summary table + heir card)
+    const matches = screen.getAllByText(/3,00,000/)
+    expect(matches.length).toBeGreaterThan(0)
   })
 })
 
@@ -200,19 +203,26 @@ describe('RSLT-02: shows Quranic reference', () => {
   })
 })
 
-describe('RSLT-03: step accordion', () => {
+describe('RSLT-03: step accordion (behind collapsible)', () => {
   beforeEach(() => {
     useWizardStore.setState({
       ...baseStoreState,
       results: makeSimpleOutput(),
-      viewMode: 'detailed',
     })
   })
 
-  it('shows step descriptions in detailed mode', () => {
+  it('shows step descriptions after expanding collapsible section', async () => {
     render(<App />)
 
-    expect(screen.getByText('Calculation Steps')).toBeInTheDocument()
+    // Step accordion is hidden by default behind collapsible
+    expect(screen.queryByText('Calculation Steps')).not.toBeInTheDocument()
+
+    // Expand the collapsible
+    fireEvent.click(screen.getByText('Islamic Legal Basis & Calculation Steps'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Calculation Steps')).toBeInTheDocument()
+    })
     expect(screen.getByText('Identify heirs')).toBeInTheDocument()
     expect(screen.getByText('Assign fixed shares')).toBeInTheDocument()
     expect(screen.getByText('Assign residuary')).toBeInTheDocument()
@@ -220,6 +230,12 @@ describe('RSLT-03: step accordion', () => {
 
   it('expands a step to show detail text when clicked', async () => {
     render(<App />)
+
+    // Expand the collapsible first
+    fireEvent.click(screen.getByText('Islamic Legal Basis & Calculation Steps'))
+    await waitFor(() => {
+      expect(screen.getByText('Identify heirs')).toBeInTheDocument()
+    })
 
     // Detail should not be visible initially
     expect(screen.queryByText(/Husband and 2 daughters are present/)).not.toBeInTheDocument()
@@ -235,6 +251,12 @@ describe('RSLT-03: step accordion', () => {
 
   it('allows multiple steps to be open simultaneously', async () => {
     render(<App />)
+
+    // Expand the collapsible first
+    fireEvent.click(screen.getByText('Islamic Legal Basis & Calculation Steps'))
+    await waitFor(() => {
+      expect(screen.getByText('Identify heirs')).toBeInTheDocument()
+    })
 
     // Open step 1
     fireEvent.click(screen.getByText('Identify heirs'))
@@ -253,60 +275,45 @@ describe('RSLT-03: step accordion', () => {
   })
 })
 
-describe('RSLT-06: mode toggle', () => {
+describe('Collapsible sections', () => {
   beforeEach(() => {
     useWizardStore.setState({
       ...baseStoreState,
       results: makeSimpleOutput(),
-      viewMode: 'simple',
     })
   })
 
-  it('hides step accordion in simple mode', () => {
+  it('hides step accordion and Islamic basis by default', () => {
     render(<App />)
 
     expect(screen.queryByText('Calculation Steps')).not.toBeInTheDocument()
+    expect(screen.queryByText('Islamic Basis')).not.toBeInTheDocument()
   })
 
-  it('shows step accordion after switching to Detailed mode', async () => {
+  it('shows Islamic Basis section after expanding collapsible', async () => {
     render(<App />)
 
-    // Click the "Detailed" mode button
-    fireEvent.click(screen.getByText('Detailed'))
-
-    await waitFor(() => {
-      expect(screen.getByText('Calculation Steps')).toBeInTheDocument()
-    })
-  })
-
-  it('hides step accordion when switching back to Simple mode', async () => {
-    render(<App />)
-
-    // Switch to Detailed
-    fireEvent.click(screen.getByText('Detailed'))
-    await waitFor(() => {
-      expect(screen.getByText('Calculation Steps')).toBeInTheDocument()
-    })
-
-    // Switch back to Simple
-    fireEvent.click(screen.getByText('Simple'))
-    await waitFor(() => {
-      expect(screen.queryByText('Calculation Steps')).not.toBeInTheDocument()
-    })
-  })
-
-  it('shows Islamic Basis section only in detailed mode', async () => {
-    render(<App />)
-
-    // Not visible in simple mode
+    // Not visible initially
     expect(screen.queryByText('Islamic Basis')).not.toBeInTheDocument()
 
-    // Switch to detailed
-    fireEvent.click(screen.getByText('Detailed'))
+    // Expand the collapsible
+    fireEvent.click(screen.getByText('Islamic Legal Basis & Calculation Steps'))
 
     await waitFor(() => {
       expect(screen.getByText('Islamic Basis')).toBeInTheDocument()
     })
+  })
+
+  it('shows Charts & Visualizations collapsible toggle', () => {
+    render(<App />)
+
+    expect(screen.getByText('Charts & Visualizations')).toBeInTheDocument()
+  })
+
+  it('shows Inheritance Summary table', () => {
+    render(<App />)
+
+    expect(screen.getByText('Inheritance Summary')).toBeInTheDocument()
   })
 })
 
