@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { motion } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import type { AppPage } from '@/types/scenario'
 import { useWizardStore } from '@/stores/wizardStore'
 import { usePdfExport } from '@/hooks/usePdfExport'
@@ -12,6 +11,7 @@ import { BlockedHeirsSection } from '@/components/results/BlockedHeirsSection'
 import { ChartSection } from '@/components/results/ChartSection'
 import { StepAccordion } from '@/components/results/StepAccordion'
 import { IslamicBasisSection } from '@/components/results/IslamicBasisSection'
+import { ModeToggle } from '@/components/results/ModeToggle'
 import { getAllReferences } from '@/core/faraid/references'
 import { HEIR_TYPE_LABELS } from '@/core/utils/display'
 
@@ -67,11 +67,13 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
   const movableAssets = useWizardStore((s) => s.movableAssets)
   const setStep = useWizardStore((s) => s.setStep)
 
+  const viewMode = useWizardStore((s) => s.viewMode)
+  const hasToggledMode = useWizardStore((s) => s.hasToggledMode)
+
   const { downloadPdf, printPdf, isGenerating, error: pdfError, dismissError } = usePdfExport()
   const { exportJson } = useJsonExport()
 
-  const [chartsOpen, setChartsOpen] = useState(false)
-  const [basisOpen, setBasisOpen] = useState(false)
+  const isDetailed = viewMode === 'detailed'
 
   if (!results) return null
 
@@ -92,6 +94,25 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
       <h2 className="text-xl font-bold text-gray-900">
         Inheritance Results
       </h2>
+
+      {/* Mode toggle pill + hint text */}
+      <div className="flex flex-col items-center gap-1">
+        <ModeToggle />
+        <AnimatePresence>
+          {!hasToggledMode && viewMode === 'simple' && (
+            <motion.p
+              key="mode-hint"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
+              className="text-xs text-gray-400"
+            >
+              Switch to Detailed for charts, legal references, and calculation steps
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* Summary card -- heir shares at a glance */}
       <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
@@ -173,70 +194,42 @@ export function ResultsPage({ onNavigate }: ResultsPageProps) {
       {/* Blocked heirs section -- always visible */}
       <BlockedHeirsSection blockedHeirs={results.blockedHeirs} />
 
-      {/* Collapsible: Charts & Visualizations */}
-      <div className="rounded-xl border border-gray-200 bg-white">
-        <button
-          type="button"
-          onClick={() => setChartsOpen(!chartsOpen)}
-          className="flex w-full items-center justify-between px-4 py-3 text-left"
-        >
-          <span className="text-sm font-semibold text-gray-700">
-            Charts & Visualizations
-          </span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${
-              chartsOpen ? 'rotate-180' : ''
-            }`}
-            viewBox="0 0 20 20"
-            fill="currentColor"
+      {/* Charts -- visible in detailed mode */}
+      <AnimatePresence>
+        {isDetailed && (
+          <motion.div
+            key="charts-section"
+            initial={prefersReducedMotion ? { opacity: 1 } : { height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={prefersReducedMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.3, ease: 'easeInOut' }}
+            style={{ overflow: 'hidden' }}
           >
-            <path
-              fillRule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-        {chartsOpen && (
-          <div className="border-t border-gray-100 px-4 pb-4 pt-2">
-            <ChartSection />
-          </div>
+            <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+              <ChartSection />
+            </div>
+          </motion.div>
         )}
-      </div>
+      </AnimatePresence>
 
-      {/* Collapsible: Islamic Legal Basis & Calculation Steps */}
-      <div className="rounded-xl border border-gray-200 bg-white">
-        <button
-          type="button"
-          onClick={() => setBasisOpen(!basisOpen)}
-          className="flex w-full items-center justify-between px-4 py-3 text-left"
-        >
-          <span className="text-sm font-semibold text-gray-700">
-            Islamic Legal Basis & Calculation Steps
-          </span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${
-              basisOpen ? 'rotate-180' : ''
-            }`}
-            viewBox="0 0 20 20"
-            fill="currentColor"
+      {/* Islamic Legal Basis & Calculation Steps -- visible in detailed mode */}
+      <AnimatePresence>
+        {isDetailed && (
+          <motion.div
+            key="basis-section"
+            initial={prefersReducedMotion ? { opacity: 1 } : { height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={prefersReducedMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.3, ease: 'easeInOut' }}
+            style={{ overflow: 'hidden' }}
           >
-            <path
-              fillRule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-        {basisOpen && (
-          <div className="space-y-4 border-t border-gray-100 px-4 pb-4 pt-2">
-            <StepAccordion steps={results.steps} />
-            <IslamicBasisSection references={getAllReferences(results)} />
-          </div>
+            <div className="space-y-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+              <StepAccordion steps={results.steps} />
+              <IslamicBasisSection references={getAllReferences(results)} />
+            </div>
+          </motion.div>
         )}
-      </div>
+      </AnimatePresence>
 
       {/* Sticky action bar */}
       <div className="sticky bottom-0 z-40 -mx-4 border-t border-gray-200 bg-white px-4 py-3 shadow-[0_-2px_8px_rgba(0,0,0,0.06)] sm:-mx-6 sm:px-6 md:py-2">
