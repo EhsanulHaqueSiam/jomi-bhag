@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { sanitizeForPdf } from '../extractPdfData'
+import { sanitizeForPdf, pdfBdtFormat } from '../extractPdfData'
 
 describe('sanitizeForPdf', () => {
   it('strips Bengali text and preserves Latin text in parentheses', () => {
@@ -46,5 +46,25 @@ describe('sanitizeForPdf', () => {
 
   it('handles multiple Bengali segments interspersed with Latin', () => {
     expect(sanitizeForPdf('বাড়ি House জমি Land')).toBe('House Land')
+  })
+})
+
+describe('pdfBdtFormat', () => {
+  it('formats amounts with Tk prefix (not Bengali taka symbol)', () => {
+    const result = pdfBdtFormat(5000000)
+    expect(result).toMatch(/^Tk/)
+    expect(result).not.toContain('\u09F3') // no Bengali taka sign
+  })
+
+  it('uses Indian/Bangladeshi lakh/crore grouping', () => {
+    expect(pdfBdtFormat(5000000)).toBe('Tk50,00,000')
+  })
+
+  it('formats zero', () => {
+    expect(pdfBdtFormat(0)).toBe('Tk0')
+  })
+
+  it('formats small amounts', () => {
+    expect(pdfBdtFormat(500)).toBe('Tk500')
   })
 })

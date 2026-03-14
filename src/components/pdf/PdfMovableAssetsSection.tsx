@@ -1,14 +1,7 @@
 import { View, Text } from '@react-pdf/renderer'
 import { styles } from './pdfStyles'
 import type { PdfMovableAsset } from './pdfTypes'
-
-const bdtFormat = new Intl.NumberFormat('en-IN', {
-  style: 'currency',
-  currency: 'BDT',
-  currencyDisplay: 'narrowSymbol',
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 0,
-})
+import { pdfBdtFormat } from './extractPdfData'
 
 interface PdfMovableAssetsSectionProps {
   movableAssets: PdfMovableAsset[]
@@ -67,7 +60,7 @@ export function PdfMovableAssetsSection({
               { width: '20%', fontSize: 9, textAlign: 'right' },
             ]}
           >
-            {bdtFormat.format(asset.value)}
+            {pdfBdtFormat(asset.value)}
           </Text>
           <Text style={[styles.tableCell, { width: '30%', fontSize: 9 }]}>
             {asset.isIndivisible
@@ -95,7 +88,7 @@ export function PdfMovableAssetsSection({
           Total Movable Assets
         </Text>
         <Text style={{ fontSize: 11, fontWeight: 700, color: '#111' }}>
-          {bdtFormat.format(movableAssetsTotal)}
+          {pdfBdtFormat(movableAssetsTotal)}
         </Text>
       </View>
     </View>

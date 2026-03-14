@@ -7,15 +7,7 @@ import type {
   PdfSettlementBuyout,
   PdfSettlementJointOwnership,
 } from './pdfTypes'
-
-const bdtFormat = (amount: number): string =>
-  new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'BDT',
-    currencyDisplay: 'narrowSymbol',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
+import { pdfBdtFormat } from './extractPdfData'
 
 const METHOD_LABELS: Record<string, string> = {
   sell_split: 'Sell & Split',
@@ -28,7 +20,7 @@ function SellSplitDetail({ detail }: { detail: PdfSettlementSellSplit }) {
   return (
     <View>
       <Text style={{ fontSize: 9, marginBottom: 4 }}>
-        Sale Price: {bdtFormat(detail.effectivePrice)}
+        Sale Price: {pdfBdtFormat(detail.effectivePrice)}
         {detail.isOverridden ? ' (actual sale price)' : ' (property value)'}
       </Text>
 
@@ -61,7 +53,7 @@ function SellSplitDetail({ detail }: { detail: PdfSettlementSellSplit }) {
             {payout.heirType}
           </Text>
           <Text style={[styles.tableCell, { flex: 1, textAlign: 'right' }]}>
-            {bdtFormat(payout.amount)}
+            {pdfBdtFormat(payout.amount)}
           </Text>
         </View>
       ))}
@@ -119,7 +111,7 @@ function PhysicalDivisionDetail({
             {parcel.area}
           </Text>
           <Text style={[styles.tableCell, { flex: 1, textAlign: 'right' }]}>
-            {bdtFormat(parcel.appraisedValue)}
+            {pdfBdtFormat(parcel.appraisedValue)}
           </Text>
         </View>
       ))}
@@ -135,13 +127,13 @@ function PhysicalDivisionDetail({
         }}
       >
         <Text style={{ fontSize: 9 }}>
-          Total sub-parcel value: {bdtFormat(detail.totalSubParcelValue)} |
-          Property value: {bdtFormat(detail.propertyValue)}
+          Total sub-parcel value: {pdfBdtFormat(detail.totalSubParcelValue)} |
+          Property value: {pdfBdtFormat(detail.propertyValue)}
         </Text>
         {detail.compensation !== 0 && (
           <Text style={{ fontSize: 9, color: '#92400e', marginTop: 2 }}>
             Cash compensation needed:{' '}
-            {bdtFormat(Math.abs(detail.compensation))}
+            {pdfBdtFormat(Math.abs(detail.compensation))}
           </Text>
         )}
       </View>
@@ -156,7 +148,7 @@ function BuyoutDetail({ detail }: { detail: PdfSettlementBuyout }) {
         Buyer: {detail.buyer}
       </Text>
       <Text style={{ fontSize: 9, marginBottom: 4 }}>
-        Compensation owed to other heirs: {bdtFormat(detail.compensationOwed)}
+        Compensation owed to other heirs: {pdfBdtFormat(detail.compensationOwed)}
       </Text>
 
       {/* Per-group payment table */}
@@ -188,7 +180,7 @@ function BuyoutDetail({ detail }: { detail: PdfSettlementBuyout }) {
             {payment.heirType}
           </Text>
           <Text style={[styles.tableCell, { flex: 1, textAlign: 'right' }]}>
-            {bdtFormat(payment.amount)}
+            {pdfBdtFormat(payment.amount)}
           </Text>
         </View>
       ))}
@@ -205,7 +197,7 @@ function BuyoutDetail({ detail }: { detail: PdfSettlementBuyout }) {
           }}
         >
           <Text style={{ fontSize: 9 }}>
-            Payment plan: ~{bdtFormat(detail.installmentPlan.perInstallment)}
+            Payment plan: ~{pdfBdtFormat(detail.installmentPlan.perInstallment)}
             /month for {detail.installmentPlan.count} months
           </Text>
           <Text style={{ fontSize: 8, color: '#059669', marginTop: 2 }}>
@@ -268,7 +260,7 @@ function JointOwnershipDetail({
           </Text>
           <Text style={{ fontSize: 9, marginBottom: 4 }}>
             Total {detail.income.period.toLowerCase()} income:{' '}
-            {bdtFormat(detail.income.amount)}
+            {pdfBdtFormat(detail.income.amount)}
           </Text>
 
           <View style={styles.tableHeaderRow}>
@@ -304,7 +296,7 @@ function JointOwnershipDetail({
               <Text
                 style={[styles.tableCell, { flex: 1, textAlign: 'right' }]}
               >
-                {bdtFormat(dist.amount)}
+                {pdfBdtFormat(dist.amount)}
               </Text>
             </View>
           ))}
@@ -357,7 +349,7 @@ export function PdfSettlementSection({
               {settlement.propertyName}
             </Text>
             <Text style={{ fontSize: 9, color: '#666' }}>
-              {bdtFormat(settlement.propertyValue)}
+              {pdfBdtFormat(settlement.propertyValue)}
             </Text>
           </View>
 

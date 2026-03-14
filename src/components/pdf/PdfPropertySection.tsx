@@ -1,14 +1,7 @@
 import { View, Text } from '@react-pdf/renderer'
 import { styles } from './pdfStyles'
 import type { PdfProperty } from './pdfTypes'
-
-const bdtFormat = new Intl.NumberFormat('en-IN', {
-  style: 'currency',
-  currency: 'BDT',
-  currencyDisplay: 'narrowSymbol',
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 0,
-})
+import { pdfBdtFormat } from './extractPdfData'
 
 function ValueRow({
   label,
@@ -44,7 +37,7 @@ function ValueRow({
           color: '#333',
         }}
       >
-        {bdtFormat.format(value)}
+        {pdfBdtFormat(value)}
       </Text>
     </View>
   )
@@ -127,7 +120,7 @@ export function PdfPropertySection({
           Total Estate Value
         </Text>
         <Text style={{ fontSize: 11, fontWeight: 700, color: '#111' }}>
-          {bdtFormat.format(totalEstateValue)}
+          {pdfBdtFormat(totalEstateValue)}
         </Text>
       </View>
     </View>

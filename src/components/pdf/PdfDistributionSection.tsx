@@ -1,15 +1,7 @@
 import { View, Text } from '@react-pdf/renderer'
 import { styles } from './pdfStyles'
 import type { PdfDistribution } from './pdfTypes'
-
-const bdtFormat = (amount: number): string =>
-  new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'BDT',
-    currencyDisplay: 'narrowSymbol',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
+import { pdfBdtFormat } from './extractPdfData'
 
 export function PdfDistributionSection({
   distribution,
@@ -40,7 +32,7 @@ export function PdfDistributionSection({
               {group.count > 1 ? ` (x${group.count})` : ''}
             </Text>
             <Text style={{ fontSize: 9, color: '#666' }}>
-              Target: {bdtFormat(group.targetValue)}
+              Target: {pdfBdtFormat(group.targetValue)}
             </Text>
           </View>
 
@@ -96,7 +88,7 @@ export function PdfDistributionSection({
                     { flex: 1, textAlign: 'right' },
                   ]}
                 >
-                  {bdtFormat(item.value)}
+                  {pdfBdtFormat(item.value)}
                 </Text>
               </View>
             ))
@@ -122,7 +114,7 @@ export function PdfDistributionSection({
             }}
           >
             <Text style={{ fontSize: 9 }}>
-              Received: {bdtFormat(group.assignedValue)}
+              Received: {pdfBdtFormat(group.assignedValue)}
             </Text>
             <Text
               style={{
@@ -136,9 +128,9 @@ export function PdfDistributionSection({
               }}
             >
               {group.cashAdjustment > 0
-                ? `Owes ${bdtFormat(Math.abs(group.cashAdjustment))} cash`
+                ? `Owes ${pdfBdtFormat(Math.abs(group.cashAdjustment))} cash`
                 : group.cashAdjustment < 0
-                  ? `Owed ${bdtFormat(Math.abs(group.cashAdjustment))} cash`
+                  ? `Owed ${pdfBdtFormat(Math.abs(group.cashAdjustment))} cash`
                   : 'Balanced'}
             </Text>
           </View>
@@ -169,7 +161,7 @@ export function PdfDistributionSection({
                   { flex: 1, textAlign: 'right', fontWeight: 600 },
                 ]}
               >
-                {bdtFormat(comp.amount)}
+                {pdfBdtFormat(comp.amount)}
               </Text>
             </View>
           ))}

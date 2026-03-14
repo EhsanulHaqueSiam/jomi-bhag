@@ -1,15 +1,7 @@
 import { View, Text } from '@react-pdf/renderer'
 import { styles } from './pdfStyles'
 import type { PdfIndividualDistribution, PdfIndividualHeir } from './pdfTypes'
-
-const bdtFormat = (amount: number): string =>
-  new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'BDT',
-    currencyDisplay: 'narrowSymbol',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
+import { pdfBdtFormat } from './extractPdfData'
 
 function equilibriumIndicator(status: 'balanced' | 'close' | 'off', percentage: number): string {
   switch (status) {
@@ -73,7 +65,7 @@ function HeirRow({ heir }: { heir: PdfIndividualHeir }) {
             {equilibriumIndicator(heir.equilibriumStatus, heir.equilibriumPercentage)}
           </Text>
           <Text style={{ fontSize: 8, color: '#666' }}>
-            Target: {bdtFormat(heir.targetValue)}
+            Target: {pdfBdtFormat(heir.targetValue)}
           </Text>
         </View>
       </View>
@@ -110,7 +102,7 @@ function HeirRow({ heir }: { heir: PdfIndividualHeir }) {
               {item.category}
             </Text>
             <Text style={[styles.tableCell, { flex: 1, textAlign: 'right' }]}>
-              {bdtFormat(item.value)}
+              {pdfBdtFormat(item.value)}
             </Text>
           </View>
         ))
@@ -134,7 +126,7 @@ function HeirRow({ heir }: { heir: PdfIndividualHeir }) {
         }}
       >
         <Text style={{ fontSize: 9 }}>
-          Received: {bdtFormat(heir.assignedValue)}
+          Received: {pdfBdtFormat(heir.assignedValue)}
         </Text>
         {heir.cashAdjustment !== 0 && (
           <Text
@@ -144,8 +136,8 @@ function HeirRow({ heir }: { heir: PdfIndividualHeir }) {
             }}
           >
             {heir.cashAdjustment > 0
-              ? `+${bdtFormat(Math.abs(heir.cashAdjustment))} over target`
-              : `-${bdtFormat(Math.abs(heir.cashAdjustment))} under target`}
+              ? `+${pdfBdtFormat(Math.abs(heir.cashAdjustment))} over target`
+              : `-${pdfBdtFormat(Math.abs(heir.cashAdjustment))} under target`}
           </Text>
         )}
       </View>
@@ -246,7 +238,7 @@ export function PdfIndividualSection({
                   { flex: 1, textAlign: 'right', fontWeight: 600 },
                 ]}
               >
-                {bdtFormat(comp.amount)}
+                {pdfBdtFormat(comp.amount)}
               </Text>
             </View>
           ))}
@@ -269,7 +261,7 @@ export function PdfIndividualSection({
         </Text>
         {totalCompensation > 0 && (
           <Text style={{ fontSize: 10, color: '#92400e' }}>
-            Total compensation: {bdtFormat(totalCompensation)}
+            Total compensation: {pdfBdtFormat(totalCompensation)}
           </Text>
         )}
       </View>

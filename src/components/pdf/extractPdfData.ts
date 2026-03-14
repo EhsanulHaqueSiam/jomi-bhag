@@ -50,6 +50,62 @@ export function sanitizeForPdf(str: string): string {
 }
 
 /**
+ * PDF-safe BDT currency formatter.
+ * Uses "Tk" prefix instead of "৳" (U+09F3 Bengali Taka Sign) which
+ * crashes @react-pdf/renderer since Inter font doesn't support Bengali glyphs.
+ * Uses Indian/Bangladeshi lakh/crore grouping (en-IN locale).
+ */
+const _pdfBdtFormatter = new Intl.NumberFormat('en-IN', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+})
+
+export function pdfBdtFormat(amount: number): string {
+  return `Tk${_pdfBdtFormatter.format(amount)}`
+}
+
+/**
+ * Strip Arabic diacritical marks (tashkeel) and Quranic annotation signs
+ * from Arabic text. These combining marks crash @react-pdf/renderer's GPOS
+ * engine when the font doesn't have proper anchor points for all mark combinations.
+ *
+ * Removes: U+064B-U+065F (tashkeel), U+0670 (superscript alef),
+ * U+06D6-U+06ED (Quranic annotation marks).
+ * Preserves: base Arabic letters (readable without vowelization).
+ */
+function sanitizeArabicForPdf(str: string): string {
+  return str.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g, '')
+}
+
+/**
+ * Deep-sanitize all string values in a PdfData object tree.
+ * - arabicText keys: strips diacriticals/marks (keeps base Arabic letters)
+ * - Other strings: strips unsupported Unicode scripts
+ * - base64 data URLs: left untouched
+ */
+function deepSanitizeStrings<T>(obj: T, parentKey?: string): T {
+  if (typeof obj === 'string') {
+    // Don't sanitize base64 data URLs (chart images)
+    if (obj.startsWith('data:')) return obj
+    // Arabic text: strip diacriticals but keep base letters
+    if (parentKey === 'arabicText') return sanitizeArabicForPdf(obj) as T
+    // All other text: strip unsupported Unicode scripts
+    return sanitizeForPdf(obj) as T
+  }
+  if (Array.isArray(obj)) {
+    return obj.map((item) => deepSanitizeStrings(item)) as T
+  }
+  if (obj !== null && typeof obj === 'object' && !(obj instanceof Date)) {
+    const result: Record<string, unknown> = {}
+    for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
+      result[key] = deepSanitizeStrings(value, key)
+    }
+    return result as T
+  }
+  return obj
+}
+
+/**
  * Extract a serializable PdfData object from engine output and property data.
  * All Fraction objects are converted to pre-formatted strings.
  * No Zustand hooks, no DOM access -- pure data transformation.
@@ -115,8 +171,8 @@ export function extractPdfData(
     count: share.count,
     fraction: fractionToString(share.totalShare),
     percentage: fractionToPercent(share.totalShare),
-    perHeirBdt: fractionToBDT(share.sharePerHeir, totalEstateValue),
-    totalBdt: fractionToBDT(share.totalShare, totalEstateValue),
+    perHeirBdt: fractionToBDT(share.sharePerHeir, totalEstateValue).replace(/৳/g, 'Tk'),
+    totalBdt: fractionToBDT(share.totalShare, totalEstateValue).replace(/৳/g, 'Tk'),
     shareType: SHARE_TYPE_LABELS[share.shareType] ?? share.shareType,
     explanation: share.explanation,
     quranRef: share.quranRef,
@@ -408,7 +464,7 @@ export function extractPdfData(
     }
   }
 
-  return {
+  const rawData: PdfData = {
     shares,
     activeShares,
     adjustment: results.adjustment,
@@ -432,4 +488,8 @@ export function extractPdfData(
     individualDistribution,
     generatedAt: new Date(),
   }
+
+  // Deep-sanitize all strings to catch any Unicode that could crash @react-pdf/renderer.
+  // This is a safety net beyond the targeted sanitization above.
+  return deepSanitizeStrings(rawData)
 }
