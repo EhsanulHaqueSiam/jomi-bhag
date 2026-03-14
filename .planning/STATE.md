@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-13)
 Phase: 14 of 14 (Per-Heir Asset Breakdown)
 Plan: 4 of 4 complete
 Status: Complete
-Last activity: 2026-03-14 -- Phase 14 plan 04 complete (PDF individual asset breakdown section)
+Last activity: 2026-03-14 - Completed quick task 1: Fix missing next button on mobile - cannot go to next step
 
 Progress: [##########] 35/35 plans (100%)
 
@@ -225,6 +225,12 @@ None yet.
 - Phase 12 added: JSON import and export for assets -- import JSON with partial fields, edit in GUI, export complete data
 - Phase 13 added: Land settlement methods -- sell and split, physical division by value, buyouts, and joint ownership for complete land resolution
 - Phase 14 added: Per-heir asset breakdown -- individual kanban cards showing each heir's land parcels and assets separately (Brother-1 card with their land + assets, not grouped by heir type)
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 1 | Fix missing next button on mobile - cannot go to next step | 2026-03-14 | 46704fe | [1-fix-missing-next-button-on-mobile-cannot](./quick/1-fix-missing-next-button-on-mobile-cannot/) |
 
 ### Blockers/Concerns
 
