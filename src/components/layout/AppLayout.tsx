@@ -62,7 +62,7 @@ export function AppLayout({ children, page, onNavigate }: AppLayoutProps) {
       </header>
 
       {/* Main content area */}
-      <main className="relative px-4 pb-24 md:mx-auto md:max-w-lg md:pb-8 lg:max-w-xl">
+      <main className="relative px-4 pb-32 md:mx-auto md:max-w-lg md:pb-8 lg:max-w-xl">
         <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm md:p-8">
           {children}
         </div>
@@ -72,6 +72,7 @@ export function AppLayout({ children, page, onNavigate }: AppLayoutProps) {
       <nav
         className="fixed bottom-0 left-0 right-0 z-50 flex border-t border-gray-200 bg-white md:hidden"
         aria-label="Mobile navigation"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       >
         <button
           type="button"
