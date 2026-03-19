@@ -154,7 +154,7 @@ describe('useJsonImport', () => {
     const resetSpy = vi.fn()
     vi.spyOn(useDistributionStore, 'getState').mockReturnValue({
       resetDistribution: resetSpy,
-    } as any)
+    } as unknown as ReturnType<typeof useDistributionStore.getState>)
 
     const { result } = renderHook(() => useJsonImport())
 

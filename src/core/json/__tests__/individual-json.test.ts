@@ -352,10 +352,8 @@ describe('Scenario save/load with individual distribution', () => {
   })
 
   it('Scenario type has optional individualDistribution field', async () => {
-    // Verify the type exists by importing it
-    const { Scenario } = await import('@/types/scenario').catch(() => ({
-      Scenario: undefined,
-    }))
+    // Verify the type module resolves
+    await import('@/types/scenario')
 
     // If this compiles, the type is correct. We verify by creating a scenario-like object
     const scenario = {

@@ -2,9 +2,14 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import Fraction from 'fraction.js'
 import { useWizardStore } from '@/stores/wizardStore'
 import type { HeirType, FaraidOutput } from '@/core/faraid/types'
+import type { MovableAsset } from '@/core/assets/types'
 import { WIZARD_STEPS } from '@/types/wizard'
 
 const initialState = useWizardStore.getState()
+
+function asMovablePatch(patch: object): Partial<MovableAsset> {
+  return patch as Partial<MovableAsset>
+}
 
 beforeEach(() => {
   localStorage.clear()
@@ -634,14 +639,14 @@ describe('movable asset CRUD', () => {
   })
 
   it('addMovableAsset sets correct isIndivisible for vehicle', () => {
-    const id = useWizardStore.getState().addMovableAsset('vehicle')
+    useWizardStore.getState().addMovableAsset('vehicle')
     const asset = useWizardStore.getState().movableAssets[0]
     expect(asset.isIndivisible).toBe(true) // vehicle default
     expect(asset.category).toBe('vehicle')
   })
 
   it('addMovableAsset sets livestock defaults', () => {
-    const id = useWizardStore.getState().addMovableAsset('livestock')
+    useWizardStore.getState().addMovableAsset('livestock')
     const asset = useWizardStore.getState().movableAssets[0]
     expect(asset.category).toBe('livestock')
     if (asset.category === 'livestock') {
@@ -669,7 +674,7 @@ describe('movable asset CRUD', () => {
 
   it('updateMovableAsset patches the asset', () => {
     const id = useWizardStore.getState().addMovableAsset('cash')
-    useWizardStore.getState().updateMovableAsset(id, { value: 500000 } as any)
+    useWizardStore.getState().updateMovableAsset(id, asMovablePatch({ value: 500000 }))
     const asset = useWizardStore.getState().movableAssets[0]
     if (asset.category === 'cash') {
       expect(asset.value).toBe(500000)
@@ -680,9 +685,9 @@ describe('movable asset CRUD', () => {
 describe('movable asset totals', () => {
   it('getMovableAssetsTotal returns sum of movable assets', () => {
     const id1 = useWizardStore.getState().addMovableAsset('cash')
-    useWizardStore.getState().updateMovableAsset(id1, { value: 100000 } as any)
+    useWizardStore.getState().updateMovableAsset(id1, asMovablePatch({ value: 100000 }))
     const id2 = useWizardStore.getState().addMovableAsset('cash')
-    useWizardStore.getState().updateMovableAsset(id2, { value: 200000 } as any)
+    useWizardStore.getState().updateMovableAsset(id2, asMovablePatch({ value: 200000 }))
     expect(useWizardStore.getState().getMovableAssetsTotal()).toBe(300000)
   })
 
@@ -692,7 +697,7 @@ describe('movable asset totals', () => {
     useWizardStore.getState().updateProperty(propId, { landValue: 100000 })
     // Add a movable asset
     const assetId = useWizardStore.getState().addMovableAsset('cash')
-    useWizardStore.getState().updateMovableAsset(assetId, { value: 50000 } as any)
+    useWizardStore.getState().updateMovableAsset(assetId, asMovablePatch({ value: 50000 }))
     // Total should be property + movable
     expect(useWizardStore.getState().getAllPropertiesTotal()).toBe(150000)
   })

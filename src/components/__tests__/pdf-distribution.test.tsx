@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import Fraction from 'fraction.js'
+import type { ReactNode } from 'react'
 import type { FaraidOutput, ShareResult } from '@/core/faraid/types'
 import type { DistributionResult, DistributionGroup, DistributionItem } from '@/core/distribution/types'
 import type { CashCompensation } from '@/core/land/division'
@@ -9,12 +10,11 @@ import type { CashCompensation } from '@/core/land/division'
 // ---------------------------------------------------------------------------
 
 vi.mock('@react-pdf/renderer', () => {
-  const React = require('react')
   return {
-    Document: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-    Page: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-    View: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-    Text: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
+    Document: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    Page: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    View: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    Text: ({ children }: { children: ReactNode }) => <span>{children}</span>,
     Image: ({ src }: { src: string }) => <img src={src} alt="" />,
     StyleSheet: {
       create: <T extends Record<string, unknown>>(styles: T): T => styles,

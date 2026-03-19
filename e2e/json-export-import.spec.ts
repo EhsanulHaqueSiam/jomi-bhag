@@ -16,11 +16,12 @@ test.describe('JSON Export', () => {
 
     // Patch URL.createObjectURL BEFORE clicking
     await page.evaluate(() => {
-      (window as any).__exportedBlob = null
+      const exportWindow = window as Window & { __exportedBlob?: Blob | null }
+      exportWindow.__exportedBlob = null
       const orig = URL.createObjectURL.bind(URL)
       URL.createObjectURL = function (blob: Blob) {
         if (blob.type === 'application/json') {
-          (window as any).__exportedBlob = blob
+          exportWindow.__exportedBlob = blob
         }
         return orig(blob)
       }
@@ -31,7 +32,8 @@ test.describe('JSON Export', () => {
 
     // Read the captured blob
     const jsonContent = await page.evaluate(async () => {
-      const blob = (window as any).__exportedBlob as Blob | null
+      const exportWindow = window as Window & { __exportedBlob?: Blob | null }
+      const blob = exportWindow.__exportedBlob ?? null
       if (!blob) return ''
       return await blob.text()
     })
@@ -52,11 +54,12 @@ test.describe('JSON Export', () => {
     await expect(page.getByText('Inheritance Results')).toBeVisible({ timeout: 5000 })
 
     await page.evaluate(() => {
-      (window as any).__exportedBlob = null
+      const exportWindow = window as Window & { __exportedBlob?: Blob | null }
+      exportWindow.__exportedBlob = null
       const orig = URL.createObjectURL.bind(URL)
       URL.createObjectURL = function (blob: Blob) {
         if (blob.type === 'application/json') {
-          (window as any).__exportedBlob = blob
+          exportWindow.__exportedBlob = blob
         }
         return orig(blob)
       }
@@ -66,7 +69,8 @@ test.describe('JSON Export', () => {
     await page.waitForTimeout(1000)
 
     const jsonContent = await page.evaluate(async () => {
-      const blob = (window as any).__exportedBlob as Blob | null
+      const exportWindow = window as Window & { __exportedBlob?: Blob | null }
+      const blob = exportWindow.__exportedBlob ?? null
       if (!blob) return ''
       return await blob.text()
     })

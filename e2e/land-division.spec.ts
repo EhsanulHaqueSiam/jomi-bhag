@@ -25,7 +25,7 @@ test.describe('Land Division', () => {
 
     // Should see group cards with heir type labels
     // The wizard adds wife, 2 sons, 1 daughter
-    await expect(page.getByText('Wife')).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Wife' })).toBeVisible()
   })
 
   test('Randomize button reshuffles assignments without crash', async ({ page }) => {

@@ -53,14 +53,3 @@ export function EquilibriumBar({
     </div>
   )
 }
-
-/**
- * Returns the border-top color class for a column based on equilibrium status.
- */
-export function getColumnBorderColor(
-  assignedValue: number,
-  targetValue: number,
-): string {
-  const result = getEquilibriumStatus(assignedValue, targetValue)
-  return STATUS_COLORS[result.status]?.[2] ?? 'border-t-red-500'
-}

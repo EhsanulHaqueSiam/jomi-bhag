@@ -25,9 +25,7 @@ test.describe('PDF Export', () => {
     // Click and verify spinner appears (isGenerating = true)
     await pdfButton.click()
 
-    // The button should show a spinner while generating
-    const spinner = page.locator('button:has-text("Download PDF") .animate-spin')
-    // Wait for generation to complete (spinner disappears, button re-enabled)
+    // Wait for generation to complete (button re-enabled)
     await expect(pdfButton).toBeEnabled({ timeout: 45000 })
   })
 
@@ -63,7 +61,7 @@ test.describe('PDF Export', () => {
     await fileInput.setInputFiles(scenarioPath)
 
     // Wait for the confirm dialog and click "Import" button
-    const importButton = page.locator('button:text-is("Import")')
+    const importButton = page.getByRole('button', { name: /^Import$/i })
     await expect(importButton).toBeVisible({ timeout: 5000 })
     await importButton.click()
 

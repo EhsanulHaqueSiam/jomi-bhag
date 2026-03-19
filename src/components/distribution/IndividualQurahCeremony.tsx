@@ -4,7 +4,8 @@ import type { IndividualColumn } from '@/core/distribution/individual-types'
 import type { HeirType } from '@/core/faraid/types'
 import { getEquilibriumStatus } from '@/core/distribution/algorithm'
 import { HEIR_TYPE_LABELS } from '@/core/utils/display'
-import { HeirIcon, feminineHeirs } from '@/components/ui/HeirIcon'
+import { HeirIcon } from '@/components/ui/HeirIcon'
+import { feminineHeirs } from '@/components/ui/heirGender'
 import { HEIR_TYPE_COLORS } from './IndividualColumn'
 
 /** Faraid priority order for section rendering. */

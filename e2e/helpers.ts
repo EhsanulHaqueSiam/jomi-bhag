@@ -7,7 +7,47 @@ import { type Page, expect } from '@playwright/test'
 export async function clearPersistedState(page: Page) {
   await page.addInitScript(() => {
     localStorage.clear()
+    localStorage.setItem('jomi-bhag-lang', 'en')
   })
+}
+
+interface EstateStepOptions {
+  addExtraChildren?: boolean
+}
+
+/**
+ * Navigate through relationship/family steps and land on Estate Inventory.
+ */
+export async function goToEstateInventory(
+  page: Page,
+  options: EstateStepOptions = {},
+) {
+  const { addExtraChildren = false } = options
+
+  await page.goto('/')
+  await page.waitForLoadState('networkidle')
+
+  await page.locator('button:text-is("Father")').click()
+  await expect(page.getByText("I am the deceased's...")).toBeVisible()
+
+  await page.locator('button:text-is("Son")').click()
+  await expect(page.getByText("Is the deceased's wife (your mother) alive?")).toBeVisible()
+
+  await page.locator('button:text-is("Yes")').click()
+
+  const nextButton = page.getByRole('button', { name: 'Next' })
+  await expect(nextButton).toBeEnabled()
+  await nextButton.click()
+
+  if (addExtraChildren) {
+    await page.getByRole('button', { name: 'Increase Sons' }).click()
+    await page.getByRole('button', { name: 'Increase Daughters' }).click()
+  }
+
+  await expect(nextButton).toBeEnabled()
+  await nextButton.click()
+
+  await expect(page.getByRole('button', { name: 'Calculate Shares' })).toBeVisible()
 }
 
 /**
@@ -16,30 +56,9 @@ export async function clearPersistedState(page: Page) {
  * Adds one property.
  */
 export async function wizardToResults(page: Page) {
-  await page.goto('/')
-  await page.waitForLoadState('networkidle')
+  await goToEstateInventory(page, { addExtraChildren: true })
 
-  // Step 1: Select "Father" as the deceased
-  await page.locator('button:text-is("Father")').click()
-  // Follow-up: I am the deceased's Son
-  await page.locator('button:text-is("Son")').click()
-  // Follow-up: Is the deceased's wife alive? Yes
-  await page.locator('button:text-is("Yes")').click()
-
-  // Next to Step 2
-  await page.getByRole('button', { name: 'Next' }).click()
-
-  // Step 2: Add 1 more son + 1 daughter
-  await page.getByRole('button', { name: 'Increase Sons' }).click()
-  await page.getByRole('button', { name: 'Increase Daughters' }).click()
-
-  // Next to Step 3
-  await page.getByRole('button', { name: 'Next' }).click()
-
-  // Step 3: Siblings - skip
-  await page.getByRole('button', { name: 'Next' }).click()
-
-  // Step 4: Add a property
+  // Step 3: Estate inventory
   await page.getByRole('button', { name: 'Add Property' }).click()
   await page.waitForTimeout(300)
 

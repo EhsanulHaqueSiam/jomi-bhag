@@ -3,7 +3,6 @@ import Fraction from 'fraction.js'
 import type { ShareResult } from '@/core/faraid/types'
 import type { DistributionGroup, DistributionItem } from '@/core/distribution/types'
 import type { IndividualColumn } from '@/core/distribution/individual-types'
-import { COMPENSATION_THRESHOLD } from '@/core/distribution/individual-types'
 import {
   expandGroupsToIndividuals,
   subdivideGroupItems,

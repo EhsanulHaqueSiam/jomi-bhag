@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import { validateAndParseImport } from '@/core/json/importData'
-import type { ImportResult } from '@/core/json/importData'
 import { SCHEMA_VERSION } from '@/core/json/schema'
 import { extractExportData } from '@/core/json/exportData'
 import type { WizardState } from '@/types/wizard'

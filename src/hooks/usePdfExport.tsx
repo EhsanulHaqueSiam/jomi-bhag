@@ -7,13 +7,10 @@ export function usePdfExport() {
   const [error, setError] = useState<string | null>(null)
   const { language } = useTranslation()
 
-  // Read store state (non-reactive -- only read when generating)
-  const getStoreState = () => useWizardStore.getState()
-
-  async function captureCharts(): Promise<{
+  const captureCharts = useCallback(async (): Promise<{
     pieChartImage: string | null
     barChartImage: string | null
-  }> {
+  }> => {
     let pieChartImage: string | null = null
     let barChartImage: string | null = null
 
@@ -68,10 +65,10 @@ export function usePdfExport() {
     }
 
     return { pieChartImage, barChartImage }
-  }
+  }, [])
 
-  async function generatePdfBlob(): Promise<Blob> {
-    const state = getStoreState()
+  const generatePdfBlob = useCallback(async (): Promise<Blob> => {
+    const state = useWizardStore.getState()
     if (!state.results) throw new Error('No results to export')
 
     // Validate that Fraction objects are real instances (not plain objects from stale localStorage)
@@ -112,7 +109,7 @@ export function usePdfExport() {
     // Generate PDF blob
     const blob = await pdf(<PdfDocument data={pdfData} />).toBlob()
     return blob
-  }
+  }, [captureCharts, language])
 
   const downloadPdf = useCallback(async (): Promise<void> => {
     setIsGenerating(true)
@@ -138,7 +135,7 @@ export function usePdfExport() {
     } finally {
       setIsGenerating(false)
     }
-  }, [language])
+  }, [generatePdfBlob])
 
   const printPdf = useCallback(async (): Promise<void> => {
     setIsGenerating(true)
@@ -175,7 +172,7 @@ export function usePdfExport() {
     } finally {
       setIsGenerating(false)
     }
-  }, [language])
+  }, [generatePdfBlob])
 
   const dismissError = useCallback(() => setError(null), [])
 

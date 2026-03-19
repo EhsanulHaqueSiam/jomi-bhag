@@ -8,13 +8,16 @@ test.describe('App Navigation', () => {
 
   test('shows Jomi-Bhag header and calculator page by default', async ({ page }) => {
     await page.goto('/')
+    await page.waitForLoadState('networkidle')
 
     await expect(page.getByText('Jomi-Bhag')).toBeVisible()
     await expect(page.getByText('Islamic Inheritance Calculator')).toBeVisible()
   })
 
-  test('desktop nav tabs switch between Calculator and My Scenarios', async ({ page }) => {
+  test('desktop nav tabs switch between Calculator and My Scenarios', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'Desktop navigation is hidden on mobile viewport')
     await page.goto('/')
+    await page.waitForLoadState('networkidle')
 
     // Desktop nav should have Calculator and My Scenarios
     const nav = page.getByRole('navigation', { name: 'Main navigation' })
@@ -43,6 +46,7 @@ test.describe('Mobile Navigation', () => {
 
   test('shows bottom navigation bar on mobile', async ({ page }) => {
     await page.goto('/')
+    await page.waitForLoadState('networkidle')
 
     const mobileNav = page.getByRole('navigation', { name: 'Mobile navigation' })
     await expect(mobileNav).toBeVisible()
@@ -52,6 +56,7 @@ test.describe('Mobile Navigation', () => {
 
   test('mobile nav switches pages', async ({ page }) => {
     await page.goto('/')
+    await page.waitForLoadState('networkidle')
 
     const mobileNav = page.getByRole('navigation', { name: 'Mobile navigation' })
 

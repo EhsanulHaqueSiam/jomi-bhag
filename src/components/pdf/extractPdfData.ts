@@ -52,12 +52,12 @@ export function sanitizeForPdf(str: string, language?: Language): string {
   if (language === 'bn') {
     // Keep Bengali (U+0980-U+09FF) + ASCII + Latin Extended + Arabic
     return str
-      .replace(/[^\u0000-\u024F\u0600-\u06FF\u0980-\u09FF]/g, '')
+      .replace(/[^\t\n\r\u0020-\u024F\u0600-\u06FF\u0980-\u09FF]/g, '')
       .replace(/\s{2,}/g, ' ')
       .trim()
   }
   return str
-    .replace(/[^\u0000-\u024F\u0600-\u06FF]/g, '')
+    .replace(/[^\t\n\r\u0020-\u024F\u0600-\u06FF]/g, '')
     .replace(/\s{2,}/g, ' ')
     .trim()
 }

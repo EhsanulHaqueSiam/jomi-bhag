@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import Fraction from 'fraction.js'
 import { useDistributionStore } from '@/stores/distributionStore'
 import { useWizardStore } from '@/stores/wizardStore'

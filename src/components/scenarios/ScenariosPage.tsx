@@ -123,10 +123,6 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
     )
   }
 
-  if (scenarios.length === 0) {
-    return <EmptyState onNewCalculation={handleNewCalculation} />
-  }
-
   return (
     <div className="space-y-4">
       {/* Top actions bar */}
@@ -198,68 +194,72 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
         </div>
       )}
 
-      {/* Compare button */}
-      {selectedIds.length === 2 && (
-        <button
-          type="button"
-          onClick={startCompare}
-          className="w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700"
-        >
-          {t('scenarios.compareSelected')}
-        </button>
-      )}
-
-      {/* Scenario cards list */}
-      <div className="space-y-3">
-        {sortedScenarios.map((scenario) => (
-          <ScenarioCard
-            key={scenario.id}
-            scenario={scenario}
-            isSelected={selectedIds.includes(scenario.id)}
-            onToggleSelect={() => toggleSelected(scenario.id)}
-            onLoad={() => handleLoad(scenario.id)}
-            onDuplicate={() => duplicateScenario(scenario.id)}
-            onDelete={() => deleteScenario(scenario.id)}
-            onRename={(name) => renameScenario(scenario.id, name)}
-          />
-        ))}
-      </div>
-
-      {/* Clear All */}
-      {scenarios.length > 0 && (
-        <div className="border-t border-gray-100 pt-4">
-          {showClearConfirm ? (
-            <div className="rounded-lg border border-red-200 bg-red-50 p-3">
-              <p className="text-sm font-medium text-red-800">
-                {t('scenarios.clearConfirm').replace('{count}', String(scenarios.length))}
-              </p>
-              <div className="mt-2 flex gap-2">
-                <button
-                  type="button"
-                  onClick={handleClearAll}
-                  className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700"
-                >
-                  {t('scenarios.yesDeleteAll')}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowClearConfirm(false)}
-                  className="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700"
-                >
-                  {t('buttons.cancel')}
-                </button>
-              </div>
-            </div>
-          ) : (
+      {scenarios.length === 0 ? (
+        <EmptyState onNewCalculation={handleNewCalculation} />
+      ) : (
+        <>
+          {/* Compare button */}
+          {selectedIds.length === 2 && (
             <button
               type="button"
-              onClick={() => setShowClearConfirm(true)}
-              className="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-500 transition-colors hover:bg-red-50"
+              onClick={startCompare}
+              className="w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700"
             >
-              {t('scenarios.clearAll')}
+              {t('scenarios.compareSelected')}
             </button>
           )}
-        </div>
+
+          {/* Scenario cards list */}
+          <div className="space-y-3">
+            {sortedScenarios.map((scenario) => (
+              <ScenarioCard
+                key={scenario.id}
+                scenario={scenario}
+                isSelected={selectedIds.includes(scenario.id)}
+                onToggleSelect={() => toggleSelected(scenario.id)}
+                onLoad={() => handleLoad(scenario.id)}
+                onDuplicate={() => duplicateScenario(scenario.id)}
+                onDelete={() => deleteScenario(scenario.id)}
+                onRename={(name) => renameScenario(scenario.id, name)}
+              />
+            ))}
+          </div>
+
+          {/* Clear All */}
+          <div className="border-t border-gray-100 pt-4">
+            {showClearConfirm ? (
+              <div className="rounded-lg border border-red-200 bg-red-50 p-3">
+                <p className="text-sm font-medium text-red-800">
+                  {t('scenarios.clearConfirm').replace('{count}', String(scenarios.length))}
+                </p>
+                <div className="mt-2 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={handleClearAll}
+                    className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700"
+                  >
+                    {t('scenarios.yesDeleteAll')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowClearConfirm(false)}
+                    className="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700"
+                  >
+                    {t('buttons.cancel')}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowClearConfirm(true)}
+                className="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-500 transition-colors hover:bg-red-50"
+              >
+                {t('scenarios.clearAll')}
+              </button>
+            )}
+          </div>
+        </>
       )}
     </div>
   )

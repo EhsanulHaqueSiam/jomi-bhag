@@ -23,7 +23,9 @@ test.describe('Mobile Wizard Flow', () => {
     await page.locator('button:text-is("Yes")').click()
 
     // Next via mobile bottom nav
-    await page.getByRole('button', { name: 'Next' }).click()
+    const nextButton = page.getByRole('button', { name: 'Next' })
+    await expect(nextButton).toBeEnabled()
+    await nextButton.click()
 
     // Step 2: Immediate Family
     await expect(page.getByText('Immediate Family')).toBeVisible()
@@ -33,12 +35,10 @@ test.describe('Mobile Wizard Flow', () => {
     await page.getByRole('button', { name: 'Increase Daughters' }).click()
 
     // Next to Step 3
-    await page.getByRole('button', { name: 'Next' }).click()
+    await expect(nextButton).toBeEnabled()
+    await nextButton.click()
 
-    // Step 3: skip
-    await page.getByRole('button', { name: 'Next' }).click()
-
-    // Step 4: Calculate
+    // Step 3: Estate inventory -> Calculate
     await page.getByRole('button', { name: 'Calculate Shares' }).click()
 
     // Step 5: Results
@@ -57,6 +57,7 @@ test.describe('Mobile Wizard Flow', () => {
     // Next button should be visible in the fixed mobile nav
     const nextButton = page.getByRole('button', { name: 'Next' })
     await expect(nextButton).toBeVisible()
+    await expect(nextButton).toBeEnabled()
 
     // Click Next to go to step 2
     await nextButton.click()
@@ -71,15 +72,17 @@ test.describe('Mobile Wizard Flow', () => {
     await page.locator('button:text-is("Father")').click()
     await page.locator('button:text-is("Son")').click()
     await page.locator('button:text-is("Yes")').click()
-    await page.getByRole('button', { name: 'Next' }).click()
-    await page.getByRole('button', { name: 'Next' }).click()
-    await page.getByRole('button', { name: 'Next' }).click()
+    const nextButton = page.getByRole('button', { name: 'Next' })
+    await expect(nextButton).toBeEnabled()
+    await nextButton.click()
+    await expect(nextButton).toBeEnabled()
+    await nextButton.click()
 
-    // Step 4: Calculate Shares button should be visible
+    // Step 3: Calculate Shares button should be visible
     await expect(page.getByRole('button', { name: 'Calculate Shares' })).toBeVisible()
 
     // Skip to Results link should also be visible
-    await expect(page.getByText('Skip to Results')).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Skip to Results' })).toBeVisible()
   })
 
   test('mobile Back button appears on steps 2+ but not step 1', async ({ page }) => {
@@ -96,7 +99,9 @@ test.describe('Mobile Wizard Flow', () => {
     await expect(backButton).not.toBeVisible()
 
     // Navigate to step 2
-    await page.getByRole('button', { name: 'Next' }).click()
+    const nextButton = page.getByRole('button', { name: 'Next' })
+    await expect(nextButton).toBeEnabled()
+    await nextButton.click()
     await expect(page.getByText('Immediate Family')).toBeVisible()
 
     // On step 2, Back SHOULD be visible

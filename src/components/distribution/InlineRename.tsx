@@ -17,21 +17,18 @@ export function InlineRename({ value, subtitle, onSave }: InlineRenameProps) {
     }
   }, [editing])
 
-  // Sync draft when value changes externally
-  useEffect(() => {
-    if (!editing) {
-      setDraft(value)
-    }
-  }, [value, editing])
-
   if (!editing) {
     return (
       <button
         type="button"
-        onClick={() => setEditing(true)}
+        onClick={() => {
+          setDraft(value)
+          setEditing(true)
+        }}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault()
+            setDraft(value)
             setEditing(true)
           }
         }}

@@ -1,4 +1,3 @@
-import { useCallback } from 'react'
 import type { ShareResult } from '@/core/faraid/types'
 import type { SubParcel } from '@/core/land/settlement-types'
 import type { LandUnit } from '@/core/land/types'
@@ -39,7 +38,7 @@ export function PhysicalDivisionDetail({
       : 0
   const isClose = diffPercent <= 10
 
-  const handleSuggest = useCallback(() => {
+  const handleSuggest = () => {
     const count = activeShares.length
     const suggested: SubParcel[] = targets.map((t, i) => ({
       id: crypto.randomUUID(),
@@ -49,9 +48,9 @@ export function PhysicalDivisionDetail({
       appraisedValue: t.targetValue,
     }))
     onSubParcelsChange(suggested.slice(0, count))
-  }, [activeShares.length, targets, landInputUnit, onSubParcelsChange])
+  }
 
-  const handleAdd = useCallback(() => {
+  const handleAdd = () => {
     const newParcel: SubParcel = {
       id: crypto.randomUUID(),
       name: parcelName(subParcels.length),
@@ -60,23 +59,17 @@ export function PhysicalDivisionDetail({
       appraisedValue: 0,
     }
     onSubParcelsChange([...subParcels, newParcel])
-  }, [subParcels, landInputUnit, onSubParcelsChange])
+  }
 
-  const handleRemove = useCallback(
-    (id: string) => {
-      onSubParcelsChange(subParcels.filter((p) => p.id !== id))
-    },
-    [subParcels, onSubParcelsChange],
-  )
+  const handleRemove = (id: string) => {
+    onSubParcelsChange(subParcels.filter((p) => p.id !== id))
+  }
 
-  const handleUpdate = useCallback(
-    (id: string, patch: Partial<SubParcel>) => {
-      onSubParcelsChange(
-        subParcels.map((p) => (p.id === id ? { ...p, ...patch } : p)),
-      )
-    },
-    [subParcels, onSubParcelsChange],
-  )
+  const handleUpdate = (id: string, patch: Partial<SubParcel>) => {
+    onSubParcelsChange(
+      subParcels.map((p) => (p.id === id ? { ...p, ...patch } : p)),
+    )
+  }
 
   const unitLabel =
     landInputUnit === 'sqft'

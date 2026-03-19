@@ -263,7 +263,8 @@ export const useIndividualDistributionStore = create<IndividualDistributionStore
         })
 
         // Remove from split origins
-        const { [parentId]: _, ...newSplitOrigins } = splitOrigins
+        const newSplitOrigins = { ...splitOrigins }
+        delete newSplitOrigins[parentId]
 
         const compensations = calculateIndividualCompensations(newIndividuals)
 

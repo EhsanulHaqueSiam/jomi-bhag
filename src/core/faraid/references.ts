@@ -8,7 +8,6 @@ import { FARAID_RULES } from '@/data/faraid-rules'
  */
 export function getShareReference(
   heirType: HeirType,
-  _condition?: string
 ): IslamicReference[] {
   const rule = FARAID_RULES.find((r) => r.heirType === heirType)
   if (!rule) return []

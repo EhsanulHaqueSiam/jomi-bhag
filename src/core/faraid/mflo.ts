@@ -31,12 +31,14 @@ import Fraction from 'fraction.js'
  */
 export function applyMFLO(
   input: FaraidInput,
-  _ctx: HeirContext,
+  ctx: HeirContext,
 ): {
   modifiedHeirs: HeirInput[]
   mfloShares: ShareAssignment[]
   explanation: CalculationStep
 } | null {
+  void ctx
+
   // MFLO must be explicitly enabled
   if (!input.mfloEnabled) {
     return null

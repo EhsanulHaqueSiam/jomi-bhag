@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useWizardStore } from '@/stores/wizardStore'
 import { StepperButton } from '@/components/ui/StepperButton'
 import { Tooltip } from '@/components/ui/Tooltip'
@@ -62,14 +62,7 @@ export function StepFamilyAndSiblings() {
   const { t } = useTranslation()
 
   // Collapsible siblings section state
-  const [siblingsExpanded, setSiblingsExpanded] = useState(false)
-
-  // Auto-expand on mount if any sibling count > 0
-  useEffect(() => {
-    if (hasSiblings) {
-      setSiblingsExpanded(true)
-    }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  const [siblingsExpanded, setSiblingsExpanded] = useState(() => hasSiblings)
 
   const handleCollapsedBrotherChange = (newTotal: number) => {
     const diff = newTotal - totalBrothers

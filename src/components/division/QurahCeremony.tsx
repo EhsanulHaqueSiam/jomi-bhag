@@ -6,9 +6,11 @@ interface QurahCeremonyProps {
 
 export function QurahCeremony({
   onDraw,
-  isRevealed: _isRevealed,
+  isRevealed,
   hasDrawn,
 }: QurahCeremonyProps) {
+  const hasCompletedDraw = hasDrawn || isRevealed
+
   return (
     <div className="space-y-4">
       {/* Bismillah header */}
@@ -32,7 +34,7 @@ export function QurahCeremony({
           onClick={onDraw}
           className="rounded-xl bg-gold-600 px-8 py-3 font-semibold text-white hover:bg-gold-700 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2"
         >
-          {hasDrawn ? 'Re-Draw Lots (Qurah)' : 'Draw Lots (Qurah)'}
+          {hasCompletedDraw ? 'Re-Draw Lots (Qurah)' : 'Draw Lots (Qurah)'}
         </button>
       </div>
     </div>

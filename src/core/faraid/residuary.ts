@@ -177,7 +177,7 @@ export function assignResiduary(
   }
 
   // Determine actual remainder for Asaba (account for fard_and_asaba fixed portions)
-  let asabaRemainder = remainder
+  const asabaRemainder = remainder
 
   // For fard_and_asaba heirs, remainder is calculated after their fard portion
   // The fard portion is already counted in fixedTotal above

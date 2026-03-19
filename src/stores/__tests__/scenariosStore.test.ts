@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { useWizardStore } from '@/stores/wizardStore'
 import {
   useScenariosStore,
@@ -6,7 +6,6 @@ import {
   computeStateFingerprint,
   MAX_SCENARIOS,
 } from '@/stores/scenariosStore'
-import type { WizardState } from '@/types/wizard'
 
 const initialWizardState = useWizardStore.getState()
 const initialScenariosState = useScenariosStore.getState()
@@ -170,7 +169,6 @@ describe('renameScenario', () => {
   it('updates name and updatedAt', () => {
     useWizardStore.getState().setRelationship('father')
     const id = useScenariosStore.getState().saveScenario('Original')!
-    const beforeUpdate = useScenariosStore.getState().scenarios[0].updatedAt
 
     // Small delay to ensure different timestamp
     useScenariosStore.getState().renameScenario(id, 'Renamed')

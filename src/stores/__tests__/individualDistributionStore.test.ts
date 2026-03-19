@@ -546,8 +546,6 @@ describe('splitOrigins persistence', () => {
 
     useIndividualDistributionStore.getState().splitItem('p1', [{ areaSqft: 600 }, { areaSqft: 400 }], 1000)
 
-    // Access persist options to check partialize
-    const persistOptions = (useIndividualDistributionStore as any).persist
     const state = useIndividualDistributionStore.getState()
 
     // The partialize function should include splitOrigins

@@ -3,7 +3,8 @@ import type { DistributionGroup, DistributionItem } from '@/core/distribution/ty
 import type { Property } from '@/core/land/types'
 import type { ShareResult, HeirType } from '@/core/faraid/types'
 import type { LandSettlement } from '@/core/land/settlement-types'
-import { EquilibriumBar, getColumnBorderColor } from './EquilibriumBar'
+import { EquilibriumBar } from './EquilibriumBar'
+import { getColumnBorderColor } from './equilibriumUtils'
 import { AssetCard } from './AssetCard'
 import { MobileFallback } from './MobileFallback'
 

@@ -7,7 +7,6 @@ import type {
   CashAsset,
   VehicleAsset,
   CustomAsset,
-  MovableAsset,
 } from '@/core/assets/types'
 import { MovableAssetCard } from '@/components/assets/MovableAssetCard'
 import { MovableAssetList } from '@/components/assets/MovableAssetList'

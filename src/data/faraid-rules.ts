@@ -35,7 +35,7 @@ export const FARAID_RULES: FaraidRule[] = [
       {
         share: HALF,
         when: 'Wife (deceased) has no children or grandchildren',
-        predicate: (_ctx: HeirContext) => true,
+        predicate: () => true,
       },
     ],
     quranRef: '4:12',
@@ -54,7 +54,7 @@ export const FARAID_RULES: FaraidRule[] = [
       {
         share: QUARTER,
         when: 'Husband (deceased) has no children or grandchildren',
-        predicate: (_ctx: HeirContext) => true,
+        predicate: () => true,
       },
     ],
     quranRef: '4:12',
@@ -68,7 +68,7 @@ export const FARAID_RULES: FaraidRule[] = [
       {
         share: ZERO, // Asaba -- gets remainder
         when: 'Son inherits as Asaba (residuary). Male gets twice the female share when co-inheriting with daughters.',
-        predicate: (_ctx: HeirContext) => true,
+        predicate: () => true,
       },
     ],
     quranRef: '4:11',
@@ -106,7 +106,7 @@ export const FARAID_RULES: FaraidRule[] = [
       {
         share: ZERO, // Asaba -- gets remainder
         when: "Son's son inherits as Asaba (residuary) when not blocked by son",
-        predicate: (_ctx: HeirContext) => true,
+        predicate: () => true,
       },
     ],
     quranRef: '4:11',
@@ -165,7 +165,7 @@ export const FARAID_RULES: FaraidRule[] = [
       {
         share: ZERO, // Pure Asaba
         when: 'No children or grandchildren: father inherits as pure Asaba',
-        predicate: (_ctx: HeirContext) => true,
+        predicate: () => true,
       },
     ],
     quranRef: '4:11',
@@ -191,7 +191,7 @@ export const FARAID_RULES: FaraidRule[] = [
       {
         share: ZERO, // Pure Asaba
         when: 'No children or grandchildren: grandfather inherits as pure Asaba',
-        predicate: (_ctx: HeirContext) => true,
+        predicate: () => true,
       },
     ],
     quranRef: '4:11',
@@ -214,7 +214,7 @@ export const FARAID_RULES: FaraidRule[] = [
         // Here we use ONE_THIRD as the default; the engine adjusts for Umariyyatayn
         share: ONE_THIRD,
         when: 'No children, no grandchildren, 0-1 sibling',
-        predicate: (_ctx: HeirContext) => true,
+        predicate: () => true,
       },
     ],
     quranRef: '4:11',

@@ -1,9 +1,9 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
 import Fraction from 'fraction.js'
 import { useWizardStore } from '@/stores/wizardStore'
 import { useScenariosStore } from '@/stores/scenariosStore'
-import type { Scenario, ScenarioSummary } from '@/types/scenario'
+import type { Scenario } from '@/types/scenario'
 import type { FaraidOutput, ShareResult } from '@/core/faraid/types'
 import type { WizardState } from '@/types/wizard'
 import { ScenariosPage } from '@/components/scenarios/ScenariosPage'
@@ -240,7 +240,7 @@ describe('ScenarioCard', () => {
   })
 
   it('inline rename: click name, type new name, blur saves', async () => {
-    const handleRename = { fn: (_n: string) => {} }
+    const handleRename = { fn: () => {} }
     const renameSpy = (name: string) => {
       handleRename.fn(name)
     }
