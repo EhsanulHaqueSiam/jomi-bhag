@@ -29,6 +29,26 @@ test.describe('PDF Export', () => {
     await expect(pdfButton).toBeEnabled({ timeout: 45000 })
   })
 
+  test('PDF generation works in Bangla UI mode', async ({ page }) => {
+    await wizardToResults(page)
+
+    // Switch app language to Bangla (from default English)
+    await page.getByRole('button', { name: 'Switch to Bangla' }).click()
+    await expect(page.getByText('উত্তরাধিকার ফলাফল')).toBeVisible({ timeout: 5000 })
+
+    const pdfButton = page
+      .getByRole('button', { name: /পিডিএফ ডাউনলোড|Download PDF/i })
+      .first()
+    await expect(pdfButton).toBeVisible()
+    await expect(pdfButton).toBeEnabled()
+    await pdfButton.click()
+
+    // Would fail before fix when italic Bengali font variant was unresolved.
+    await expect(pdfButton).toBeEnabled({ timeout: 45000 })
+
+    await expect(page.getByText(/PDF (download|print) failed/i)).not.toBeVisible()
+  })
+
   test('PDF generation works after using individual distribution', async ({ page }) => {
     await wizardToResults(page)
     await goToIndividualDistribution(page)

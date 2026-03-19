@@ -24,5 +24,14 @@ Font.register({
 
 Font.register({
   family: 'Noto Sans Bengali',
-  fonts: [{ src: NotoSansBengaliRegular, fontWeight: 400 }],
+  fonts: [
+    // Noto Sans Bengali regular is used as a safe fallback for italic/bold
+    // variants so @react-pdf can resolve requested styles without crashing.
+    { src: NotoSansBengaliRegular, fontWeight: 400 },
+    { src: NotoSansBengaliRegular, fontWeight: 400, fontStyle: 'italic' },
+    { src: NotoSansBengaliRegular, fontWeight: 600 },
+    { src: NotoSansBengaliRegular, fontWeight: 600, fontStyle: 'italic' },
+    { src: NotoSansBengaliRegular, fontWeight: 700 },
+    { src: NotoSansBengaliRegular, fontWeight: 700, fontStyle: 'italic' },
+  ],
 })
