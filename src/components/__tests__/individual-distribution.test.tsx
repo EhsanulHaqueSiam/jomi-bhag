@@ -332,9 +332,13 @@ describe('DistributionPage view toggle', () => {
 
     fireEvent.click(screen.getByText('By Individual'))
 
-    // Section headers
-    expect(screen.getByText(/Sons/)).toBeInTheDocument()
-    expect(screen.getByText(/Daughters/)).toBeInTheDocument()
+    // Section groups should be rendered by heir type
+    expect(
+      screen.getByRole('group', { name: /Son section/i }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('group', { name: /Daughter section/i }),
+    ).toBeInTheDocument()
   })
 
   it('hides group controls in individual view', () => {

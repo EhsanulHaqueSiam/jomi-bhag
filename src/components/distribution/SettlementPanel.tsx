@@ -10,6 +10,7 @@ import { SellSplitDetail } from './SellSplitDetail'
 import { PhysicalDivisionDetail } from './PhysicalDivisionDetail'
 import { BuyoutDetail } from './BuyoutDetail'
 import { JointOwnershipDetail } from './JointOwnershipDetail'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const displayFormatter = new Intl.NumberFormat('en-IN')
 
@@ -24,14 +25,12 @@ interface SettlementPanelProps {
 
 interface MethodOption {
   method: LandSettlementMethod
-  label: string
   icon: React.ReactNode
 }
 
 const METHOD_OPTIONS: MethodOption[] = [
   {
     method: 'sell_split',
-    label: 'Sell & Split',
     icon: (
       <svg
         className="h-5 w-5"
@@ -50,7 +49,6 @@ const METHOD_OPTIONS: MethodOption[] = [
   },
   {
     method: 'physical_division',
-    label: 'Physical Division',
     icon: (
       <svg
         className="h-5 w-5"
@@ -69,7 +67,6 @@ const METHOD_OPTIONS: MethodOption[] = [
   },
   {
     method: 'buyout',
-    label: 'Buyout',
     icon: (
       <svg
         className="h-5 w-5"
@@ -88,7 +85,6 @@ const METHOD_OPTIONS: MethodOption[] = [
   },
   {
     method: 'joint_ownership',
-    label: 'Joint Ownership',
     icon: (
       <svg
         className="h-5 w-5"
@@ -114,6 +110,7 @@ export function SettlementPanel({
   landInputUnit,
   onUpdate,
 }: SettlementPanelProps) {
+  const { t } = useTranslation()
   const currentMethod = settlement?.method ?? null
 
   const selectMethod = useCallback(
@@ -160,7 +157,7 @@ export function SettlementPanel({
       {/* Header */}
       <div className="flex items-center justify-between">
         <h4 className="text-sm font-semibold text-gray-800">
-          Land Settlement Method
+          {t('distribution.settlementPlan')}
         </h4>
         <span className="text-xs text-gray-500">
           &#2547;{displayFormatter.format(propertyValue)}
@@ -170,7 +167,7 @@ export function SettlementPanel({
       {/* Method prompt if none selected */}
       {!currentMethod && (
         <p className="mt-1 text-xs text-gray-400">
-          Choose how to settle this property
+          {t('distribution.chooseSettlement')}
         </p>
       )}
 
@@ -201,7 +198,10 @@ export function SettlementPanel({
                   isSelected ? 'text-emerald-700' : 'text-gray-700'
                 }`}
               >
-                {opt.label}
+                {opt.method === 'sell_split' && t('distribution.sellSplit')}
+                {opt.method === 'physical_division' && t('distribution.physicalDivision')}
+                {opt.method === 'buyout' && t('estate.buyout')}
+                {opt.method === 'joint_ownership' && t('distribution.jointOwnership')}
               </span>
             </button>
           )

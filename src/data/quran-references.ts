@@ -43,7 +43,7 @@ export const QURAN_REFERENCES: Record<string, QuranReference> = {
     arabicText:
       'يَسْتَفْتُونَكَ قُلِ اللَّهُ يُفْتِيكُمْ فِي الْكَلَالَةِ ۚ إِنِ امْرُؤٌ هَلَكَ لَيْسَ لَهُ وَلَدٌ وَلَهُ أُخْتٌ فَلَهَا نِصْفُ مَا تَرَكَ ۚ وَهُوَ يَرِثُهَا إِن لَّمْ يَكُن لَّهَا وَلَدٌ ۚ فَإِن كَانَتَا اثْنَتَيْنِ فَلَهُمَا الثُّلُثَانِ مِمَّا تَرَكَ ۚ وَإِن كَانُوا إِخْوَةً رِّجَالًا وَنِسَاءً فَلِلذَّكَرِ مِثْلُ حَظِّ الْأُنثَيَيْنِ',
     englishTranslation:
-      'They request from you a [legal] ruling. Say, "Allah gives you a ruling concerning one having neither combiningthat is, the Kalalah. If a man dies, leaving no child but [only] a sister, she will have half of what he left. And he inherits from her if she [dies and] has no child. But if there are two sisters [or more], they will have two-thirds of what he left. And if there are both brothers and sisters, the male will have the share of two females."',
+      'They ask you for a ruling. Say, "Allah gives you a ruling about kalalah (one who leaves neither ascendants nor descendants). If a man dies leaving no child but has a sister, she receives half of what he leaves; and he inherits from her if she has no child. If there are two sisters, they receive two-thirds of what he leaves. If there are brothers and sisters, the male gets the share of two females."',
     context:
       'Shares of full and consanguine siblings in Kalalah (no children, no father). The Kalalah verse.',
   },

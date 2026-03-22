@@ -8,6 +8,20 @@ import { COMPENSATION_THRESHOLD } from '@/core/distribution/individual-types'
 import type { ShareResult, HeirType } from '@/core/faraid/types'
 import { HEIR_TYPE_LABELS } from '@/core/utils/display'
 import type { WizardState } from '@/types/wizard'
+import { computePropertyTotal } from '@/core/land/types'
+import { computeAssetValue } from '@/core/assets/valuation'
+
+const SPLIT_ITEM_SEPARATOR = '__split__'
+
+export function createSplitItemId(parentId: string, index: number): string {
+  return `${parentId}${SPLIT_ITEM_SEPARATOR}${index + 1}_${crypto.randomUUID()}`
+}
+
+export function getSplitParentIdFromItemId(itemId: string): string | null {
+  const splitIndex = itemId.indexOf(SPLIT_ITEM_SEPARATOR)
+  if (splitIndex <= 0) return null
+  return itemId.slice(0, splitIndex)
+}
 
 /**
  * Expand each DistributionGroup into per-individual IndividualColumn objects.
@@ -308,8 +322,14 @@ export function computeIndividualFingerprint(
   wizardState: WizardState,
 ): string {
   return JSON.stringify({
-    properties: (wizardState.properties ?? []).map((p: { id: string }) => p.id),
-    movableAssets: (wizardState.movableAssets ?? []).map((a: { id: string }) => a.id),
+    properties: (wizardState.properties ?? []).map((p) => ({
+      id: p.id,
+      value: computePropertyTotal(p),
+    })),
+    movableAssets: (wizardState.movableAssets ?? []).map((a) => ({
+      id: a.id,
+      value: computeAssetValue(a),
+    })),
     heirs: {
       sonCount: wizardState.sonCount,
       daughterCount: wizardState.daughterCount,

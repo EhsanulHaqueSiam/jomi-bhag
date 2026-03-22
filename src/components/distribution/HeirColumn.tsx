@@ -7,6 +7,7 @@ import { EquilibriumBar } from './EquilibriumBar'
 import { getColumnBorderColor } from './equilibriumUtils'
 import { AssetCard } from './AssetCard'
 import { MobileFallback } from './MobileFallback'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const bdtFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -35,6 +36,7 @@ export function HeirColumn({
   shares,
   onSettlementUpdate,
 }: HeirColumnProps) {
+  const { t } = useTranslation()
   const { isOver, setNodeRef } = useDroppable({
     id: group.heirType,
   })
@@ -64,7 +66,9 @@ export function HeirColumn({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h3 className="text-base font-semibold text-gray-900">
-              {group.label}
+              {t(`results.heirTypes.${group.heirType}`) !== `results.heirTypes.${group.heirType}`
+                ? t(`results.heirTypes.${group.heirType}`)
+                : group.label}
             </h3>
             {(() => {
               const matchingShare = shares.find((s) => s.heirType === group.heirType)
@@ -84,7 +88,7 @@ export function HeirColumn({
             )}
           </div>
           <span className="text-xs text-gray-500">
-            Target: {bdtFormatter.format(group.targetValue)}
+            {t('distribution.target')}: {bdtFormatter.format(group.targetValue)}
           </span>
         </div>
       </div>
@@ -93,7 +97,7 @@ export function HeirColumn({
       <div className="flex-1 space-y-2 overflow-y-auto px-4 pb-4 max-h-[400px] lg:max-h-[600px]">
         {items.length === 0 ? (
           <div className="rounded-lg border-2 border-dashed border-gray-200 px-4 py-6 text-center text-sm text-gray-400">
-            Drag items here
+            {t('distribution.dragItemsHere')}
           </div>
         ) : (
           items.map((item) => {

@@ -414,9 +414,33 @@ describe('moveIndividualItem', () => {
 })
 
 describe('computeIndividualFingerprint', () => {
+  const baseProperty = {
+    id: 'p1',
+    nickname: '',
+    type: 'residential' as const,
+    division: null,
+    upazila: null,
+    rateSource: 'manual' as const,
+    landAreaSqft: 0,
+    landInputUnit: 'decimal' as const,
+    landValue: 100_000,
+    house: null,
+    trees: null,
+    pond: null,
+    settlement: null,
+  }
+
+  const baseAsset = {
+    id: 'a1',
+    category: 'cash' as const,
+    value: 50_000,
+    isIndivisible: false,
+    indivisibleResolution: null,
+  }
+
   it('should change when heir count changes', () => {
     const state1 = {
-      properties: [{ id: 'p1' }],
+      properties: [baseProperty],
       movableAssets: [],
       sonCount: 3,
       daughterCount: 2,
@@ -443,8 +467,8 @@ describe('computeIndividualFingerprint', () => {
 
   it('should include property and movable asset IDs and values', () => {
     const state1 = {
-      properties: [{ id: 'p1' }],
-      movableAssets: [{ id: 'a1' }],
+      properties: [baseProperty],
+      movableAssets: [baseAsset],
       sonCount: 1,
       daughterCount: 0,
       wifeCount: 0,
@@ -459,7 +483,12 @@ describe('computeIndividualFingerprint', () => {
 
     const state2 = {
       ...state1,
-      properties: [{ id: 'p1' }, { id: 'p2' }], // added property
+      properties: [
+        { ...baseProperty, landValue: 100_000 },
+      ],
+      movableAssets: [
+        { ...baseAsset, value: 75_000 },
+      ],
     } as unknown as WizardState
 
     const fp1 = computeIndividualFingerprint(state1)

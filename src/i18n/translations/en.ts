@@ -394,7 +394,9 @@ export const en = {
     undo: 'Undo',
     drawLots: 'Draw Lots (Qurah)',
     drawAgain: 'Draw Again',
+    qurahCeremonyDialog: 'Qurah (Lot Drawing) Ceremony',
     noAssets: 'No assets to distribute. Add properties or movable assets first.',
+    dragItemsHere: 'Drag items here',
     // Compensation
     cashCompensation: 'Cash Compensation Required',
     compensationText: '{from} received {amount} more in land -- owes {to} {amount2} cash',
@@ -406,7 +408,8 @@ export const en = {
     jointOwnership: 'Joint Ownership',
     // Qurah ceremony
     bismillahTranslation: 'In the name of Allah, the Most Gracious, the Most Merciful',
-    qurahVerse: '(Al-Ma\'idah 5:3) -- "And take a provision (of Qurah) for your division"',
+    qurahVerse:
+      'Qurah is used only for assigning equivalent assets after fixed Faraid shares are already determined.',
     reDrawLots: 'Re-Draw Lots (Qurah)',
     // Move
     moveTo: 'Move to...',

@@ -398,6 +398,34 @@ describe('isStale', () => {
 
     expect(useIndividualDistributionStore.getState().isStale()).toBe(false)
   })
+
+  it('returns true when property or asset values change', () => {
+    const shares: ShareResult[] = [
+      makeShare('son', 1, new Fraction(1, 2)),
+      makeShare('daughter', 1, new Fraction(1, 2)),
+    ]
+
+    useWizardStore.setState({
+      properties: [makeProperty('p1', 100_000)],
+      movableAssets: [makeVehicleAsset('a1', 50_000)],
+      totalEstateValue: 150_000,
+      results: makeFaraidOutput(shares),
+      sonCount: 1,
+      daughterCount: 1,
+    })
+
+    useDistributionStore.getState().computeDistribution()
+    useIndividualDistributionStore.getState().initialize()
+
+    // Keep IDs the same; change only values
+    useWizardStore.setState({
+      properties: [makeProperty('p1', 120_000)],
+      movableAssets: [makeVehicleAsset('a1', 55_000)],
+      totalEstateValue: 175_000,
+    })
+
+    expect(useIndividualDistributionStore.getState().isStale()).toBe(true)
+  })
 })
 
 describe('qurahShuffle', () => {

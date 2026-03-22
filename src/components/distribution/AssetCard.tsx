@@ -5,6 +5,7 @@ import type { Property } from '@/core/land/types'
 import type { ShareResult } from '@/core/faraid/types'
 import type { LandSettlement } from '@/core/land/settlement-types'
 import { SettlementPanel } from './SettlementPanel'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const bdtFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -127,8 +128,10 @@ export function AssetCard({
   shares,
   onSettlementUpdate,
 }: AssetCardProps) {
+  const { t } = useTranslation()
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: item.id,
+    disabled: Boolean(isOverlay),
     data: { groupId },
   })
 
@@ -179,9 +182,10 @@ export function AssetCard({
         <button
           type="button"
           onClick={() => setExpanded((prev) => !prev)}
+          aria-expanded={expanded}
           className="mt-1 flex w-full items-center justify-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700"
         >
-          <span>Settlement</span>
+          <span>{t('distribution.settlementPlan')}</span>
           <svg
             className={`h-3 w-3 transition-transform ${expanded ? 'rotate-180' : ''}`}
             fill="none"

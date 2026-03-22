@@ -129,13 +129,15 @@ export function ScenariosPage({ onNavigate }: ScenariosPageProps) {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-lg font-bold text-gray-900">{t('scenarios.title')}</h2>
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleNewCalculation}
-            className="rounded-lg border border-emerald-300 px-3 py-1.5 text-xs font-medium text-emerald-700 transition-colors hover:bg-emerald-50"
-          >
-            {t('scenarios.newCalculation')}
-          </button>
+          {scenarios.length > 0 && (
+            <button
+              type="button"
+              onClick={handleNewCalculation}
+              className="rounded-lg border border-emerald-300 px-3 py-1.5 text-xs font-medium text-emerald-700 transition-colors hover:bg-emerald-50"
+            >
+              {t('scenarios.newCalculation')}
+            </button>
+          )}
           <button
             type="button"
             onClick={handleSave}

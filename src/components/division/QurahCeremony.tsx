@@ -1,3 +1,5 @@
+import { useTranslation } from '@/i18n/useTranslation'
+
 interface QurahCeremonyProps {
   onDraw: () => void
   isRevealed: boolean
@@ -9,6 +11,7 @@ export function QurahCeremony({
   isRevealed,
   hasDrawn,
 }: QurahCeremonyProps) {
+  const { t } = useTranslation()
   const hasCompletedDraw = hasDrawn || isRevealed
 
   return (
@@ -23,7 +26,7 @@ export function QurahCeremony({
           بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
         </p>
         <p className="mt-2 text-sm text-gold-500">
-          In the name of Allah, the Most Gracious, the Most Merciful
+          {t('distribution.bismillahTranslation')}
         </p>
       </div>
 
@@ -34,7 +37,7 @@ export function QurahCeremony({
           onClick={onDraw}
           className="rounded-xl bg-gold-600 px-8 py-3 font-semibold text-white hover:bg-gold-700 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2"
         >
-          {hasCompletedDraw ? 'Re-Draw Lots (Qurah)' : 'Draw Lots (Qurah)'}
+          {hasCompletedDraw ? t('distribution.reDrawLots') : t('distribution.drawLots')}
         </button>
       </div>
     </div>

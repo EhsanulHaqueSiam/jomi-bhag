@@ -12,6 +12,8 @@ import { AssetCard } from './AssetCard'
 import { InlineRename } from './InlineRename'
 import { IndividualMobileFallback } from './IndividualMobileFallback'
 import { ParcelSplitDialog } from './ParcelSplitDialog'
+import { getSplitParentIdFromItemId } from '@/core/distribution/individual-algorithm'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const bdtFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -73,6 +75,7 @@ export const IndividualColumnComponent = React.memo(function IndividualColumnCom
   properties,
   splitOrigins,
 }: IndividualColumnProps) {
+  const { t } = useTranslation()
   const { isOver, setNodeRef } = useDroppable({
     id: individual.id,
   })
@@ -88,6 +91,12 @@ export const IndividualColumnComponent = React.memo(function IndividualColumnCom
 
   // Check if an item is a split sub-parcel that can be merged
   const canMerge = (item: DistributionItem): string | null => {
+    const splitParentId = getSplitParentIdFromItemId(item.id)
+    if (splitParentId && splitOrigins[splitParentId]) {
+      return splitParentId
+    }
+
+    // Backward compatibility for older persisted split items
     for (const [parentId, originalItem] of Object.entries(splitOrigins)) {
       // Sub-items have labels starting with original label
       if (item.label.includes('(') && item.type === 'property') {
@@ -128,7 +137,7 @@ export const IndividualColumnComponent = React.memo(function IndividualColumnCom
             />
             <div className="mt-0.5 flex items-center gap-2 text-xs text-gray-500">
               <span>{individual.sharePerHeir}</span>
-              <span>Target: {bdtFormatter.format(individual.targetValue)}</span>
+              <span>{t('distribution.target')}: {bdtFormatter.format(individual.targetValue)}</span>
             </div>
           </div>
         </div>
@@ -138,7 +147,7 @@ export const IndividualColumnComponent = React.memo(function IndividualColumnCom
       <div className="flex-1 space-y-2 overflow-y-auto px-4 pb-4 max-h-[400px] lg:max-h-[600px]">
         {items.length === 0 ? (
           <div className="rounded-lg border-2 border-dashed border-gray-200 px-4 py-6 text-center text-sm text-gray-400">
-            Drag items here
+            {t('distribution.dragItemsHere')}
           </div>
         ) : (
           items.map((item) => {
@@ -162,7 +171,7 @@ export const IndividualColumnComponent = React.memo(function IndividualColumnCom
                       <path fillRule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
                       <path fillRule="evenodd" d="M10 5a1 1 0 011 1v8a1 1 0 11-2 0V6a1 1 0 011-1z" clipRule="evenodd" />
                     </svg>
-                    Split
+                    {t('distribution.splitParcel')}
                   </button>
                 )}
                 {/* Merge button for split sub-parcels */}
@@ -176,7 +185,7 @@ export const IndividualColumnComponent = React.memo(function IndividualColumnCom
                     <svg className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
                     </svg>
-                    Merge
+                    {t('distribution.mergeParcel')}
                   </button>
                 )}
                 <IndividualMobileFallback

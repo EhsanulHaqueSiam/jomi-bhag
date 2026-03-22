@@ -13,6 +13,8 @@ import {
   mergeParcel,
   calculateIndividualCompensations,
   computeIndividualFingerprint,
+  createSplitItemId,
+  getSplitParentIdFromItemId,
 } from '@/core/distribution/individual-algorithm'
 import { getEquilibriumStatus } from '@/core/distribution/algorithm'
 import { useDistributionStore } from './distributionStore'
@@ -168,8 +170,19 @@ export const useIndividualDistributionStore = create<IndividualDistributionStore
         const originalItem = items.find((i) => i.id === itemId)
         if (!originalItem) return
 
+        // Save snapshot for undo
+        const previousSnapshot = {
+          individuals: structuredClone(individuals),
+          items: structuredClone(items),
+        }
+
         // Create sub-items
-        const subItems = splitParcel(originalItem, splits, totalAreaSqft)
+        const subItems = splitParcel(originalItem, splits, totalAreaSqft).map(
+          (subItem, idx) => ({
+            ...subItem,
+            id: createSplitItemId(itemId, idx),
+          }),
+        )
 
         // Replace original item with sub-items in items array
         const newItems = items.filter((i) => i.id !== itemId).concat(subItems)
@@ -206,6 +219,7 @@ export const useIndividualDistributionStore = create<IndividualDistributionStore
           items: newItems,
           compensations,
           splitOrigins: newSplitOrigins,
+          previousSnapshot,
         })
       },
 
@@ -215,24 +229,23 @@ export const useIndividualDistributionStore = create<IndividualDistributionStore
         const originalItem = splitOrigins[parentId]
         if (!originalItem) return
 
-        // Find all sub-items for this parent (they won't have a direct parentId field,
-        // but we can find them by checking they are NOT in the original items list
-        // and were created by splitItem replacing parentId)
-        // Approach: use mergeParcel which takes splitItems and originalItem
-        // The sub-items are the ones that replaced the original
+        // Save snapshot for undo
+        const previousSnapshot = {
+          individuals: structuredClone(individuals),
+          items: structuredClone(items),
+        }
 
-        // Identify sub-items: all items that are NOT the original and are not in the
-        // original items set (before split). Since we can't easily track this,
-        // we'll find items whose labels contain the original label pattern from split.
-        // Better approach: find all item IDs assigned that aren't in our known item IDs
-        // Actually, the simplest approach: the sub-items are the ones that we added
-        // when we called splitItem. We can identify them by finding items whose labels
-        // start with the original label + " (" pattern.
+        // Preferred: detect by generated split-item ID prefix
+        let subItems = items.filter((i) => getSplitParentIdFromItemId(i.id) === parentId)
 
-        // Find sub-items by label prefix matching
-        const subItems = items.filter(
-          (i) => i.label.startsWith(originalItem.label + ' (') && i.id !== parentId,
-        )
+        // Backward compatibility for older persisted states that used label matching
+        if (subItems.length === 0) {
+          subItems = items.filter(
+            (i) => i.label.startsWith(originalItem.label + ' (') && i.id !== parentId,
+          )
+        }
+
+        if (subItems.length === 0) return
 
         const { removedIds, restoredItem } = mergeParcel(subItems, originalItem)
 
@@ -273,6 +286,7 @@ export const useIndividualDistributionStore = create<IndividualDistributionStore
           items: newItems,
           compensations,
           splitOrigins: newSplitOrigins,
+          previousSnapshot,
         })
       },
 

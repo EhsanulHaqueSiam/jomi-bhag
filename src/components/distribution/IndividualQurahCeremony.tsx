@@ -7,6 +7,7 @@ import { HEIR_TYPE_LABELS } from '@/core/utils/display'
 import { HeirIcon } from '@/components/ui/HeirIcon'
 import { feminineHeirs } from '@/components/ui/heirGender'
 import { HEIR_TYPE_COLORS } from './IndividualColumn'
+import { useTranslation } from '@/i18n/useTranslation'
 
 /** Faraid priority order for section rendering. */
 const HEIR_TYPE_ORDER: HeirType[] = [
@@ -52,6 +53,7 @@ export function IndividualQurahCeremony({
   hasDrawn,
   revealedCount,
 }: IndividualQurahCeremonyProps) {
+  const { t } = useTranslation()
   const reducedMotion = prefersReducedMotion()
 
   // Group individuals by heir type in Faraid priority order
@@ -108,7 +110,7 @@ export function IndividualQurahCeremony({
         }}
         role="dialog"
         aria-modal="true"
-        aria-label="Qurah (Lot Drawing) Ceremony"
+        aria-label={t('distribution.qurahCeremonyDialog')}
       >
         <motion.div
           className="mx-4 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl"
@@ -128,11 +130,10 @@ export function IndividualQurahCeremony({
                 {'\u0628\u0650\u0633\u0652\u0645\u0650 \u0627\u0644\u0644\u0651\u064E\u0647\u0650 \u0627\u0644\u0631\u0651\u064E\u062D\u0652\u0645\u064E\u0646\u0650 \u0627\u0644\u0631\u0651\u064E\u062D\u0650\u064A\u0645\u0650'}
               </p>
               <p className="mt-2 text-sm text-gold-500">
-                In the name of Allah, the Most Gracious, the Most Merciful
+                {t('distribution.bismillahTranslation')}
               </p>
               <p className="mt-1 text-xs text-gold-400 italic">
-                (Al-Ma&apos;idah 5:3) &mdash; &quot;And take a provision (of
-                Qurah) for your division&quot;
+                {t('distribution.qurahVerse')}
               </p>
             </div>
 
@@ -143,7 +144,7 @@ export function IndividualQurahCeremony({
                 onClick={onDraw}
                 className="rounded-xl bg-gold-600 px-8 py-3 font-semibold text-white hover:bg-gold-700 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2"
               >
-                {hasDrawn ? 'Draw Again' : 'Draw Lots (Qurah)'}
+                {hasDrawn ? t('distribution.drawAgain') : t('distribution.drawLots')}
               </button>
             </div>
 
@@ -155,8 +156,11 @@ export function IndividualQurahCeremony({
                     bg: 'bg-gray-50',
                     text: 'text-gray-700',
                   }
+                  const translatedHeirType = t(`results.heirTypes.${heirType}`)
                   const sectionLabel =
-                    HEIR_TYPE_LABELS[heirType] ?? heirType
+                    translatedHeirType !== `results.heirTypes.${heirType}`
+                      ? translatedHeirType
+                      : HEIR_TYPE_LABELS[heirType] ?? heirType
 
                   return (
                     <div key={heirType}>
@@ -245,7 +249,7 @@ export function IndividualQurahCeremony({
                   onClick={onClose}
                   className="rounded-xl bg-emerald-600 px-8 py-3 font-semibold text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                 >
-                  Done
+                  {t('buttons.done')}
                 </button>
               </div>
             )}

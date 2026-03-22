@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { DistributionItem } from '@/core/distribution/types'
 import type { IndividualColumn } from '@/core/distribution/individual-types'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface IndividualMobileFallbackProps {
   item: DistributionItem
@@ -15,6 +16,7 @@ export function IndividualMobileFallback({
   allIndividuals,
   onMove,
 }: IndividualMobileFallbackProps) {
+  const { t } = useTranslation()
   const [selectValue, setSelectValue] = useState('')
 
   const otherIndividuals = allIndividuals.filter(
@@ -35,10 +37,10 @@ export function IndividualMobileFallback({
     <select
       value={selectValue}
       onChange={handleChange}
-      className="w-full rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs text-gray-600"
-      aria-label={`Move ${item.label} to another heir`}
+      className="w-full rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs text-gray-600 md:hidden"
+      aria-label={`${t('distribution.moveTo')} ${item.label}`}
     >
-      <option value="">Move to...</option>
+      <option value="">{t('distribution.moveTo')}</option>
       {otherIndividuals.map((ind) => (
         <option key={ind.id} value={ind.id}>
           {ind.customName || ind.displayName}

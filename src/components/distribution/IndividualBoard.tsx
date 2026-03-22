@@ -18,6 +18,7 @@ import { HEIR_TYPE_LABELS } from '@/core/utils/display'
 import { SummaryBanner } from './SummaryBanner'
 import { AssetCard } from './AssetCard'
 import { IndividualColumnComponent, HEIR_TYPE_COLORS } from './IndividualColumn'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface IndividualBoardProps {
   individuals: IndividualColumn[]
@@ -54,27 +55,6 @@ const HEIR_TYPE_ORDER: HeirType[] = [
   'sister_uterine',
 ]
 
-/** Group label for section header (pluralized). */
-const HEIR_TYPE_SECTION_LABELS: Partial<Record<HeirType, string>> = {
-  husband: 'Husband',
-  wife: 'Wife',
-  son: 'Sons',
-  daughter: 'Daughters',
-  son_of_son: "Sons' Sons",
-  daughter_of_son: "Sons' Daughters",
-  father: 'Father',
-  paternal_grandfather: 'Paternal Grandfather',
-  mother: 'Mother',
-  paternal_grandmother: 'Paternal Grandmother',
-  maternal_grandmother: 'Maternal Grandmother',
-  brother_full: 'Full Brothers',
-  brother_consanguine: 'Paternal Brothers',
-  brother_uterine: 'Maternal Brothers',
-  sister_full: 'Full Sisters',
-  sister_consanguine: 'Paternal Sisters',
-  sister_uterine: 'Maternal Sisters',
-}
-
 export function IndividualBoard({
   individuals,
   items,
@@ -88,6 +68,7 @@ export function IndividualBoard({
   properties,
   splitOrigins,
 }: IndividualBoardProps) {
+  const { t } = useTranslation()
   const [activeItem, setActiveItem] = useState<DistributionItem | null>(null)
 
   const itemMap = useMemo(
@@ -227,8 +208,11 @@ export function IndividualBoard({
             bg: 'bg-gray-50',
             text: 'text-gray-700',
           }
+          const translatedHeirType = t(`results.heirTypes.${heirType}`)
           const sectionLabel =
-            HEIR_TYPE_SECTION_LABELS[heirType] ?? HEIR_TYPE_LABELS[heirType]
+            translatedHeirType !== `results.heirTypes.${heirType}`
+              ? translatedHeirType
+              : HEIR_TYPE_LABELS[heirType]
 
           // Group share info
           const shareInfo = typeIndividuals[0]?.sharePerHeir

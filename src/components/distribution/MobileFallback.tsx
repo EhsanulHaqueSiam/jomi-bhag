@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { HeirType } from '@/core/faraid/types'
 import type { DistributionItem, DistributionGroup } from '@/core/distribution/types'
 import { HEIR_TYPE_LABELS } from '@/core/utils/display'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface MobileFallbackProps {
   item: DistributionItem
@@ -16,6 +17,7 @@ export function MobileFallback({
   allGroups,
   onMove,
 }: MobileFallbackProps) {
+  const { t } = useTranslation()
   const [selectValue, setSelectValue] = useState('')
 
   const otherGroups = allGroups.filter(
@@ -36,10 +38,10 @@ export function MobileFallback({
     <select
       value={selectValue}
       onChange={handleChange}
-      className="w-full rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs text-gray-600"
-      aria-label={`Move ${item.label} to another group`}
+      className="w-full rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs text-gray-600 md:hidden"
+      aria-label={`${t('distribution.moveTo')} ${item.label}`}
     >
-      <option value="">Move to...</option>
+      <option value="">{t('distribution.moveTo')}</option>
       {otherGroups.map((g) => (
         <option key={g.heirType} value={g.heirType}>
           {HEIR_TYPE_LABELS[g.heirType]}
